@@ -1,12 +1,12 @@
 const router = require('express').Router();
-let User = require('../models/user.models');
+let Admin = require('../models/admin.models');
 const process = require('process');
 
 var basePath = process.cwd();
 
 router.route('/').get((req, res) => {
-    res.sendFile(basePath+'/frontend/index.html');
-    // User.find()
+    res.render('admin/index');
+    // Admin.find()
     //     .then((users) => {
     //         let result = []
     //         users.forEach(user => {

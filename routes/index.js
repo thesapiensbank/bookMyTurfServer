@@ -1,11 +1,9 @@
 const router = require('express').Router();
 // let User = require('../models/user.models');
-const process = require('process');
 
-var basePath = process.cwd();
-
+// app.set('view engine', 'ejs');
 router.route('/').get((req, res) => {
-    res.sendFile(basePath+'/frontend/index.html');
+    res.render('index');
 });
 
 // router.route('/add').post((req, res) => {

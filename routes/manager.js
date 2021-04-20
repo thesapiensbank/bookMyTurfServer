@@ -1,9 +1,9 @@
 const router = require('express').Router();
-let Exercise = require('../models/exercise.models');
+let Manager = require('../models/manager.models');
 
 router.route('/').get((req, res) => {
-  Exercise.find()
-    .then((exercises) => res.json(exercises))
+  Manager.find()
+    .then((manager) => res.json(manager))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
@@ -13,7 +13,7 @@ router.route('/add').post((req, res) => {
   const duration = Number(req.body.duration);
   const date = Date.parse(req.body.date);
 
-  const newExercise = new Exercise({
+  const newManager = new Manager({
     username,
     description,
     duration,
@@ -22,7 +22,7 @@ router.route('/add').post((req, res) => {
 
   newUser
     .save()
-    .then(() => res.json('Excercise Added!'))
+    .then(() => res.json('Manager Added!'))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
