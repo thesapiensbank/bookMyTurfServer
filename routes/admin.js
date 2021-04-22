@@ -1,8 +1,18 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt')
 let Admin = require('../models/admin.models');
 const process = require('process');
 
 var basePath = process.cwd();
+const saltRounds = 10;
+
+router.route('/login').post((req,res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    if(bcrypt.compareSync(myPlaintextPassword, hash); // true
+
+
+})
 
 router.route('/').get((req, res) => {
     res.render('admin/index');
@@ -18,8 +28,11 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const username = req.body.username;
-  const newUser = new User({ username });
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = bcrypt.hashSync(req.body.password, saltRounds);
+
+  const newUser = new Admin({ name,email,password });
   
   newUser
     .save()
