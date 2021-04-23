@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Manager = require('../models/manager.models');
+let Manager = require('../models/turf.models');
 
 router.route('/').get((req, res) => {
   Manager.find()

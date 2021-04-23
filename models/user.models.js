@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const adminSchema = new Schema({
+const userSchema = new Schema({
     name:{
        type: String,
        required: true
@@ -16,11 +16,18 @@ const adminSchema = new Schema({
     password: {
        type: String,
        required: true
+    },
+    privilege:{
+       type:String,
+       required: true,
+    },
+    turfid:{
+       type:Number,
     }
  },{
     timestamps: true,
-    collection: 'users'
+    collection: 'Users'
  })
-const Admin = mongoose.model('Admin',adminSchema);
+const User = mongoose.model('User',userSchema);
 
-module.exports = Admin;
+module.exports = User;
