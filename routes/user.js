@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 let User = require('../models/user.models');
 const process = require('process');
 
@@ -10,59 +10,88 @@ let serverPrivilege = null;
 
 //Api calls
 router.route('/login').post((req, res) => {
-    console.log(req)
+  console.log(req);
   const email = req.body.email;
-  console.log("email",email)
+  console.log('email', email);
   const password = req.body.password;
-  console.log("Password",password)
+  console.log('Password', password);
   const user = User.findOne({
-      "email":email,
-  })
-  User.findOne({ 'email': email }, function (err, user) {
-      if(bcrypt.compareSync(password, user.password)){
-          serverPrivilege = user.privilege;
-          res.redirect('dashboard');
-          //res.send([true,serverPrivilege])
-      }
+    email: email,
+  });
+  User.findOne({ email: email }, function (err, user) {
+    if (bcrypt.compareSync(password, user.password)) {
+      req.session.context = { isLoggedIn: true, privilege: user.privilege };
+      res.redirect('dashboard');
+      //res.send([true,serverPrivilege])
+    }
   });
 
   console.log(user.password);
 });
 
 router.route('/add').post((req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = bcrypt.hashSync(req.body.password, saltRounds);
-    const privilege = req.body.privilege;
-    // const turfid = req.body.turfid
-    const newUser = new User({ name,email,password,privilege });
-    
-    newUser
-      .save()
-      .then(() => res.json('User Added!'))
-      .catch((err) => res.status(400).json('Error: ' + err));
-  
-  });
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = bcrypt.hashSync(req.body.password, saltRounds);
+  const privilege = req.body.privilege;
+  // const turfid = req.body.turfid
+  const newUser = new User({ name, email, password, privilege });
+
+  newUser
+    .save()
+    .then(() => res.json('User Added!'))
+    .catch((err) => res.status(400).json('Error: ' + err));
+});
 
 //HTTP calls
 
 router.route('/').get((req, res) => {
-    res.render('admin/index');
-    // User.find()
-    //     .then((users) => {
-    //         let result = []
-    //         users.forEach(user => {
-    //             result.push(user.username)
-    //         });
-    //         res.json(result)
-    //     })
-    //     .catch((err) => res.status(400).json('Error: ' + err));
+  res.render('admin/index');
+  // User.find()
+  //     .then((users) => {
+  //         let result = []
+  //         users.forEach(user => {
+  //             result.push(user.username)
+  //         });
+  //         res.json(result)
+  //     })
+  //     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-router.route('/dashboard').get((req,res)=>{
-    res.render('admin/dashboard')
+router.route('/dashboard').get((req, res) => {
+  if (isAdmin(req)) {
+    res.render('admin/dashboard');
+  } else if (isManager(req)) {
+    res.render('manager/dashboard');
+  } else {
+    res.redirect('/admin');
+  }
 });
 
+function isAdmin(req) {
+  let context = req.session.context;
+  if (context === undefined) {
+    req.session.context = { isLoggedIn: false, privilege: null };
+    context = req.session.context;
+  }
+  if (context.isLoggedIn && context.privilege === 'admin') {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isManager(req) {
+  let context = req.session.context;
+  if (context === undefined) {
+    req.session.context = { isLoggedIn: false, privilege: null };
+    context = req.session.context;
+  }
+  if (context.isLoggedIn && context.privilege === 'manager') {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 module.exports = router;
 

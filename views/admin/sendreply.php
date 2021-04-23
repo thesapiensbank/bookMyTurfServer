@@ -98,9 +98,9 @@ else{
 		$result=$query->fetch(PDO::FETCH_OBJ);
 		$cnt=1;	
 ?>
-	<?php include('includes/header.php');?>
+	<%- include('includes/header'); %>
 	<div class="ts-main-content">
-	<?php include('includes/leftbar.php');?>
+	<%- include('includes/leftbar'); %>
 		<div class="content-wrapper">
 			<div class="container-fluid">
 				<div class="row">

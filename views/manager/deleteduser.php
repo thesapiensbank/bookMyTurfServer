@@ -63,10 +63,10 @@ else{
 </head>
 
 <body>
-	<?php include('includes/header.php');?>
+	<%- include('includes/header'); %>
 
 	<div class="ts-main-content">
-		<?php include('includes/leftbar.php');?>
+		<%- include('includes/leftbar'); %>
 		<div class="content-wrapper">
 			<div class="container-fluid">
 
