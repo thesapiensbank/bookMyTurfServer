@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 let User = require('../models/user.models');
+const {isAdmin, isManager} = require('./commonutils');
 const process = require('process');
 
 var basePath = process.cwd();
@@ -12,9 +13,7 @@ let serverPrivilege = null;
 router.route('/login').post((req, res) => {
   console.log(req);
   const email = req.body.email;
-  console.log('email', email);
   const password = req.body.password;
-  console.log('Password', password);
   const user = User.findOne({
     email: email,
   });
@@ -68,30 +67,7 @@ router.route('/dashboard').get((req, res) => {
   }
 });
 
-function isAdmin(req) {
-  let context = req.session.context;
-  if (context === undefined) {
-    req.session.context = { isLoggedIn: false, privilege: null };
-    context = req.session.context;
-  }
-  if (context.isLoggedIn && context.privilege === 'admin') {
-    return true;
-  } else {
-    return false;
-  }
-}
-function isManager(req) {
-  let context = req.session.context;
-  if (context === undefined) {
-    req.session.context = { isLoggedIn: false, privilege: null };
-    context = req.session.context;
-  }
-  if (context.isLoggedIn && context.privilege === 'manager') {
-    return true;
-  } else {
-    return false;
-  }
-}
+
 
 module.exports = router;
 

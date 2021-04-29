@@ -1,0 +1,62 @@
+{
+    "status":true,
+    "name":"Turf1",
+    "website":"www.aniket.com",
+    "mobile":"8177965611",
+    "location":[18.643842505150936,73.75573347284335],
+    "address1":"Flat No 103, A2 W2",
+    "address2":"Garcinia, Green Groves, Wagholi",
+    "city":"Pune",
+    "pincode":"412207",
+    "state":"Maharashtra",
+    "sports":[
+        {
+        "name":"Football",
+        "value":true
+        },
+         {
+        "name":"Cricket",
+        "value":false
+        },
+         {
+        "name":"Volleyball",
+        "value":true
+        },
+         {
+        "name":"Basketball",
+        "value":false
+        }
+    ],
+    "features":[
+        {
+        "name":"WiFi",
+        "value":true
+        },
+        {
+        "name":"Toilets",
+        "value":false
+        },
+        {
+        "name":"FirsAid",
+        "value":true
+        },
+        {
+        "name":"Floodlights",
+        "value":true
+        }
+    ],
+    "slots":"1",
+    "turftype":[
+        {
+            "name":"Basketball",
+            "area":{
+                "height":"5",
+                "width":"5",
+                "units":"ft"
+            },
+            "operatinghours":["4.00 am to 5.00 am","5.00 am to 6.00 am","6.00 am to 7.00 am","7.00 am to 8.00 am"],
+            "bookedhours":["9.00 am to 10.00 am","11.00 am to 12.00 am","7.00 am to 8.00 am"]
+        }
+    ],
+    "imagefile":["img/slide.jpg","img/slide2.jpg"]
+}

@@ -28,12 +28,12 @@ connection.once('open',()=>{
 })
 
 const indexRouter = require('./routes/index')
-// const managerRouter = require('./routes/turf');
+const turfRouter = require('./routes/turf');
 const userRouter = require('./routes/user');
  
 app.use(express.static(__dirname + '/public'));
 app.use('/',indexRouter);
-// app.use('/manager',managerRouter);
+app.use('/turf',turfRouter);
 app.use('/admin',userRouter);
 
 app.listen(port, () => {
