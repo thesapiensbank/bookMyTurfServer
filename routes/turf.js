@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   console.log(req)
-  if (!isAdmin(req)) {
+  if (!isAdmin(req)) { //remove this !isAdmin on production
     const status = req.body.status;
     const name = req.body.name;
     const website = req.body.website;
