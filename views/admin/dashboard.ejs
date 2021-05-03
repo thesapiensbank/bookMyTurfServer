@@ -271,6 +271,8 @@ $error="Something went wrong. Please try again";
         google.maps.event.addListener(marker, 'dragend', function () {
           //geocodePosition(marker.getPosition());
           updatedLatLng = marker.getPosition();
+          $("#maplocation").val(updatedLatLng);
+
         });
       }
       function geocodePosition(pos) {
@@ -329,7 +331,7 @@ $error="Something went wrong. Please try again";
   </header>
 
 <body>
-  <div id="mainForm" class="container  mt-5 card">
+  <form id="mainForm" method="post" action="../turf/add" class="container  mt-5 card">
     <div class="row m-2">
 
       <div class="col-md-4 ">
@@ -350,7 +352,7 @@ $error="Something went wrong. Please try again";
         </label>
         <div class="form-group">
           <label for="exampleInput1" id="nameinp" class="bmd-label-floating">Name</label>
-          <input name="name" type="text" class="form-control">
+          <input required name="name" type="text" class="form-control">
           <span class="bmd-help">Name of Sports Arena</span>
         </div>
       </div>
@@ -360,7 +362,7 @@ $error="Something went wrong. Please try again";
       <div class="col-12  col-md-2">
         <div class="form-group">
           <label for="exampleInput1" class="bmd-label-floating">Official Website</label>
-          <input name="website" type="text" class="form-control">
+          <input required name="website" type="text" class="form-control">
           <span class="bmd-help"></span>
         </div>
       </div>
@@ -368,7 +370,7 @@ $error="Something went wrong. Please try again";
       <div class="col-12  col-md-2 mt-3 mt-md-0">
         <div class="form-group">
           <label for="exampleInput1" class="bmd-label-floating">Mobile number</label>
-          <input name="mobile" type="number" maxlength="10" class="form-control">
+          <input required name="mobile" type="number" maxlength="10" class="form-control">
           <span class="bmd-help">Primary Contact Number</span>
         </div>
       </div>
@@ -383,7 +385,7 @@ $error="Something went wrong. Please try again";
         <p>Drag Marker to set Arena Location</p>
         <div class="card">
           <div id="map"></div>
-
+          <input required id="maplocation" name="location" type="hidden" value="">
           <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
           <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkVSaMvvg1hNEYUsvaq9eMFgBfgx8BnII&callback=initMap&libraries=&v=weekly"
@@ -405,7 +407,7 @@ $error="Something went wrong. Please try again";
           <div class="col-12">
             <div class="form-group">
               <label for="exampleInput1" class="bmd-label-floating">Address Line 1</label>
-              <input name="address1" type="text" class="form-control">
+              <input required name="address1" type="text" class="form-control">
               <span class="bmd-help">We'll never share your email with anyone else.</span>
             </div>
           </div>
@@ -414,7 +416,7 @@ $error="Something went wrong. Please try again";
           <div class="col-12">
             <div class="form-group">
               <label for="exampleInput1" class="bmd-label-floating">Address Line 2</label>
-              <input name="address2" type="text" class="form-control">
+              <input required name="address2" type="text" class="form-control">
               <span class="bmd-help">We'll never share your email with anyone else.</span>
             </div>
           </div>
@@ -423,14 +425,14 @@ $error="Something went wrong. Please try again";
           <div class="col-8">
             <div class="form-group">
               <label for="exampleInput1" class="bmd-label-floating">City</label>
-              <input name="city" type="text" class="form-control">
+              <input required name="city" type="text" class="form-control">
               <span class="bmd-help">We'll never share your email with anyone else.</span>
             </div>
           </div>
           <div class="col-4">
             <div class="form-group">
               <label for="exampleInput1" class="bmd-label-floating">Pincode</label>
-              <input name="pincode" type="number" maxlength="6" class="form-control">
+              <input required name="pincode" type="number" maxlength="6" class="form-control">
               <span class="bmd-help"></span>
             </div>
           </div>
@@ -438,7 +440,7 @@ $error="Something went wrong. Please try again";
         <div class="row mt-3  ">
           <div class="col-12">
             <div class="dropdown pb-1">
-              <select name="state" class="form-select" aria-label="Default select example">
+              <select required name="state" class="form-select" aria-label="Default select example">
                 <option disabled selected>Select state</option>
                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                 <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -508,7 +510,8 @@ $error="Something went wrong. Please try again";
         <div class="row m-2 mt-3" id="sportsSection">
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Football" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+              <input name="sports_Football" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Football" class="form-check-input" type="checkbox" value="true">
               Football
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -517,7 +520,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Cricket" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="sports_Cricket" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Cricket" class="form-check-input" type="checkbox" value="true">
               Cricket
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -526,7 +530,9 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Hockey" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> Hockey
+              <input name="sports_Hockey" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Hockey" class="form-check-input" type="checkbox" value="true">
+              Hockey
               <span class="form-check-sign">
                 <span class="check"></span>
               </span>
@@ -534,7 +540,9 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Tennis" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"> Tennis
+              <input name="sports_Tennis" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Tennis" class="form-check-input" type="checkbox" value="true">
+              Tennis
               <span class="form-check-sign">
                 <span class="check"></span>
               </span>
@@ -542,7 +550,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Badminton" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="sports_Badminton" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Badminton" class="form-check-input" type="checkbox" value="true">
               Badminton
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -551,7 +560,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Basketball" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="sports_Basketball" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Basketball" class="form-check-input" type="checkbox" value="true">
               Basketball
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -560,7 +570,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Cycling" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="sports_Cycling" class="form-check-input" type="hidden" value="false">
+              <input name="sports_Cycling" class="form-check-input" type="checkbox" value="true">
               Cycling
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -591,7 +602,9 @@ $error="Something went wrong. Please try again";
         <div id="featuresSection" class="row mt-3 m-2">
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Wifi" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> Wifi
+              <input name="features_Wifi" class="form-check-input" type="hidden" value="false">
+              <input name="features_Wifi" class="form-check-input" type="checkbox" value="true">
+              Wifi
               <span class="form-check-sign">
                 <span class="check"></span>
               </span>
@@ -599,7 +612,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Beverages" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_Beverages" class="form-check-input" type="hidden" value="false">
+              <input name="features_Beverages" class="form-check-input" type="checkbox" value="true">
               Beverages
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -608,7 +622,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="First Aid" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_First Aid" class="form-check-input" type="hidden" value="false">
+              <input name="features_First Aid" class="form-check-input" type="checkbox" value="true">
               First Aid
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -617,7 +632,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Parking" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_Parking" class="form-check-input" type="hidden" value="false">
+              <input name="features_Parking" class="form-check-input" type="checkbox" value="true">
               Parking
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -626,8 +642,10 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Drinking Water" class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                value="option2"> Drinking Water
+              <input name="features_Drinking Water" class="form-check-input" type="hidden" value="false"> 
+              <input name="features_Drinking Water" class="form-check-input" type="checkbox" value="true"> 
+              Drinking
+              Water
               <span class="form-check-sign">
                 <span class="check"></span>
               </span>
@@ -635,7 +653,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Coaching" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_Coaching" class="form-check-input" type="hidden" value="false">
+              <input name="features_Coaching" class="form-check-input" type="checkbox" value="true">
               Coaching
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -644,7 +663,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Flood Lights" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_Flood Lights" class="form-check-input" type="hidden" value="false">
+              <input name="features_Flood Lights" class="form-check-input" type="checkbox" value="true">
               Flood Lights
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -653,7 +673,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="Toilets" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+              <input name="features_Toilets" class="form-check-input" type="hidden" value="false">
+              <input name="features_Toilets" class="form-check-input" type="checkbox" value="true">
               Toilets
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -674,13 +695,17 @@ $error="Something went wrong. Please try again";
           Operating Hours
         </label>
         <!-- input with datetimepicker -->
-        <div class="form-group ">
-          <input name="operatinghours" id="datetimepickerid" type="text" class="form-control datetimepicker " value="10/05/2016" />
+        <div class="form-group pb-1">
+          <select name="operatinghours" class="form-select" required aria-label="Default select example">
+            <option disabled selected>Select operating hours</option>
+            <option value="08am to 08pm">08am to 08pm</option>
+            <option value="09am to 09pm">09am to 09pm</option>
+            <option value="10am to 10pm">10am to 10pm</option>
+            <option value="11am to 11pm">11am to 11pm</option>
+            <option value="12am to 12pm">12am to 12pm</option>
+          </select>
         </div>
       </div>
-
-
-
 
     </div>
 
@@ -690,7 +715,7 @@ $error="Something went wrong. Please try again";
           Slots
         </label>
         <div class="dropdown pb-1">
-          <select name="slots" class="form-select" aria-label="Default select example">
+          <select required name="slots" class="form-select" aria-label="Default select example">
             <option disabled selected>Select slot type</option>
             <option value="1">1 Hour Slots</option>
             <option value="2">2 Hour Slots</option>
@@ -779,11 +804,11 @@ $error="Something went wrong. Please try again";
 
     <hr>
 
-    <button id="submitbt1" class="btn btn-primary">Publish</button>
+    <button id="submit" class="btn btn-primary">Publish</button>
     <button class="btn btn-danger btn-link">Cancel</button>
 
 
-  </div>
+  </form>
 
 
   <!-- Modal -->
@@ -908,14 +933,14 @@ $error="Something went wrong. Please try again";
   <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
   <script src="js/material-kit.js?v=2.0.7" type="text/javascript"></script>
   <script>
-      function onGeneratedRow(columnsResult) {
-        var jsonData = {};
-        columnsResult.forEach(function (column) {
-          var columnName = column.metadata.colName;
-          jsonData[columnName] = column.value;
-        });
-        viewData.employees.push(jsonData);
-      }
+    function onGeneratedRow(columnsResult) {
+      var jsonData = {};
+      columnsResult.forEach(function (column) {
+        var columnName = column.metadata.colName;
+        jsonData[columnName] = column.value;
+      });
+      viewData.employees.push(jsonData);
+    }
 
 
     $('#submitbt1').click(function () {
@@ -933,7 +958,7 @@ $error="Something went wrong. Please try again";
         var formObject = `${elementName}":"${element.val()}`
         allobject.push(formObject);
       });
-      
+
       console.log((allobject));
       console.log(arrayToJSONObject(allobject));
       let sports = [];
