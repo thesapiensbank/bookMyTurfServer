@@ -29,12 +29,9 @@ const turfSchema = new Schema(
     slots: { type: Number, required: true  },
     turftype: [
       {
-        name: { type: String, required: true  },
-        area: {
-          height: { type: String, required: true  },
-          width: { type: String, required: true  },
-          units: { type: String, required: true  },
-        },
+        name: { type: String, required: true },
+        area: { type: Number, required: true },
+        rate: { type: Number, required: true },
         operatinghours: [{ type: String, required: true  }],
         bookedhours: [{ type: String }],
       },

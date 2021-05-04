@@ -49,11 +49,8 @@
     "turftype":[
         {
             "name":"Basketball",
-            "area":{
-                "height":"5",
-                "width":"5",
-                "units":"ft"
-            },
+            "area":21312,
+            "rate":123,
             "operatinghours":["4.00 am to 5.00 am","5.00 am to 6.00 am","6.00 am to 7.00 am","7.00 am to 8.00 am"],
             "bookedhours":["9.00 am to 10.00 am","11.00 am to 12.00 am","7.00 am to 8.00 am"]
         }

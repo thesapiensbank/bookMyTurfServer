@@ -765,15 +765,8 @@ $error="Something went wrong. Please try again";
                     <th class=" ">Action</th>
                   </tr>
                 </thead>
-                <tbody class="px-3">
-                  <tr>
-                    <td class="">Content 1</td>
-                    <td>Content 1</td>
-                    <td>Content 1</td>
-                    <td class=" "><a data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit"></i></a>
-                      &nbsp;&nbsp;<a data-toggle="modal" data-target="#modalDelete"><i
-                          class="fa fa-trash text-danger"></i></a></td>
-                  </tr>
+                <tbody class="px-3" id="tbody">
+                  
                 <tbody>
               </table>
             </div>
@@ -825,7 +818,7 @@ $error="Something went wrong. Please try again";
         <div class="modal-body mx-3 ">
           <div class="form-group">
             <label for="exampleInput1" class="bmd-label-floating">Turf Name</label>
-            <input type="email" class="form-control">
+            <input id="typeName" type="text" class="form-control">
             <span class="bmd-help">We'll never share your email with anyone else.</span>
           </div>
 
@@ -833,13 +826,13 @@ $error="Something went wrong. Please try again";
             <div class="col-md-3">
               <div class="form-group">
                 <label for="exampleInput1" class="bmd-label-floating">Turf Area</label>
-                <input type="email" class="form-control">
+                <input type="number" id="area" class="form-control">
                 <span class="bmd-help"></span>
               </div>
             </div>
 
             <div class="col-md-4">
-              <h6 class="text-primary mt-5">Sq.Metres</h6>
+            <h6 class="text-primary mt-5">Sq.Metres</h6>
             </div>
           </div>
           <div class="row">
@@ -851,7 +844,7 @@ $error="Something went wrong. Please try again";
                       <i class="material-icons">payments</i>
                     </span>
                   </div>
-                  <input type="text" class="form-control" placeholder="Rate in Rupees">
+                  <input type="text" id="rate" class="form-control" placeholder="Rate in Rupees">
                 </div>
               </div>
             </div>
@@ -861,7 +854,7 @@ $error="Something went wrong. Please try again";
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" id="addType" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -942,7 +935,7 @@ $error="Something went wrong. Please try again";
       viewData.employees.push(jsonData);
     }
 
-
+    //Not using this piece of F unction
     $('#submitbt1').click(function () {
       alert("alert")
       // var divElem = document.getElementById("mainForm");
@@ -1005,6 +998,9 @@ $error="Something went wrong. Please try again";
       //     }
       //  })
     });
+
+
+
     $(document).ready(function () {
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
@@ -1012,8 +1008,36 @@ $error="Something went wrong. Please try again";
       // Sliders Init
       //materialKit.initSliders();
 
+      // jQuery button click event to add a row.
+      $('#addType').on('click', function () {
 
+        var typeName = $('#typeName').val()
+        var typeArea = $('#area').val()
+        var typeRate = $('#rate').val()
+          // Adding a row inside the tbody.
+          $('#tbody').append(`<tr id="type_`+typeName+`row"> 
+          <td id="type_`+typeName+`">`+typeName+`</td>
+          <input name="type_`+typeName+`" class="form-check-input" type="hidden" value="`+typeName+`">
+ 
+          <td id="area_`+typeName+`">`+typeArea+`</td>
+          <input name="area_`+typeName+`" class="form-check-input" type="hidden" value="`+typeArea+`">
+
+          <td id="rate_`+typeName+`"  >`+typeRate+`</td>
+          <input name="rate_`+typeName+`" class="form-check-input" type="hidden" value="`+typeRate+`">
+
+          <td class=" "><a name="type_`+typeName+`row"  class="delete" onclick="remove(type_`+typeName+`row)"  ><i class="fa fa-trash text-danger"></i></a></td>
+          </tr>`);
+      });
     });
+
+
+    function remove(element){
+     // var removeRow =  $(this).attr('name');
+      //alert(removeRow);
+
+      $(element).remove(); 
+    }
+
 
     function scrollToDownload() {
       if ($('.section-download').length != 0) {
