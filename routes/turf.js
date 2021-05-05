@@ -9,8 +9,9 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
+  console.log(typeof req.file)
   // console.log(req)
-  if (!isAdmin(req)) {
+  if (isAdmin(req)) {
     //remove this !isAdmin on production
 
     console.log(req.body);
@@ -19,6 +20,7 @@ router.route('/add').post((req, res) => {
     const name = req.body.name;
     const website = req.body.website;
     const mobile = req.body.mobile;
+    console.log(req.body)
     const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
     const address1 = req.body.address1;
     const address2 = req.body.address2;
@@ -26,13 +28,14 @@ router.route('/add').post((req, res) => {
     const pincode = req.body.pincode;
     const state = req.body.state;
     const slots = req.body.slots;
-    console.log(slots)
+    console.log(slots);
     let operatinghours = req.body.operatinghours;
-    operatinghours = calculateHours(operatinghours,slots)
+    console.log(operatinghours);
+    operatinghours = calculateHours(operatinghours, Number(slots));
     let sports = [];
     let features = [];
     let body = req.body;
-    let turfTypes = [];
+    let turftype = [];
 
     for (var reqname in body) {
       // for sports
@@ -63,12 +66,12 @@ router.route('/add').post((req, res) => {
       if (reqname.startsWith('type')) {
         let turfType = reqname.split('_')[1];
         console.log(turfType);
-        turfTypes.push({
+        turftype.push({
           name: turfType,
-          area: body[`area_${turfType}`],
-          rate: body[`rate_${turfType}`],
+          area: Number(body[`area_${turfType}`]),
+          rate: Number(body[`rate_${turfType}`]),
           operatinghours: operatinghours,
-          bookedhours:[]
+          bookedhours: [],
         });
       }
     }
@@ -76,7 +79,7 @@ router.route('/add').post((req, res) => {
     // const imagefile = req.body.imagefile;
     const imagefile = ['img/slide.jpg', 'img/slide2.jpg'];
     // const date = Date.parse(req.body.date);
-
+    console.log(turftype)
     const newTurf = new Turf({
       status,
       name,
@@ -95,36 +98,35 @@ router.route('/add').post((req, res) => {
       imagefile,
     });
 
-    // newTurf
-    //   .save()
-    //   .then(() => res.json('Turf Added!'))
-    //   .catch((err) => res.status(400).json('Error: ' + err));
+    newTurf
+      .save()
+      .then(() => res.json('Turf Added!'))
+      .catch((err) => res.status(400).json('Error: ' + err));
   } else {
     res.send('You are not a admin');
   }
 });
 
-function calculateHours(oph,slots) {
-  console.log(oph);
+function calculateHours(oph, slots) {
   oph = oph.replace(/\s+/g, '').split('to');
-  let start = Number(oph[0].split('-')[0]);
-  let startPost = oph[0].split('-')[1];
-  let end = Number(oph[1].split('-')[0]);
-  let endPost = oph[1].split('-')[1];
-  console.log(start, startPost, end, endPost);
+  let start = Number(oph[0]);
+  let end = Number(oph[1]);
+  console.log(start, end);
+  //["4 to 5 ","5  to 6 ","6  to 7 ","11  to 12 "]
   let mainoperatinghours = [];
-  while (start != end || startPost != endPost) {
-    console.log('this ran');
-    let firstHalf = `${start} ${startPost}`;
-    start = start + slots == 13 ? 1 : start + slots;
-    if (start == 12 && startPost == 'am') {
-      startPost = 'pm';
-    } else if (start == 12 && startPost == 'pm') {
-      startPost = 'am';
+  let postFlag = false;
+  while (start != end) {
+    let firstHalf = `${start}`;
+    start = start + slots;
+    if (slots == 2) {
+      if (start - end == 1) {
+        break;
+      }
     }
-    let secondHalf = `${start} ${startPost}`;
+    let secondHalf = `${start}`;
     mainoperatinghours.push(`${firstHalf} to ${secondHalf}`);
   }
+  console.log(mainoperatinghours)
 
   return mainoperatinghours;
 }

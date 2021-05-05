@@ -51,8 +51,8 @@
             "name":"Basketball",
             "area":21312,
             "rate":123,
-            "operatinghours":["4.00 am to 5.00 am","5.00 am to 6.00 am","6.00 am to 7.00 am","11.00 am to 12.00 pm"],
-            "bookedhours":["9.00 am to 10.00 am","11.00 am to 12.00 am","7.00 am to 8.00 am"]
+            "operatinghours":['11 to 13',  '13 to 15',  '15 to 17',  '17 to 19',  '19 to 21',  '21 to 23'],
+            "bookedhours":[]
         }
     ],
     "imagefile":["img/slide.jpg","img/slide2.jpg"]

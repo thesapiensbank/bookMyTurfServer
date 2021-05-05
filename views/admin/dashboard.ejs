@@ -698,11 +698,11 @@ $error="Something went wrong. Please try again";
         <div class="form-group pb-1">
           <select name="operatinghours" class="form-select" required aria-label="Default select example">
             <option disabled selected>Select operating hours</option>
-            <option value="08-am to 08-pm">08am to 08pm</option>
-            <option value="09-am to 09-pm">09am to 09pm</option>
-            <option value="10-am to 10-pm">10am to 10pm</option>
-            <option value="11-am to 11-pm">11am to 11pm</option>
-            <option value="12-pm to 12-am">12pm to 12am</option>
+            <option value="8 to 20">8:00 to 20:00</option>
+            <option value="9 to 21">9:00 to 21:00</option>
+            <option value="10 to 22">10:00 to 22:00</option>
+            <option value="11 to 23">11:00 to 23:00</option>
+            <option value="12 to 00">12:00 to 00:00</option>
           </select>
         </div>
       </div>
@@ -785,7 +785,7 @@ $error="Something went wrong. Please try again";
         </label>
       </div>
       <div class="col-2">
-
+        <!-- <input type="file" id="image" value="uploading_img"  accept="image/*" name="image" multiple > -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">+ Add Photos</button>
 
       </div>
@@ -926,14 +926,11 @@ $error="Something went wrong. Please try again";
   <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
   <script src="js/material-kit.js?v=2.0.7" type="text/javascript"></script>
   <script>
-    function onGeneratedRow(columnsResult) {
-      var jsonData = {};
-      columnsResult.forEach(function (column) {
-        var columnName = column.metadata.colName;
-        jsonData[columnName] = column.value;
-      });
-      viewData.employees.push(jsonData);
-    }
+   $("#image").on("change", function () {
+      if ($("#image")[0].files.length > 10) {
+        alert("You can select only 10 images");
+      }
+    });
 
     //Not using this piece of F unction
     $('#submitbt1').click(function () {
