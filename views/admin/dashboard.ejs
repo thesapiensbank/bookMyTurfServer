@@ -331,7 +331,7 @@ $error="Something went wrong. Please try again";
   </header>
 
 <body>
-  <form id="mainForm" method="POST"   class="container  mt-5 card">
+  <form id="mainForm" method="POST" action="../turf/add" class="container  mt-5 card">
     <div class="row m-2">
 
       <div class="col-md-4 ">
@@ -773,8 +773,11 @@ $error="Something went wrong. Please try again";
           </div>
         </div>
       </div>
+      <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
+      <input id="email" name="email" class="form-check-input" type="hidden" value=<%=user_email%>>
     </div>
-
+    <button id="submit" type="submit" class="btn btn-primary">Publish</button>
+    <button class="btn btn-danger btn-link">Cancel</button>
   </form>
 
   <form id="imageForm" method="post" class="container  mt-5 card">
@@ -923,72 +926,6 @@ $error="Something went wrong. Please try again";
       }
     });
 
-    //Not using this piece of F unction
-    $('#submitbt1').click(function () {
-      alert("alert")
-      // var divElem = document.getElementById("mainForm");
-      let allobject = [];
-      var data;
-      // let status, name, website, location, address1, address2, city, pincode, state, sports, features, slots, turftype, imagefile;
-      //this is for full form ok
-      $('#mainForm').find('input[type=email],input[type=number],input[type=text], select, textarea').each(function () {
-        console.log($(this).attr('name'));
-        let element = $(this);
-        var elementName = element.attr('name');
-        console.log(element.val());
-        var formObject = `${elementName}":"${element.val()}`
-        allobject.push(formObject);
-      });
-
-      console.log((allobject));
-      console.log(arrayToJSONObject(allobject));
-      let sports = [];
-      let features = [];
-      $('#sportsSection').find('input[type=checkbox]').each(function () {
-        console.log($(this).attr('name'));
-        let element = $(this)
-        let sportName = element.attr('name');
-        var obj = { name: sportName, value: element.is(':checked') };
-        sports.push(obj);
-      })
-      console.log(JSON.stringify({ "sports": sports }));
-
-
-      $('#featuresSection').find('input[type=checkbox]').each(function () {
-        console.log($(this).attr('name'));
-        let element = $(this)
-        let sportName = element.attr('name');
-        var obj = { name: sportName, value: element.is(":checked") };
-        features.push(obj);
-      })
-
-      // data = allobject + sports + features;
-
-      // console.log(data);
-      let jsontopost = {};
-      console.log(JSON.stringify(jsontopost));
-
-      //apan vegle varche .find() function karu execute veg vegle sports sathi fea
-
-      // var inputElements = divElem.querySelectorAll("input, select, checkbox, textarea");
-      // alert($("#datetimepickerid").data("DateTimePicker").date())
-      // console.log(inputElements);
-      //  $.ajax({ 
-      //     url: '/ajax',
-      //     type: 'POST',
-      //     cache: false, 
-      //     data: { field1: 1, field2: 2 }, 
-      //     success: function(data){
-      //        alert('Success!')
-      //     }
-      //     , error: function(jqXHR, textStatus, err){
-      //         alert('text status '+textStatus+', err '+err)
-      //     }
-      //  })
-    });
-
-
-
     $(document).ready(function () {
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
@@ -1036,7 +973,6 @@ $error="Something went wrong. Please try again";
     }
 
     let myForm = document.getElementById('imageForm');
-    let myFormWithOtherDetails = document.getElementById('mainForm');
     $('#submit2').on('click', function (e) {
       e.preventDefault();
       var fd = new FormData(myForm);
@@ -1051,31 +987,34 @@ $error="Something went wrong. Please try again";
         processData: false,
         contentType: false,
         data: fd,
-        async:false,
+        async: false,
         success: function (data) {
-          console.log(data)
-          alert("Images Uploaded successfully!");
+          console.log(data,Array.isArray(data))
+          if(Array.isArray(data)){
+            $('#imagefield').val(data);
+           alert("Images Uploaded successfully!");
+          }
 
-          var fd = new FormData(myFormWithOtherDetails);
-          console.log(fd);
-          $.ajax({
-            url: '/turf/add',
-            type: 'POST', 
-            async:false,
-            cache: false,
-            processData: false,
-            // enctype: "application/x-www-form-urlencoded",
-            data: fd.serialize(),
-            success: function (data) {
-              console.log(data)
-              alert("Success"); 
-            }
-            , error: function (jqXHR, textStatus, err) {
-              alert('text status ' + textStatus + ', err ' + err)
-            }
+          // var fd2 = new FormData(myFormWithOtherDetails);
+          // console.log(fd);
+          // $.ajax({
+          //   url: '/turf/add',
+          //   type: 'POST',
+          //   async: false,
+          //   cache: false,
+          //   processData: false,
+          //   contentType:false,
+          //   // enctype: "application/json",
+          //   data: myFormWithOtherDetails,
+          //   success: function (data) {
+          //     console.log(data)
+          //     alert("Success");
+          //   }
+          //   , error: function (jqXHR, textStatus, err) {
+          //     alert('text status ' + textStatus + ', err ' + err)
+          //   }
 
-          })
-          console.log(fd);
+          // })
 
 
         }
@@ -1084,7 +1023,6 @@ $error="Something went wrong. Please try again";
         }
 
       })
-      console.log(fd);
 
     })
 

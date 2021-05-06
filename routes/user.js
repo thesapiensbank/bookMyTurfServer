@@ -19,7 +19,7 @@ router.route('/login').post((req, res) => {
   });
   User.findOne({ email: email }, function (err, user) {
     if (bcrypt.compareSync(password, user.password)) {
-      req.session.context = { isLoggedIn: true, privilege: user.privilege };
+      req.session.context = { isLoggedIn: true, privilege: user.privilege, user_email:email };
       res.redirect('dashboard');
       //res.send([true,serverPrivilege])
     }
@@ -59,9 +59,13 @@ router.route('/').get((req, res) => {
 
 router.route('/dashboard').get((req, res) => {
   if (isAdmin(req)) {
-    res.render('admin/dashboard');
+    let context = req.session.context;
+    email = context.user_email;
+    res.render('admin/dashboard',{user_email:email});
   } else if (isManager(req)) {
-    res.render('manager/dashboard');
+    let context = req.session.context;
+    email = context.user_email;
+    res.render('manager/dashboard',{user_email:email});
   } else {
     res.redirect('/admin');
   }

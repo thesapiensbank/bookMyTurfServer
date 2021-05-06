@@ -1,7 +1,11 @@
 let isAdmin = (req) => {
   let context = req.session.context;
   if (context === undefined) {
-    req.session.context = { isLoggedIn: false, privilege: null };
+    req.session.context = {
+      isLoggedIn: false,
+      privilege: null,
+      user_email: null,
+    };
     context = req.session.context;
   }
   if (context.isLoggedIn && context.privilege === 'admin') {
@@ -11,11 +15,14 @@ let isAdmin = (req) => {
   }
 };
 
-
 let isManager = (req) => {
   let context = req.session.context;
   if (context === undefined) {
-    req.session.context = { isLoggedIn: false, privilege: null };
+    req.session.context = {
+      isLoggedIn: false,
+      privilege: null,
+      user_email: null,
+    };
     context = req.session.context;
   }
   if (context.isLoggedIn && context.privilege === 'manager') {
