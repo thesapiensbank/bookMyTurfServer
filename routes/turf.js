@@ -9,9 +9,8 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  console.log(typeof req.file)
-  // console.log(req)
-  if (isAdmin(req)) {
+ console.log(req)
+   
     //remove this !isAdmin on production
 
     console.log(req.body);
@@ -77,7 +76,7 @@ router.route('/add').post((req, res) => {
     }
 
     // const imagefile = req.body.imagefile;
-    const imagefile = ['img/slide.jpg', 'img/slide2.jpg'];
+    const imagefile = req.body.image; 
     // const date = Date.parse(req.body.date);
     console.log(turftype)
     const newTurf = new Turf({
@@ -102,9 +101,7 @@ router.route('/add').post((req, res) => {
       .save()
       .then(() => res.json('Turf Added!'))
       .catch((err) => res.status(400).json('Error: ' + err));
-  } else {
-    res.send('You are not a admin');
-  }
+   
 });
 
 function calculateHours(oph, slots) {

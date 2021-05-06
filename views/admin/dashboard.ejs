@@ -331,7 +331,7 @@ $error="Something went wrong. Please try again";
   </header>
 
 <body>
-  <form id="mainForm" method="post" action="../turf/add" class="container  mt-5 card">
+  <form id="mainForm" method="POST"   class="container  mt-5 card">
     <div class="row m-2">
 
       <div class="col-md-4 ">
@@ -642,8 +642,8 @@ $error="Something went wrong. Please try again";
           </div>
           <div class="form-check form-check-inline">
             <label class="form-check-label">
-              <input name="features_Drinking Water" class="form-check-input" type="hidden" value="false"> 
-              <input name="features_Drinking Water" class="form-check-input" type="checkbox" value="true"> 
+              <input name="features_Drinking Water" class="form-check-input" type="hidden" value="false">
+              <input name="features_Drinking Water" class="form-check-input" type="checkbox" value="true">
               Drinking
               Water
               <span class="form-check-sign">
@@ -766,18 +766,18 @@ $error="Something went wrong. Please try again";
                   </tr>
                 </thead>
                 <tbody class="px-3" id="tbody">
-                  
+
                 <tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-
-
-
     </div>
 
+  </form>
+
+  <form id="imageForm" method="post" class="container  mt-5 card">
     <div class="row m-2">
       <div class="col-md-2">
         <label class="form-check-label text-primary font-weight-bold my-3">
@@ -785,24 +785,15 @@ $error="Something went wrong. Please try again";
         </label>
       </div>
       <div class="col-2">
-        <input type="file" id="image" value="uploading_img"  accept="image/*" name="image" multiple >  
+        <input type="file" id="image" value="uploading_img" accept="image/*" name="image" multiple>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">+ Add Photos</button>
-
-      </div>
-
-      <div class="col-12">
-
       </div>
     </div>
 
-    <hr>
-
-    <button id="submit" class="btn btn-primary">Publish</button>
+    <button id="submit2" type="submit" class="btn btn-primary">Publish</button>
     <button class="btn btn-danger btn-link">Cancel</button>
 
-
   </form>
-
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -832,7 +823,7 @@ $error="Something went wrong. Please try again";
             </div>
 
             <div class="col-md-4">
-            <h6 class="text-primary mt-5">Sq.Metres</h6>
+              <h6 class="text-primary mt-5">Sq.Metres</h6>
             </div>
           </div>
           <div class="row">
@@ -926,7 +917,7 @@ $error="Something went wrong. Please try again";
   <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
   <script src="js/material-kit.js?v=2.0.7" type="text/javascript"></script>
   <script>
-   $("#image").on("change", function () {
+    $("#image").on("change", function () {
       if ($("#image")[0].files.length > 10) {
         alert("You can select only 10 images");
       }
@@ -1011,28 +1002,28 @@ $error="Something went wrong. Please try again";
         var typeName = $('#typeName').val()
         var typeArea = $('#area').val()
         var typeRate = $('#rate').val()
-          // Adding a row inside the tbody.
-          $('#tbody').append(`<tr id="type_`+typeName+`row"> 
-          <td id="type_`+typeName+`">`+typeName+`</td>
-          <input name="type_`+typeName+`" class="form-check-input" type="hidden" value="`+typeName+`">
+        // Adding a row inside the tbody.
+        $('#tbody').append(`<tr id="type_` + typeName + `row"> 
+          <td id="type_`+ typeName + `">` + typeName + `</td>
+          <input name="type_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeName + `">
  
-          <td id="area_`+typeName+`">`+typeArea+`</td>
-          <input name="area_`+typeName+`" class="form-check-input" type="hidden" value="`+typeArea+`">
+          <td id="area_`+ typeName + `">` + typeArea + `</td>
+          <input name="area_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeArea + `">
 
-          <td id="rate_`+typeName+`"  >`+typeRate+`</td>
-          <input name="rate_`+typeName+`" class="form-check-input" type="hidden" value="`+typeRate+`">
+          <td id="rate_`+ typeName + `"  >` + typeRate + `</td>
+          <input name="rate_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeRate + `">
 
-          <td class=" "><a name="type_`+typeName+`row"  class="delete" onclick="remove(type_`+typeName+`row)"  ><i class="fa fa-trash text-danger"></i></a></td>
+          <td class=" "><a name="type_`+ typeName + `row"  class="delete" onclick="remove(type_` + typeName + `row)"  ><i class="fa fa-trash text-danger"></i></a></td>
           </tr>`);
       });
     });
 
 
-    function remove(element){
-     // var removeRow =  $(this).attr('name');
+    function remove(element) {
+      // var removeRow =  $(this).attr('name');
       //alert(removeRow);
 
-      $(element).remove(); 
+      $(element).remove();
     }
 
 
@@ -1043,6 +1034,64 @@ $error="Something went wrong. Please try again";
         }, 1000);
       }
     }
+
+    let myForm = document.getElementById('imageForm');
+    let myFormWithOtherDetails = document.getElementById('mainForm');
+    $('#submit2').on('click', function (e) {
+      e.preventDefault();
+      var fd = new FormData(myForm);
+      //fd.append( 'image', input.files[0] );
+      console.log(fd);
+
+      $.ajax({
+        url: '/turf/upload',
+        type: 'POST',
+        enctype: "multipart/form-data",
+        cache: false,
+        processData: false,
+        contentType: false,
+        data: fd,
+        async:false,
+        success: function (data) {
+          console.log(data)
+          alert("Images Uploaded successfully!");
+
+          var fd = new FormData(myFormWithOtherDetails);
+          console.log(fd);
+          $.ajax({
+            url: '/turf/add',
+            type: 'POST', 
+            async:false,
+            cache: false,
+            processData: false,
+            // enctype: "application/x-www-form-urlencoded",
+            data: fd.serialize(),
+            success: function (data) {
+              console.log(data)
+              alert("Success"); 
+            }
+            , error: function (jqXHR, textStatus, err) {
+              alert('text status ' + textStatus + ', err ' + err)
+            }
+
+          })
+          console.log(fd);
+
+
+        }
+        , error: function (jqXHR, textStatus, err) {
+          alert('text status ' + textStatus + ', err ' + err)
+        }
+
+      })
+      console.log(fd);
+
+    })
+
+
+
+
+
   </script>
 
   <script type="text/javascript" src="js/main.js"></script>
