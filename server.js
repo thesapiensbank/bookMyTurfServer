@@ -75,7 +75,9 @@ app.post('/turf/upload', upload.array('image', 9), function (req, res, err) {
     var file = req.files;
     //res.end();
     console.log(fileNames);
+    
     res.json(fileNames);
+    fileNames = [];
     //res.sendStatus(200);
   }
 });

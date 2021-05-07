@@ -35,7 +35,7 @@
 		 close: 'fa fa-remove'
 	   }
 	 });
-	
+	 initMap();
  });
   
  function initMap() {
