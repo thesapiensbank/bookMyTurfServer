@@ -1,65 +1,3 @@
-<!--<?php
-include('includes/config.php');
-if(isset($_POST['submit']))
-{
-
-$file = $_FILES['image']['name'];
-$file_loc = $_FILES['image']['tmp_name'];
-$folder="images/"; 
-$new_file_name = strtolower($file);
-$final_file=str_replace(' ','-',$new_file_name);
-
-$name=$_POST['name'];
-$website=$_POST['website'];
-
-$mobileno=$_POST['mobileno'];
-$address=$_POST['address'];
-
-$sports=$_POST['sports'];
-$features=$_POST['features'];
-
-
-if(move_uploaded_file($file_loc,$folder.$final_file))
-	{
-		$image=$final_file;
-    }
-$notitype='Create Account';
-$reciver='Admin';
-$sender=$name;
-
-$sqlnoti="insert into notification (notiuser,notireciver,notitype) values (:notiuser,:notireciver,:notitype)";
-$querynoti = $dbh->prepare($sqlnoti);
-$querynoti-> bindParam(':notiuser', $sender, PDO::PARAM_STR);
-$querynoti-> bindParam(':notireciver',$reciver, PDO::PARAM_STR);
-$querynoti-> bindParam(':notitype', $notitype, PDO::PARAM_STR);
-$querynoti->execute();    
-    
-$sql ="INSERT INTO users(name, website, mobile,address,  image, sports,features, status) VALUES(:name, :website, :mobileno,:address, :image,:sports,:features, 1)";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':name', $name, PDO::PARAM_STR);
-$query-> bindParam(':website', $website, PDO::PARAM_STR);
-
-
-$query-> bindParam(':mobileno', $mobileno, PDO::PARAM_STR);
-$query-> bindParam(':address', $address, PDO::PARAM_STR);
-
-$query-> bindParam(':image', $image, PDO::PARAM_STR);
-$query-> bindParam(':sports', $sports, PDO::PARAM_STR);
-$query->bindParam(':features', $features, PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-echo "<script type='text/javascript'>alert('Registration Sucessfull!');</script>";
-echo "<script type='text/javascript'> document.location = 'dashboard.php'; </script>";
-}
-else 
-{
-$error="Something went wrong. Please try again";
-}
-
-}
-?>-->
 <html>
 
 <head>
@@ -240,7 +178,7 @@ $error="Something went wrong. Please try again";
         //geocoder = new google.maps.Geocoder();
         let lat = '<%- Number(turf.location[0]) %>';
         let long = '<%= Number(turf.location[1]) %>';
-        const myLatlng = { lat: Number(lat) , lng: Number(long) };
+        const myLatlng = { lat: Number(lat), lng: Number(long) };
         $("#maplocation").val(`(${myLatlng.lat},${myLatlng.lng})`);
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 4,
@@ -611,7 +549,7 @@ $error="Something went wrong. Please try again";
           </label>
           <!-- input with datetimepicker -->
           <div class="form-group pb-1">
-            <select name="operatinghours" class="form-select" required aria-label="Default select example">
+            <select id="operatinghours" name="operatinghours" class="form-select" required aria-label="Default select example">
               <option disabled selected>Select operating hours</option>
               <option value="8 to 20">8:00 to 20:00</option>
               <option value="9 to 21">9:00 to 21:00</option>
@@ -630,7 +568,7 @@ $error="Something went wrong. Please try again";
             Slots
           </label>
           <div class="dropdown pb-1">
-            <select required name="slots" class="form-select" aria-label="Default select example">
+            <select required id="slots" name="slots" class="form-select" aria-label="Default select example">
               <option disabled selected>Select slot type</option>
               <option value="1">1 Hour Slots</option>
               <option value="2">2 Hour Slots</option>
@@ -639,10 +577,12 @@ $error="Something went wrong. Please try again";
         </div>
         <div class="col-md-8 ">
           <h6 class="text-primary my-3">Bookable slots for each type</h6>
-          <ul>
-            <li>
-              09:00 AM - 10:00 AM
-            </li>
+          <ul id="bookableHours"><%= turf.operatinghours.hours %> 
+            <% let operatinghours=turf.operatinghours[0].hours; for(var i=0; i < operatinghours.length; i++) {%>
+              <li>
+                <%= operatinghours[i] %>
+              </li>
+              <%} %>
           </ul>
         </div>
 
@@ -698,7 +638,7 @@ $error="Something went wrong. Please try again";
                         <td id="rate_<%= turftype[i].name %>">121</td>
                         <input name="rate_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i].rate %> ">
                     
-                        <td class=" "><a name="type_<%= turftype[i].name %>row" class="delete" onclick=<%=func %> ><i
+                        <td class=" "><a name="type_<%= turftype[i].name %>row" class="delete" onclick=<%=func%> ><i
                               class="fa fa-trash text-danger"></i></a></td>
                       </tr>
                       <%} %>
@@ -709,7 +649,7 @@ $error="Something went wrong. Please try again";
           </div>
         </div>
         <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
-        <input id="email" name="email" class="form-check-input" type="hidden" value=<%=turf.email%>>
+        <input id="email" name="email" class="form-check-input" type="hidden" value='<%=turf.email%>' >
       </div>
       <button id="submit" type="submit" class="btn btn-primary">Publish</button>
       <button class="btn btn-danger btn-link">Cancel</button>
@@ -733,44 +673,44 @@ $error="Something went wrong. Please try again";
             <label for="exampleInput1" class="bmd-label-floating">Turf Name</label>
             <input id="typeName" type="text" class="form-control">
             <span class="bmd-help">We'll never share your email with anyone else.</span>
-          </div>
-
-          <div class="row ">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="exampleInput1" class="bmd-label-floating">Turf Area</label>
-                <input type="number" id="area" class="form-control">
-                <span class="bmd-help"></span>
               </div>
-            </div>
 
-            <div class="col-md-4">
-              <h6 class="text-primary mt-5">Sq.Metres</h6>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="material-icons">payments</i>
-                    </span>
+              <div class="row ">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="exampleInput1" class="bmd-label-floating">Turf Area</label>
+                    <input type="number" id="area" class="form-control">
+                    <span class="bmd-help"></span>
                   </div>
-                  <input type="text" id="rate" class="form-control" placeholder="Rate in Rupees">
+                </div>
+
+                <div class="col-md-4">
+                  <h6 class="text-primary mt-5">Sq.Metres</h6>
                 </div>
               </div>
-            </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="material-icons">payments</i>
+                        </span>
+                      </div>
+                      <input type="text" id="rate" class="form-control" placeholder="Rate in Rupees">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
           </div>
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" id="addType" class="btn btn-primary">Save changes</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="addType" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 
   <!-- Classic Modal -->
@@ -874,6 +814,9 @@ $error="Something went wrong. Please try again";
           <td class=" "><a name="type_`+ typeName + `row"  class="delete" onclick="remove(type_` + typeName + `row)"  ><i class="fa fa-trash text-danger"></i></a></td>
           </tr>`);
       });
+      var imagefile = '<%-turf.imagefile%>';
+      console.log(imagefile.split(','));
+      splideMount(imagefile.split(','));
     });
 
 
@@ -911,19 +854,31 @@ $error="Something went wrong. Please try again";
         success: function (data) {
 
           // console.log(data, Array.isArray(data))
-          if (Array.isArray(data)) {
+          if (Array.isArray(data)) { 
             let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val() + ',';
             $('#imagefield').val((old_val + data));
-
-            if (data.length)
-              $("#uploadSection").empty();
-            for (var i = 0; i < data.length; i++) {
-              $(".uploadSection").append(`<li class="splide__slide">
-				<img src="../images/`+ data[i] + `">
-			</li>`);
-            }
             alert("Images Uploaded successfully!");
-            $("#mainForm").css({ display: 'block' }) // show element
+            splideMount(data);
+          }
+
+        }
+        , error: function (jqXHR, textStatus, err) {
+          alert('text status ' + textStatus + ', err ' + err)
+        }
+
+      })
+
+    });
+
+    function splideMount(data) {
+
+            for (var i = 0; i < data.length; i++) {
+              $(".uploadSection").append(`
+              <li class="splide__slide">
+              <img src="../images/`+ data[i] + `">
+              </li>`
+              );
+            }
             var secondarySlider = new Splide('#secondary-slider', {
               fixedWidth: 100,
               height: 60,
@@ -948,39 +903,64 @@ $error="Something went wrong. Please try again";
             }); // do not call mount() here.
 
             primarySlider.sync(secondarySlider).mount();
+    }
+    
+    function bookableSlots() {
+      let oph_val = $('#operatinghours').val();
+      let slot_value = $('#slots').val();
+      var mainFlag = false;
+      if (oph_val!=null) {
+        if (slot_value!==null) {
+          mainFlag=true
+        }
+      }
+      if(mainFlag){
+        let alloperatinghours = calculate_Hours(oph_val, Number(slot_value));
+        console.log(alloperatinghours)
+      }
+    }
+
+    $("#operatinghours").on("change", function () {
+      bookableSlots();
+    });
+
+    $("#slots").on("change", function () {
+      bookableSlots();
+    });
+
+    function calculate_Hours(oph, slots) {
+        let menu = document.getElementById('bookableHours');
+        while (menu.firstChild) {
+          menu.removeChild(menu.firstChild);
+        }
+        oph = oph.replace(/\s+/g, '').split('to');
+        let start = Number(oph[0]);
+        let end = Number(oph[1]);
+        console.log(start, end);
+        //["4 to 5 ","5  to 6 ","6  to 7 ","11  to 12 "]
+        let mainoperatinghours = [];
+        while (start != end) {
+          let firstHalf = `${start}`;
+          start = start + slots;
+          if (slots == 2) {
+            if (start - end == 1) {
+              break;
+            }
           }
-
-          // var fd2 = new FormData(myFormWithOtherDetails);
-          // console.log(fd);
-          // $.ajax({
-          //   url: '/turf/add',
-          //   type: 'POST',
-          //   async: false,
-          //   cache: false,
-          //   processData: false,
-          //   contentType:false,
-          //   // enctype: "application/json",
-          //   data: myFormWithOtherDetails,
-          //   success: function (data) {
-          //     console.log(data)
-          //     alert("Success");
-          //   }
-          //   , error: function (jqXHR, textStatus, err) {
-          //     alert('text status ' + textStatus + ', err ' + err)
-          //   }
-
-          // })
-
-
+          let secondHalf = `${start}`;
+          mainoperatinghours.push(`${firstHalf}:00 to ${secondHalf}:00`);
         }
-        , error: function (jqXHR, textStatus, err) {
-          alert('text status ' + textStatus + ', err ' + err)
+        for (let i = 0; i < mainoperatinghours.length; i++) {
+          const element = mainoperatinghours[i];
+          $('#bookableHours').append(
+            `<li>
+                ${mainoperatinghours[i]}
+              </li>`
+          )
         }
 
-      })
-
-    })
-
+        return mainoperatinghours;
+      }
 
   </script>
 

@@ -44,7 +44,7 @@ router.route('/add').post((req, res) => {
 
   newUser
     .save()
-    .then(() => res.json('User Added!'))
+    .then(() => res.redirect('/admin/dashbaord'))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
@@ -61,16 +61,15 @@ router.route('/dashboard').get((req, res) => {
       console.log('turf_present: ', turf);
       if (turf) {
         res.render('admin/dashboard_update', { turf: turf });
-      }else{
+      } else {
         let context = {
           date: new Date().toISOString().slice(0, 10),
           user_email: email,
         };
-        console.log(new Date().toISOString().slice(0, 10) )
+        console.log(new Date().toISOString().slice(0, 10));
         res.render('admin/dashboard', { context: context });
       }
     });
-     
   }
   // else if (isManager(req)) {
   //   let context = req.session.context;
