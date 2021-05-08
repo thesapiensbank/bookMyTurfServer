@@ -83,9 +83,9 @@ $error="Something went wrong. Please try again";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-     <!-- <script src="js/controller/create.js" type="text/javascript"></script> -->
-  <script src="js/core/jquery.min.js" type="text/javascript"></script>
-  <script type="text/javascript" src="./js/main.js"></script>
+    <!-- <script src="js/controller/create.js" type="text/javascript"></script> -->
+    <script src="js/core/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
     <style type="text/css">
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -238,8 +238,9 @@ $error="Something went wrong. Please try again";
       var updatedLatLng;
       function initMap() {
         //geocoder = new google.maps.Geocoder();
-
-        const myLatlng = { lat: 19.210, lng: 72.976 };
+        let lat = '<%- Number(turf.location[0]) %>';
+        let long = '<%= Number(turf.location[1]) %>';
+        const myLatlng = { lat: Number(lat) , lng: Number(long) };
         $("#maplocation").val(`(${myLatlng.lat},${myLatlng.lng})`);
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 4,
@@ -359,7 +360,7 @@ $error="Something went wrong. Please try again";
           <div id="primary-slider" class="splide">
             <div class="splide__track">
               <ul class="splide__list uploadSection">
-                
+
               </ul>
             </div>
           </div>
@@ -383,7 +384,7 @@ $error="Something went wrong. Please try again";
       </div>
     </form>
 
-    <form id="mainForm" method="POST" action="../turf/add" style="display: none;" class="container  mt-5 card ">
+    <form id="mainForm" method="POST" action="../turf/update" class="container  mt-5 card ">
       <div class="row m-2">
 
         <div class="col-md-4 ">
@@ -392,7 +393,7 @@ $error="Something went wrong. Please try again";
             <p>
             <div class="togglebutton">
               <label>
-                <input name="status" type="checkbox" checked="">
+                <input name="status" type="checkbox" <%=turf.status?`checked`:0 %> >
                 <span class="toggle"></span>
                 Available for Booking
               </label>
@@ -404,7 +405,7 @@ $error="Something went wrong. Please try again";
           </label>
           <div class="form-group">
             <label for="exampleInput1" id="nameinp" class="bmd-label-floating">Name</label>
-            <input required name="name" type="text" class="form-control">
+            <input required name="name" type="text" value='<%= turf.name %>' class="form-control">
             <span class="bmd-help">Name of Sports Arena</span>
           </div>
         </div>
@@ -414,7 +415,7 @@ $error="Something went wrong. Please try again";
         <div class="col-12  col-md-2">
           <div class="form-group">
             <label for="exampleInput1" class="bmd-label-floating">Official Website</label>
-            <input required name="website" type="text" class="form-control">
+            <input required name="website" type="text" value='<%= turf.website %>' class="form-control">
             <span class="bmd-help"></span>
           </div>
         </div>
@@ -422,7 +423,8 @@ $error="Something went wrong. Please try again";
         <div class="col-12  col-md-2 mt-3 mt-md-0">
           <div class="form-group">
             <label for="exampleInput1" class="bmd-label-floating">Mobile number</label>
-            <input required name="mobile" type="number" maxlength="10" class="form-control">
+            <input required name="mobile" type="number" maxlength="10" value='<%= Number(turf.mobile) %>'
+              class="form-control">
             <span class="bmd-help">Primary Contact Number</span>
           </div>
         </div>
@@ -459,7 +461,7 @@ $error="Something went wrong. Please try again";
             <div class="col-12">
               <div class="form-group">
                 <label for="exampleInput1" class="bmd-label-floating">Address Line 1</label>
-                <input required name="address1" type="text" class="form-control">
+                <input required name="address1" type="text" value="<%= turf.address1 %>" class="form-control">
                 <span class="bmd-help">We'll never share your email with anyone else.</span>
               </div>
             </div>
@@ -468,7 +470,7 @@ $error="Something went wrong. Please try again";
             <div class="col-12">
               <div class="form-group">
                 <label for="exampleInput1" class="bmd-label-floating">Address Line 2</label>
-                <input required name="address2" type="text" class="form-control">
+                <input required name="address2" type="text" value="<%= turf.address2 %>" class="form-control">
                 <span class="bmd-help">We'll never share your email with anyone else.</span>
               </div>
             </div>
@@ -477,14 +479,14 @@ $error="Something went wrong. Please try again";
             <div class="col-8">
               <div class="form-group">
                 <label for="exampleInput1" class="bmd-label-floating">City</label>
-                <input required name="city" type="text" class="form-control">
+                <input required name="city" type="text" value="<%= turf.city %>" class="form-control">
                 <span class="bmd-help">We'll never share your email with anyone else.</span>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="exampleInput1" class="bmd-label-floating">Pincode</label>
-                <input required name="pincode" type="number" maxlength="6" class="form-control">
+                <input required name="pincode" type="number" maxlength="6" value="<%= Number(turf.pincode) %>" class="form-control">
                 <span class="bmd-help"></span>
               </div>
             </div>
@@ -493,7 +495,7 @@ $error="Something went wrong. Please try again";
             <div class="col-12">
               <div class="dropdown pb-1">
                 <select required name="state" class="form-select" aria-label="Default select example">
-                  <option disabled selected>Select state</option>
+                  <option value="<%= turf.state %>" selected><%= turf.state %></option>
                   <option value="Andhra Pradesh">Andhra Pradesh</option>
                   <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
                   <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -533,7 +535,7 @@ $error="Something went wrong. Please try again";
                   <option value="West Bengal">West Bengal</option>
                 </select>
               </div>
-               
+
             </div>
           </div>
         </div>
@@ -548,76 +550,18 @@ $error="Something went wrong. Please try again";
             and aplyala sagle khali fetch karta yeil like dynamically vegla
             -->
           <div class="row m-2 mt-3" id="sportsSection">
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Football" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Football" class="form-check-input" type="checkbox" value="true">
-                Football
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Cricket" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Cricket" class="form-check-input" type="checkbox" value="true">
-                Cricket
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Hockey" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Hockey" class="form-check-input" type="checkbox" value="true">
-                Hockey
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Tennis" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Tennis" class="form-check-input" type="checkbox" value="true">
-                Tennis
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Badminton" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Badminton" class="form-check-input" type="checkbox" value="true">
-                Badminton
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Basketball" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Basketball" class="form-check-input" type="checkbox" value="true">
-                Basketball
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="sports_Cycling" class="form-check-input" type="hidden" value="false">
-                <input name="sports_Cycling" class="form-check-input" type="checkbox" value="true">
-                Cycling
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
+            <% let sports=turf.sports; for(var i=0; i < sports.length; i++) {%>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input name="sports_<%= sports[i].name %>" class="form-check-input" type="hidden" value="false">
+                  <input name="sports_<%= sports[i].name %>" class="form-check-input" <%= sports[i].value?`checked`:0 %>  type="checkbox" <%= sports[i].value?'value="true"':0 %> >
+                  <%= sports[i].name %> 
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+              </div>
+              <%} %>
           </div>
         </div>
 
@@ -640,87 +584,18 @@ $error="Something went wrong. Please try again";
           </div>
 
           <div id="featuresSection" class="row mt-3 m-2">
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Wifi" class="form-check-input" type="hidden" value="false">
-                <input name="features_Wifi" class="form-check-input" type="checkbox" value="true">
-                Wifi
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Beverages" class="form-check-input" type="hidden" value="false">
-                <input name="features_Beverages" class="form-check-input" type="checkbox" value="true">
-                Beverages
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_First Aid" class="form-check-input" type="hidden" value="false">
-                <input name="features_First Aid" class="form-check-input" type="checkbox" value="true">
-                First Aid
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Parking" class="form-check-input" type="hidden" value="false">
-                <input name="features_Parking" class="form-check-input" type="checkbox" value="true">
-                Parking
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Drinking Water" class="form-check-input" type="hidden" value="false">
-                <input name="features_Drinking Water" class="form-check-input" type="checkbox" value="true">
-                Drinking
-                Water
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Coaching" class="form-check-input" type="hidden" value="false">
-                <input name="features_Coaching" class="form-check-input" type="checkbox" value="true">
-                Coaching
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Flood Lights" class="form-check-input" type="hidden" value="false">
-                <input name="features_Flood Lights" class="form-check-input" type="checkbox" value="true">
-                Flood Lights
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
-            <div class="form-check form-check-inline">
-              <label class="form-check-label">
-                <input name="features_Toilets" class="form-check-input" type="hidden" value="false">
-                <input name="features_Toilets" class="form-check-input" type="checkbox" value="true">
-                Toilets
-                <span class="form-check-sign">
-                  <span class="check"></span>
-                </span>
-              </label>
-            </div>
+            <% let features=turf.features; for(var i=0; i < features.length; i++) {%>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input name="features_<%= features[i].name %>" class="form-check-input" type="hidden" value="false">
+                  <input name="features_<%= features[i].name %>" class="form-check-input" <%= features[i].value?`checked`:0 %>  type="checkbox" <%= features[i].value?'value="true"':0 %> >
+                  <%= features[i].name %> 
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+              </div>
+              <%} %>
           </div>
         </div>
 
@@ -806,7 +681,27 @@ $error="Something went wrong. Please try again";
                     </tr>
                   </thead>
                   <tbody class="px-3" id="tbody">
-
+                    <% let turftype=turf.turftype; 
+                    for(var i=0; i < turftype.length; i++) { 
+                      let func=`remove(type_${turftype[i].name}row)`;
+                      %>
+                      <tr id="type_<%= turftype[i].name %>row">
+                        <td id="type_<%= turftype[i].name %>">
+                          <%= turftype[i].name %>
+                        </td>
+                        <input name="type_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i].name %>">
+                    
+                        <td id="area_<%= turftype[i].name %>">12121</td>
+                        <input name="area_<%= turftype[i].name %>" class="form-check-input" type="hidden"
+                          value="<%= Number(turftype[i].area) %> ">
+                    
+                        <td id="rate_<%= turftype[i].name %>">121</td>
+                        <input name="rate_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i].rate %> ">
+                    
+                        <td class=" "><a name="type_<%= turftype[i].name %>row" class="delete" onclick=<%=func %> ><i
+                              class="fa fa-trash text-danger"></i></a></td>
+                      </tr>
+                      <%} %>
                   <tbody>
                 </table>
               </div>
@@ -814,7 +709,7 @@ $error="Something went wrong. Please try again";
           </div>
         </div>
         <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
-        <input id="email" name="email" class="form-check-input" type="hidden" value=<%=user_email%>>
+        <input id="email" name="email" class="form-check-input" type="hidden" value=<%=turf.email%>>
       </div>
       <button id="submit" type="submit" class="btn btn-primary">Publish</button>
       <button class="btn btn-danger btn-link">Cancel</button>
@@ -1004,7 +899,6 @@ $error="Something went wrong. Please try again";
       var fd = new FormData(myForm);
       //fd.append( 'image', input.files[0] );
       console.log(fd);
-
       $.ajax({
         url: '/turf/upload',
         type: 'POST',
@@ -1018,16 +912,16 @@ $error="Something went wrong. Please try again";
 
           // console.log(data, Array.isArray(data))
           if (Array.isArray(data)) {
-            let old_val = $('#imagefield').val()==""?$('#imagefield').val():$('#imagefield').val()+',';
-            $('#imagefield').val((old_val+data));
-             
+            let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val() + ',';
+            $('#imagefield').val((old_val + data));
+
             if (data.length)
               $("#uploadSection").empty();
             for (var i = 0; i < data.length; i++) {
               $(".uploadSection").append(`<li class="splide__slide">
 				<img src="../images/`+ data[i] + `">
 			</li>`);
-            } 
+            }
             alert("Images Uploaded successfully!");
             $("#mainForm").css({ display: 'block' }) // show element
             var secondarySlider = new Splide('#secondary-slider', {

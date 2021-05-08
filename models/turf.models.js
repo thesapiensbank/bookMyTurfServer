@@ -21,6 +21,12 @@ const turfSchema = new Schema(
         value: { type: Boolean, required: true },
       },
     ],
+    operatinghours: [
+      {
+        date: { type: String, required: true },
+        hours: [{ type: String, required: true }],
+      },
+    ],
     features: [
       {
         name: { type: String, required: true },
@@ -33,8 +39,12 @@ const turfSchema = new Schema(
         name: { type: String, required: true },
         area: { type: Number, required: true },
         rate: { type: Number, required: true },
-        operatinghours: [{ type: String, required: true }],
-        bookedhours: [{ type: String }],
+        bookedhours: [
+          {
+            date: { type: String, required: true },
+            hours: [{ type: String, required: true }],
+          },
+        ],
       },
     ],
     imagefile: [{ type: String }],

@@ -1,0 +1,71 @@
+{
+  "location": ["19.210000000000015", "73.59123437499998"],
+  "imagefile": ["1620327897637.jpeg", "1620327897642.jpeg"],
+  "_id": "60943ddcecb1362e5022e011",
+  "status": true,
+  "name": "Vinay Sudrik",
+  "email": "rushikeshkardile9@gmail.com",
+  "website": "https://www.github.com/optimus789",
+  "mobile": 8177965611,
+  "address1": "B-401, Radhey Heights, Ambedkar Chowk, Near OJAS Hospital, Ravet",
+  "address2": "Pune",
+  "city": "Pune",
+  "pincode": 411044,
+  "state": "Maharashtra",
+  "sports": [
+    { "_id": "60943ddcecb1362e5022e012", "name": "Football", "value": false },
+    { "_id": "60943ddcecb1362e5022e013", "name": "Cricket", "value": false },
+    { "_id": "60943ddcecb1362e5022e014", "name": "Hockey", "value": true },
+    { "_id": "60943ddcecb1362e5022e015", "name": "Tennis", "value": true },
+    { "_id": "60943ddcecb1362e5022e016", "name": "Badminton", "value": true },
+    { "_id": "60943ddcecb1362e5022e017", "name": "Basketball", "value": false },
+    { "_id": "60943ddcecb1362e5022e018", "name": "Cycling", "value": false }
+  ],
+  "features": [
+    { "_id": "60943ddcecb1362e5022e019", "name": "Wifi", "value": false },
+    { "_id": "60943ddcecb1362e5022e01a", "name": "Beverages", "value": false },
+    { "_id": "60943ddcecb1362e5022e01b", "name": "First Aid", "value": true },
+    { "_id": "60943ddcecb1362e5022e01c", "name": "Parking", "value": true },
+    {
+      "_id": "60943ddcecb1362e5022e01d",
+      "name": "Drinking Water",
+      "value": false
+    },
+    { "_id": "60943ddcecb1362e5022e01e", "name": "Coaching", "value": false },
+    {
+      "_id": "60943ddcecb1362e5022e01f",
+      "name": "Flood Lights",
+      "value": false
+    },
+    { "_id": "60943ddcecb1362e5022e020", "name": "Toilets", "value": true }
+  ],
+  "operatinghours": [
+    {
+      "date": "2021-05-06",
+      "hours": [
+        "10 to 12",
+        "12 to 14",
+        "14 to 16",
+        "16 to 18",
+        "18 to 20",
+        "20 to 22"
+      ]
+    }        
+  ],
+  "slots": 2,
+  "turftype": [
+    {
+      "bookedhours": [
+        { "date": "2021-05-06", "hours": ["16 to 18", "18 to 20"] },
+        { "date": "2021-05-07", "hours": ["16 to 18", "18 to 20"] }
+      ],
+      "_id": "60943ddcecb1362e5022e021",
+      "name": "t1",
+      "area": 12321,
+      "rate": 2323
+    }
+  ],
+  "createdAt": "2021-05-06T19:05:00.095Z",
+  "updatedAt": "2021-05-06T19:05:00.095Z",
+  "__v": 0
+}

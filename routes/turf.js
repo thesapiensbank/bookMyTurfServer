@@ -9,16 +9,12 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  console.log(req);
   if (isAdmin(req)) {
-    console.log(req.body);
-    // console.log("This sports: ",Array.isArray(req.body.sports_Football))
     const status = req.body.status === 'on' ? true : false;
     const name = req.body.name;
     const email = req.body.email;
     const website = req.body.website;
     const mobile = req.body.mobile;
-    console.log(req.body);
     const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
     const address1 = req.body.address1;
     const address2 = req.body.address2;
@@ -26,20 +22,23 @@ router.route('/add').post((req, res) => {
     const pincode = req.body.pincode;
     const state = req.body.state;
     const slots = req.body.slots;
-    console.log(slots);
     let operatinghours = req.body.operatinghours;
-    console.log(operatinghours);
     operatinghours = calculateHours(operatinghours, Number(slots));
     let sports = [];
     let features = [];
     let body = req.body;
+    let date = req.body.date;
     let turftype = [];
-
+    operatinghours = [
+      {
+        date: date,
+        hours: operatinghours,
+      },
+    ];
     for (var reqname in body) {
       // for sports
       if (reqname.startsWith('sports')) {
         sportName = reqname.split('_')[1];
-        console.log(sportName);
         sports.push({
           name: sportName,
           value: Array.isArray(body[reqname]) ? true : false,
@@ -48,7 +47,6 @@ router.route('/add').post((req, res) => {
       // for features
       if (reqname.startsWith('features')) {
         sportName = reqname.split('_')[1];
-        console.log(sportName);
         features.push({
           name: sportName,
           value: Array.isArray(body[reqname]) ? true : false,
@@ -63,13 +61,16 @@ router.route('/add').post((req, res) => {
       // }
       if (reqname.startsWith('type')) {
         let turfType = reqname.split('_')[1];
-        console.log(turfType);
         turftype.push({
           name: turfType,
           area: Number(body[`area_${turfType}`]),
           rate: Number(body[`rate_${turfType}`]),
-          operatinghours: operatinghours,
-          bookedhours: [],
+          bookedhours: [
+            {
+              date: date,
+              hours: [],
+            },
+          ],
         });
       }
     }
@@ -77,7 +78,6 @@ router.route('/add').post((req, res) => {
     // const imagefile = req.body.imagefile;
     const imagefile = req.body.image.split(',');
     // const date = Date.parse(req.body.date);
-    console.log(turftype);
     const newTurf = new Turf({
       status,
       name,
@@ -91,6 +91,7 @@ router.route('/add').post((req, res) => {
       pincode,
       state,
       sports,
+      operatinghours,
       features,
       slots,
       turftype,
@@ -113,7 +114,6 @@ function calculateHours(oph, slots) {
   console.log(start, end);
   //["4 to 5 ","5  to 6 ","6  to 7 ","11  to 12 "]
   let mainoperatinghours = [];
-  let postFlag = false;
   while (start != end) {
     let firstHalf = `${start}`;
     start = start + slots;
