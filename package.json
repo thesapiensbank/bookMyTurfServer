@@ -19,7 +19,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon server.js -e ejs,js,css,html,scss"
+    "start": "npx nodemon server.js -e js,css,html,scss"
   },
   "repository": {
     "type": "git",

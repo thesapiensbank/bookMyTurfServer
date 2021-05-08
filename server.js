@@ -84,4 +84,5 @@ app.post('/turf/upload', upload.array('image', 9), function (req, res, err) {
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
+  console.log(`http://127.0.0.1:${port}`);
 });

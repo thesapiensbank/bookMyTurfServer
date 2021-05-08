@@ -100,7 +100,7 @@ router.route('/add').post((req, res) => {
 
     newTurf
       .save()
-      .then(() => res.json('Turf Added!'))
+      .then(() => res.redirect('/admin/dashboard'))
       .catch((err) => res.status(400).json('Error: ' + err));
   } else {
     res.send('You are not an admin');

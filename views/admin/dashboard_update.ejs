@@ -304,7 +304,7 @@
           </div>
           <div id="secondary-slider" class="splide">
             <div class="splide__track">
-              <ul class="splide__list uploadSection">
+              <ul class="splide__list uploadSection2">
               </ul>
             </div>
           </div>
@@ -555,7 +555,7 @@
               <option value="9 to 21">9:00 to 21:00</option>
               <option value="10 to 22">10:00 to 22:00</option>
               <option value="11 to 23">11:00 to 23:00</option>
-              <option value="12 to 00">12:00 to 00:00</option>
+               
             </select>
           </div>
         </div>
@@ -855,8 +855,7 @@
 
           // console.log(data, Array.isArray(data))
           if (Array.isArray(data)) { 
-            let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val() + ',';
-            $('#imagefield').val((old_val + data));
+             
             alert("Images Uploaded successfully!");
             splideMount(data);
           }
@@ -869,17 +868,30 @@
       })
 
     });
-
+    var primarySlider,secondarySlider;
     function splideMount(data) {
-
+      let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val()+ ','  ;
+        console.log("OLD VALUE:"+old_val);
+           $('#imagefield').val((old_val  + data));
             for (var i = 0; i < data.length; i++) {
+              let idname = data[i].split('.')[0];
               $(".uploadSection").append(`
-              <li class="splide__slide">
-              <img src="../images/`+ data[i] + `">
+              
+              <li  class="splide__slide `+idname+`">
+                <i class="fa fa-times-circle text-danger m-3" onclick="deleteImage(`+idname+`)" style="font-size:20px;"></i>
+              <img id="`+idname+`" src="../images/`+ data[i] + `">
+              </li>`
+              );
+
+              $(".uploadSection2").append(`
+              
+              <li  class="splide__slide `+idname+`">
+                 
+              <img id="`+idname+`" src="../images/`+ data[i] + `">
               </li>`
               );
             }
-            var secondarySlider = new Splide('#secondary-slider', {
+            secondarySlider = new Splide('#secondary-slider', {
               fixedWidth: 100,
               height: 60,
               gap: 10,
@@ -894,7 +906,7 @@
               },
             }).mount();
 
-            var primarySlider = new Splide('#primary-slider', {
+            primarySlider = new Splide('#primary-slider', {
               type: 'fade',
               heightRatio: 0.5,
               pagination: false,
@@ -903,6 +915,39 @@
             }); // do not call mount() here.
 
             primarySlider.sync(secondarySlider).mount();
+    }
+
+    function arrayRemove(arr, value) { 
+    
+    return arr.filter(function(ele){ 
+        return ele != value; 
+    });
+}
+
+// const items = ['a', 'b', 'c', 'd', 'e', 'f']
+// const valuesToRemove = ['c', 'd']
+// const filteredItems = items.filter(item => !valuesToRemove.includes(item))
+    function deleteImage(element)
+    {      
+     //primarySlider.remove(1);
+     //secondarySlider.remove(1);
+
+      $(".is-active ."+element).remove();
+      primarySlider.refresh();
+      secondarySlider.refresh();
+      primarySlider.mount();
+      secondarySlider.mount();
+      console.log($(`.`+element).attr('tabindex')); 
+      let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val();
+      old_val = old_val.split(',');
+      console.log(old_val);
+      //var result = arrayRemove(old_val, element);
+      const items = old_val
+      const valuesToRemove = [element+`.jpeg`]
+      const filteredItems = items.filter(item => !valuesToRemove.includes(item))
+      console.log(filteredItems);
+      $('#imagefield').val((filteredItems));
+       
     }
     
     function bookableSlots() {
