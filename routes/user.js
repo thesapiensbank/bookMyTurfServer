@@ -63,17 +63,33 @@ router.route('/dashboard').get((req, res) => {
         user_email: email,
       };
       if (turf) {
-        res.render('admin/dashboard_update', { turf: turf, context: context  });
+        res.render('admin/dashboard_update', { turf: turf, context: context });
       } else {
         res.render('admin/dashboard', { context: context });
       }
     });
   }
-  // else if (isManager(req)) {
-  //   let context = req.session.context;
-  //   email = context.user_email;
-  //   res.render('manager/dashboard', { user_email: email });
-  // }
+  else {
+    res.redirect('/admin');
+  }
+});
+
+router.route('/booking').get((req, res) => {
+  if (isAdmin(req)) {
+    let context = req.session.context;
+    email = context.user_email;
+    Turf.findOne({ email: email }, function (err, turf) {
+      let context = {
+        date: new Date().toISOString().slice(0, 10),
+        user_email: email,
+      };
+      if (turf) {
+        res.render('admin/booking', { turf: turf, context: context });
+      } else {
+        res.redirect('admin/dashboard');
+      }
+    });
+  }
   else {
     res.redirect('/admin');
   }

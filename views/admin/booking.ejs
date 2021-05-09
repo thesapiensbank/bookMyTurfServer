@@ -17,7 +17,7 @@
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
-    <link href="../../public/admin/css/material-kit.css" rel="stylesheet" />
+    <link href="css/material-kit.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -201,8 +201,8 @@
 
 
   <header>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-primary">
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg bg-primary">
       <div class="container">
         <div class="navbar-translate">
           <a class="navbar-brand" href="javascript:;">Book My Turf</a>
@@ -217,7 +217,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav">
             <li class="active nav-item"><a href="javascript:;" class="nav-link">Link</a></li>
-            <li class="nav-item"><a href="javascript:;" class="nav-link">Link</a></li>
+            <li class="nav-item"><a href="booking" class="nav-link">Booking</a></li>
             <li class="dropdown nav-item">
               <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown">Dropdown</a>
               <div class="dropdown-menu">
@@ -253,7 +253,8 @@
         <input type="date" name="dateofbirth" id="dateofbooking">
       </div> 
     </div>
-    <% let sports=turf.sports; for(var i=0; i < sports.length; i++) {%>
+    <% let type=turf.turftype; for(var i=0; i < type.length; i++) {
+      console.log(type)%>
       <div class="col-md-6 text-center">
         <div class="card">
           <div class="card-body p-0">
@@ -267,28 +268,26 @@
                   <h5>Booked Slots</h5>
                 </div>
                 <div class="col-md-6">
-                  <h4>
-                    <%= type[0]._id %>
-                  </h4>
                   <h5>
-                    <%= type[0].rate %>
+                    Rs <%= type[0].rate %>/-
                   </h5>
                 </div>
               </div>
 
             </div>
-            <% let sports=turf.sports; for(var i=0; i < sports.length; i++) {%>
+            <% let bhours=turf.operatinghours[turf.operatinghours.length-1].hours; 
+            for(var i=0; i < bhours.length; i++) {%>
 
               <div class="form-check form-check-inline">
 
                 <label class="form-check-label">
 
-                  <input name="sports_<%= sports[i].name %>" class="form-check-input" type="hidden" value="false">
+                  <input name="bhours_<%= bhours[i] %>" class="form-check-input" type="hidden" value="false">
 
-                  <input name="sports_<%= sports[i].name %>" class="form-check-input" <%=sports[i].value?`checked`:0 %>
-                  type="checkbox" <%= sports[i].value?'value="true"':0 %> >
+                  <input name="bhours_<%= bhours[i] %>" class="form-check-input" <%=bhours[i].value?`checked`:0 %>
+                  type="checkbox" <%= bhours[i].value?'value="true"':0 %> >
 
-                  <%= sports[i].name %> 
+                  <%= bhours[i] %> 
 
                   <span class="form-check-sign">
 
@@ -303,11 +302,9 @@
               <%} %> 
         </div>
       </div>
-    </div>
+      </div>
     <%} %>
-     
   </div>
-
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -418,7 +415,7 @@
 <footer>
   <!--   Core JS Files   -->
   <!-- <script src="js/controller/create.js" type="text/javascript"></script> -->
-  <script src="../../public/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+  <script src="js/core/jquery.min.js" type="text/javascript"></script>
   <script src="js/core/popper.min.js" type="text/javascript"></script>
   <script src="js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
   <script src="js/plugins/moment.min.js"></script>
@@ -430,7 +427,7 @@
   <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
   <script src="js/material-kit.js?v=2.0.7" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
-  <script type="text/javascript" src="../../public/js/main.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 
   <script>
 

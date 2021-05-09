@@ -136,7 +136,7 @@ router.route('/add').post((req, res) => {
       .then(() => res.redirect('/admin/dashboard'))
       .catch((err) => res.status(400).json('Error: ' + err));
   } else {
-    res.send('You are not an admin');
+    res.redirect('/admin');
   }
 });
 
@@ -229,7 +229,7 @@ router.route('/update').post((req, res) => {
       }
     })
   } else {
-    res.send('You are not an admin');
+    res.redirect('/admin');
   }
 });
 
