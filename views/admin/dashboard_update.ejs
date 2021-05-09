@@ -177,7 +177,7 @@
       function initMap() {
         //geocoder = new google.maps.Geocoder();
         let lat = '<%- Number(turf.location[0]) %>';
-        let long = '<%= Number(turf.location[1]) %>';
+        let long = '<%- Number(turf.location[1]) %>';
         const myLatlng = { lat: Number(lat), lng: Number(long) };
         $("#maplocation").val(`(${myLatlng.lat},${myLatlng.lng})`);
         const map = new google.maps.Map(document.getElementById("map"), {
@@ -547,10 +547,24 @@
           <label class="form-check-label text-primary font-weight-bold">
             Operating Hours
           </label>
+          <% 
+          let hoursArr; 
+          for (let i = 0; i < turf.operatinghours.length; i++) {
+            const element = turf.operatinghours[i];
+            console.log(element)
+            if(element.date == context.date){
+              hoursArr = element.hours;
+              break;
+            } 
+          }
+          let start = (hoursArr[0].trim()).split('to')[0].replace(' ','');
+          let end = (hoursArr[hoursArr.length-1].trim()).split('to')[1].replace(' ','');
+          %>
           <!-- input with datetimepicker -->
           <div class="form-group pb-1">
             <select id="operatinghours" name="operatinghours" class="form-select" required aria-label="Default select example">
-              <option disabled selected>Select operating hours</option>
+              
+              <option value="<%=start%> to <%=end%>" selected><%= start %>:00 to <%= end %>:00</option>
               <option value="8 to 20">8:00 to 20:00</option>
               <option value="9 to 21">9:00 to 21:00</option>
               <option value="10 to 22">10:00 to 22:00</option>
@@ -568,8 +582,8 @@
             Slots
           </label>
           <div class="dropdown pb-1">
-            <select required id="slots" name="slots" class="form-select" aria-label="Default select example">
-              <option disabled selected>Select slot type</option>
+            <select required id="slots" name="slots" class="form-select p-1" aria-label="Default select example">
+              <option value="<%= turf.slots %>" selected><%= turf.slots %> Hours Slot</option>
               <option value="1">1 Hour Slots</option>
               <option value="2">2 Hour Slots</option>
             </select>
@@ -578,7 +592,7 @@
         <div class="col-md-8 ">
           <h6 class="text-primary my-3">Bookable slots for each type</h6>
           <ul id="bookableHours"><%= turf.operatinghours.hours %> 
-            <% let operatinghours=turf.operatinghours[0].hours; for(var i=0; i < operatinghours.length; i++) {%>
+            <% let operatinghours=turf.operatinghours[turf.operatinghours.length-1].hours; for(var i=0; i < operatinghours.length; i++) {%>
               <li>
                 <%= operatinghours[i] %>
               </li>
@@ -649,7 +663,8 @@
           </div>
         </div>
         <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
-        <input id="email" name="email" class="form-check-input" type="hidden" value='<%=turf.email%>' >
+        <input id="email" name="email" class="form-check-input" type="hidden" value='<%=context.user_email%>'>
+        <input id="date" name="date" class="form-check-input" type="hidden" value='<%=context.date%>'>
       </div>
       <button id="submit" type="submit" class="btn btn-primary">Publish</button>
       <button class="btn btn-danger btn-link">Cancel</button>
@@ -819,14 +834,12 @@
       splideMount(imagefile.split(','));
     });
 
-
     function remove(element) {
       // var removeRow =  $(this).attr('name');
       //alert(removeRow);
 
       $(element).remove();
     }
-
 
     function scrollToDownload() {
       if ($('.section-download').length != 0) {
@@ -868,6 +881,7 @@
       })
 
     });
+
     var primarySlider,secondarySlider;
     function splideMount(data) {
       let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val()+ ','  ;
@@ -923,31 +937,42 @@
         return ele != value; 
     });
 }
-
-// const items = ['a', 'b', 'c', 'd', 'e', 'f']
-// const valuesToRemove = ['c', 'd']
-// const filteredItems = items.filter(item => !valuesToRemove.includes(item))
     function deleteImage(element)
     {      
      //primarySlider.remove(1);
      //secondarySlider.remove(1);
+     $.ajax({
+        url: '/turf/delete',
+        type: 'POST',
+        cache: false,
+        data: {"imageToDelete":element+'.jpeg'},
+        async: false,
+        success: function (data) {
+          alert(data)
+          if(data==true) {
+            $(".is-active ." + element).remove();
+            primarySlider.refresh();
+            secondarySlider.refresh();
+            primarySlider.mount();
+            secondarySlider.mount();
+            console.log($(`.` + element).attr('tabindex'));
+            let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val();
+            old_val = old_val.split(',');
+            console.log(old_val);
+            //var result = arrayRemove(old_val, element);
+            const items = old_val
+            const valuesToRemove = [element + `.jpeg`]
+            const filteredItems = items.filter(item => !valuesToRemove.includes(item))
+            console.log(filteredItems);
+            $('#imagefield').val((filteredItems));
+          }
+          // console.log(data, Array.isArray(data))
+        }
+        , error: function (jqXHR, textStatus, err) {
+          alert('text status ' + textStatus + ', err ' + err)
+        }
 
-      $(".is-active ."+element).remove();
-      primarySlider.refresh();
-      secondarySlider.refresh();
-      primarySlider.mount();
-      secondarySlider.mount();
-      console.log($(`.`+element).attr('tabindex')); 
-      let old_val = $('#imagefield').val() == "" ? $('#imagefield').val() : $('#imagefield').val();
-      old_val = old_val.split(',');
-      console.log(old_val);
-      //var result = arrayRemove(old_val, element);
-      const items = old_val
-      const valuesToRemove = [element+`.jpeg`]
-      const filteredItems = items.filter(item => !valuesToRemove.includes(item))
-      console.log(filteredItems);
-      $('#imagefield').val((filteredItems));
-       
+      })
     }
     
     function bookableSlots() {

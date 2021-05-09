@@ -58,15 +58,13 @@ router.route('/dashboard').get((req, res) => {
     let context = req.session.context;
     email = context.user_email;
     Turf.findOne({ email: email }, function (err, turf) {
-      console.log('turf_present: ', turf);
+      let context = {
+        date: new Date().toISOString().slice(0, 10),
+        user_email: email,
+      };
       if (turf) {
-        res.render('admin/dashboard_update', { turf: turf });
+        res.render('admin/dashboard_update', { turf: turf, context: context  });
       } else {
-        let context = {
-          date: new Date().toISOString().slice(0, 10),
-          user_email: email,
-        };
-        console.log(new Date().toISOString().slice(0, 10));
         res.render('admin/dashboard', { context: context });
       }
     });
