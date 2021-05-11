@@ -9,6 +9,136 @@ router.route('/').get((req, res) => {
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
+router.route('/booking').post((req, res) => {
+  if (isAdmin(req)) {
+    console.log(req.body);
+    res.redirect('/admin/booking');
+    // const status = req.body.status === 'on' ? true : false;
+    // const name = req.body.name;
+    // const email = req.body.email;
+    // const website = req.body.website;
+    // const mobile = req.body.mobile;
+    // const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
+    // const address1 = req.body.address1;
+    // const address2 = req.body.address2;
+    // const city = req.body.city;
+    // const pincode = req.body.pincode;
+    // const state = req.body.state;
+    // const slots = req.body.slots;
+    // let operatinghours = req.body.operatinghours;
+    // operatinghours = calculateHours(operatinghours, Number(slots));
+    // let sports = [];
+    // let features = [];
+    // let body = req.body;
+    // let date = req.body.date;
+    // console.log(date);
+    // let turftype = [];
+    // operatinghoursQuery = {
+    //   '$set':{
+    //     'operatinghours.$.date': date,
+    //     'operatinghours.$.hours': operatinghours
+    //   }
+    // }
+    // Turf.findOne({ 'operatinghours.date': date })
+    //   .then((turf) => {
+    //     console.log("\n Turf:"+turf);
+    //     // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
+    //     if (turf!=null) {
+    //       Turf.updateOne(
+    //         { 'operatinghours.date': date },
+    //         operatinghoursQuery,
+    //         function (err, turf) {
+    //           if (err) {
+    //             console.log(err);
+    //           }
+    //         }
+    //       );
+    //     } else {
+    //       Turf.updateOne(
+    //         { email: email },
+    //         {
+    //           $push: {
+    //             operatinghours: {
+    //               'date': date,
+    //               'hours': operatinghours,
+    //             },
+    //           },
+    //         },
+    //         function (err, turf) {
+    //           if (err) {
+    //             console.log(err);
+    //           }
+    //         }
+    //       );
+    //     }
+    //   })
+    //   .catch((err) => res.status(400).json('Error: ' + err));
+    
+    // for (var reqname in body) {
+    //   // for sports
+    //   if (reqname.startsWith('sports')) {
+    //     sportName = reqname.split('_')[1];
+    //     sports.push({
+    //       name: sportName,
+    //       value: Array.isArray(body[reqname]) ? true : false,
+    //     });
+    //   }
+    //   // for features
+    //   if (reqname.startsWith('features')) {
+    //     featureName = reqname.split('_')[1];
+    //     features.push({
+    //       name: featureName,
+    //       value: Array.isArray(body[reqname]) ? true : false,
+    //     });
+    //   }
+      
+    //   if (reqname.startsWith('type')) {
+    //     let turfType = reqname.split('_')[1];
+    //     turftype.push({
+    //       name: turfType,
+    //       area: Number(body[`area_${turfType}`]),
+    //       rate: Number(body[`rate_${turfType}`]),
+    //       bookedhours: [
+    //         {
+    //           date: date,
+    //           hours: [],
+    //         },
+    //       ],
+    //     });
+    //   }
+    // }
+
+    // // const imagefile = req.body.imagefile;
+    // const imagefile = req.body.image.split(',');
+    // // const date = Date.parse(req.body.date);
+    // const updateTurf = {
+    //   status:status,
+    //   name:name,
+    //   email:email,
+    //   website:website,
+    //   mobile:mobile,
+    //   location:location,
+    //   pincode:pincode,
+    //   state:state,
+    //   sports:sports,
+    //   features:features,
+    //   slots:slots,
+    //   turftype:turftype,
+    //   imagefile:imagefile
+    // };
+    // Turf.updateOne({email:email},updateTurf, function (err, turf){
+    //   console.log(turf)
+    //   if(err){
+    //     console.log(err);
+    //   }else{
+    //     res.redirect('/admin/dashboard');
+    //   }
+    // })
+  } else {
+    res.redirect('/admin');
+  }
+});
+
 router.route('/delete').post((req, res) => {
   if (isAdmin(req)) {
     console.log(req)
@@ -19,6 +149,7 @@ router.route('/delete').post((req, res) => {
       if (turf) {
         let imagefiles = turf.imagefile;
         let imageToDelete = req.body.imageToDelete;
+        console.log(imageToDelete, imagefiles)
         if(imagefiles.includes(imageToDelete)){
           try {
             fs.unlinkSync(path+imageToDelete);
@@ -162,12 +293,47 @@ router.route('/update').post((req, res) => {
     let date = req.body.date;
     console.log(date);
     let turftype = [];
-    operatinghours = [
-      {
-        date: date,
-        hours: operatinghours,
-      },
-    ];
+    operatinghoursQuery = {
+      '$set':{
+        'operatinghours.$.date': date,
+        'operatinghours.$.hours': operatinghours
+      }
+    }
+    Turf.findOne({ 'operatinghours.date': date })
+      .then((turf) => {
+        console.log("\n Turf:"+turf);
+        // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
+        if (turf!=null) {
+          Turf.updateOne(
+            { 'operatinghours.date': date },
+            operatinghoursQuery,
+            function (err, turf) {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        } else {
+          Turf.updateOne(
+            { email: email },
+            {
+              $push: {
+                operatinghours: {
+                  'date': date,
+                  'hours': operatinghours,
+                },
+              },
+            },
+            function (err, turf) {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        }
+      })
+      .catch((err) => res.status(400).json('Error: ' + err));
+    
     for (var reqname in body) {
       // for sports
       if (reqname.startsWith('sports')) {
@@ -179,9 +345,9 @@ router.route('/update').post((req, res) => {
       }
       // for features
       if (reqname.startsWith('features')) {
-        sportName = reqname.split('_')[1];
+        featureName = reqname.split('_')[1];
         features.push({
-          name: sportName,
+          name: featureName,
           value: Array.isArray(body[reqname]) ? true : false,
         });
       }
@@ -215,13 +381,13 @@ router.route('/update').post((req, res) => {
       pincode:pincode,
       state:state,
       sports:sports,
-      operatinghours:operatinghours,
       features:features,
       slots:slots,
       turftype:turftype,
       imagefile:imagefile
     };
-    Turf.findOneAndUpdate({email:email},updateTurf, function (err, turf){
+    Turf.updateOne({email:email},updateTurf, function (err, turf){
+      console.log(turf)
       if(err){
         console.log(err);
       }else{

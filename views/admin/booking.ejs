@@ -243,7 +243,7 @@
   </header>
 
 <body>
-  <div class="container">
+  <form id="bookingForm" action="../turf/booking" method="POST" class="container">
 
     <div class="row text-center">
       <div class="col-md-3">
@@ -253,10 +253,14 @@
       <div class="col-md-3">
         <!-- input with datetimepicker -->
         <label for="dateofbirth">Booking Date</label>
-        <input type="date" name="dateofbirth" id="dateofbooking">
+        <input type="date" name="date" id="dateofbooking">
+      </div>
+
+      <div class="col-md-6 ">
+        <button style="float:right" type="submit" class="btn btn-success" id="submit">SAVE</button>
       </div>
     </div>
-
+  
     <div class="row">
       
       <%  let type=turf.turftype; for(var i=0; i < type.length; i++) { console.log(type)%>
@@ -282,7 +286,8 @@
                 </div>
 
               </div>
-             
+           <input name="id_<%= type[i]._id %>" class="form-check-input" type="hidden" value="<%= type[i]._id %>">
+
           <%  turf.operatinghours[turf.operatinghours.length-1].hours.forEach(function(todos)  {  
                let bookedHours = type[i].bookedhours[type[i].bookedhours.length-1].hours
                let includeCheck = bookedHours.includes(todos) 
@@ -293,9 +298,9 @@
 
              <label class="form-check-label">
 
-               <input name="bhours_<%= todos %>" class="form-check-input" type="hidden" value="false">
+               <input name="<%= type[i]._id %>bhours_<%= todos %>" class="form-check-input" type="hidden" value="false">
 
-               <input name="bhours_<%= todos %>" class="form-check-input" <%=includeCheck?`checked`:0%> type="checkbox" <%= todos?'value="true"':0 %> >
+               <input name="<%= type[i]._id %>bhours_<%= todos %>" class="form-check-input" <%=includeCheck?`checked`:0%> type="checkbox" <%= todos?'value=true':0 %> >
 
              <%= todos %> 
 
@@ -316,7 +321,7 @@
       <%} %>
     
     </div>
-  </div>
+  </form>
   
   <!--  End Modal -->
 </body>
@@ -349,11 +354,8 @@
 
     });
 
-    $("#dateofbooking").on(' input', function (e) { alert('Changed!'); }); $("#dateofbooking").on("change", function () {
-      alert("You can select only 10 images");
-    });</script>
-
-
-                      </footer>
+    $("#dateofbooking").on(' input', function (e) { alert('Changed!'); });
+   </script>
+</footer>
 
 </html>

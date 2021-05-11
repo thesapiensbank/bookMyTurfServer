@@ -547,18 +547,19 @@
           <label class="form-check-label text-primary font-weight-bold">
             Operating Hours
           </label>
-          <% 
-          let hoursArr; 
+          <%
+          let hoursArr,start,end; 
           for (let i = 0; i < turf.operatinghours.length; i++) {
             const element = turf.operatinghours[i];
             console.log(element)
             if(element.date == context.date){
               hoursArr = element.hours;
+              start = (hoursArr[0].trim()).split('to')[0].replace(' ','');
+              end = (hoursArr[hoursArr.length-1].trim()).split('to')[1].replace(' ','');
               break;
             } 
           }
-          let start = (hoursArr[0].trim()).split('to')[0].replace(' ','');
-          let end = (hoursArr[hoursArr.length-1].trim()).split('to')[1].replace(' ','');
+          
           %>
           <!-- input with datetimepicker -->
           <div class="form-group pb-1">
@@ -830,8 +831,11 @@
           </tr>`);
       });
       var imagefile = '<%-turf.imagefile%>';
+      if(imagefile!=""){
       console.log(imagefile.split(','));
       splideMount(imagefile.split(','));
+      }
+      
     });
 
     function remove(element) {
@@ -889,10 +893,12 @@
            $('#imagefield').val((old_val  + data));
             for (var i = 0; i < data.length; i++) {
               let idname = data[i].split('.')[0];
+              let extname = data[i].split('.')[1];
+              console.log("This is server rendered ext name: ",extname)
               $(".uploadSection").append(`
               
               <li  class="splide__slide `+idname+`">
-                <i class="fa fa-times-circle text-danger m-3" onclick="deleteImage(`+idname+`)" style="font-size:20px;"></i>
+                <i class="fa fa-times-circle text-danger m-3" onclick="deleteImage('`+idname+`','.`+extname+`')" style="font-size:20px;"></i>
               <img id="`+idname+`" src="../images/`+ data[i] + `">
               </li>`
               );
@@ -937,7 +943,7 @@
         return ele != value; 
     });
 }
-    function deleteImage(element)
+    function deleteImage(element,ext)
     {      
      //primarySlider.remove(1);
      //secondarySlider.remove(1);
@@ -945,7 +951,7 @@
         url: '/turf/delete',
         type: 'POST',
         cache: false,
-        data: {"imageToDelete":element+'.jpeg'},
+        data: {"imageToDelete":element+String(ext)},
         async: false,
         success: function (data) {
           alert(data)
