@@ -912,7 +912,7 @@
           <td id="rate_`+ typeName + `"  >` + typeRate + `</td>
           <input name="rate_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeRate + `">
 
-          <td class=" "><a name="type_`+ typeName + `row"  class="delete" onclick="remove(type_` + typeName + `row)"  ><i class="fa fa-trash text-danger"></i></a></td>
+          <td class=" "> <i class="fa fa-trash text-danger"></i></a></td>
           </tr>`);
       });
     });
@@ -955,14 +955,13 @@
           // console.log(data, Array.isArray(data))
           if (Array.isArray(data)) {
             let old_val = $('#imagefield').val()==""?$('#imagefield').val():$('#imagefield').val()+',';
-            $('#imagefield').val((old_val+data));
-             
+            $('#imagefield').val((old_val+data)); 
             if (data.length)
               $("#uploadSection").empty();
             for (var i = 0; i < data.length; i++) {
               $(".uploadSection").append(`<li class="splide__slide">
-				<img src="../images/`+ data[i] + `">
-			</li>`);
+              <img src="../images/`+ data[i] + `">
+            </li>`);
             }
             alert("Images Uploaded successfully!");
             $("#mainForm").css({ display: 'block' }) // show element

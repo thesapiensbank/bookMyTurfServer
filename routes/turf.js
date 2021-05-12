@@ -272,6 +272,7 @@ router.route('/add').post((req, res) => {
 });
 
 router.route('/update').post((req, res) => {
+  console.log("--------------------------------------------Console-------------------------------",req.body);
   if (isAdmin(req)) {
     const status = req.body.status === 'on' ? true : false;
     const name = req.body.name;
@@ -333,7 +334,7 @@ router.route('/update').post((req, res) => {
         }
       })
       .catch((err) => res.status(400).json('Error: ' + err));
-    
+    console.log("operating hours updated")
     for (var reqname in body) {
       // for sports
       if (reqname.startsWith('sports')) {
@@ -354,16 +355,15 @@ router.route('/update').post((req, res) => {
       
       if (reqname.startsWith('type')) {
         let turfType = reqname.split('_')[1];
+        var turfId = body[``]
+        var var1 = String(body[`area_${turfType}`]).trim();
+        var var2 = String(body[`rate_${turfType}`]).trim();
+        console.log(var1+","+var2);
         turftype.push({
+
           name: turfType,
-          area: Number(body[`area_${turfType}`]),
-          rate: Number(body[`rate_${turfType}`]),
-          bookedhours: [
-            {
-              date: date,
-              hours: [],
-            },
-          ],
+          area: Number(var1),
+          rate: Number(var2),
         });
       }
     }

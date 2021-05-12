@@ -231,7 +231,9 @@
           }
         });
       }
-
+     
+      
+     
     </script>
   </head>
 
@@ -640,21 +642,27 @@
                     for(var i=0; i < turftype.length; i++) { 
                       let func=`remove(type_${turftype[i].name}row)`;
                       %>
+
                       <tr id="type_<%= turftype[i].name %>row">
+
+                        <input name="id_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i]._id %>">
+
                         <td id="type_<%= turftype[i].name %>">
                           <%= turftype[i].name %>
                         </td>
                         <input name="type_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i].name %>">
                     
-                        <td id="area_<%= turftype[i].name %>">12121</td>
+                        <td id="area_<%= turftype[i].name %>"><%= turftype[i].area %></td>
                         <input name="area_<%= turftype[i].name %>" class="form-check-input" type="hidden"
                           value="<%= Number(turftype[i].area) %> ">
                     
-                        <td id="rate_<%= turftype[i].name %>">121</td>
+                        <td id="rate_<%= turftype[i].name %>"><%= turftype[i].rate %></td>
                         <input name="rate_<%= turftype[i].name %>" class="form-check-input" type="hidden" value="<%= turftype[i].rate %> ">
                     
-                        <td class=" "><a name="type_<%= turftype[i].name %>row" class="delete" onclick=<%=func%> ><i
-                              class="fa fa-trash text-danger"></i></a></td>
+                        <td class=" ">
+ 
+                          <button type="button" id="btn_<%= turftype[i].name %>" class="btn btn-primary editTypeButton"  value="<%= turftype[i].name %>_<%= turftype[i].area %>_<%= turftype[i].rate %>" data-toggle="modal" data-target="#myModal">EDIT</button>
+                        <a name="type_<%= turftype[i].name %>row" class="delete btn btn-danger text-light" onclick=<%=func%> >DELETE</a></td>
                       </tr>
                       <%} %>
                   <tbody>
@@ -750,29 +758,57 @@
 
   <!-- Classic Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Turf Type</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="material-icons">clear</i>
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the
-            blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language
-            ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a
-            paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful
-            Pointing has no control about the blind texts it is an almost unorthographic life One day however a small
-            line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-link">Nice Button</button>
-          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+        <div class="modal-body mx-3 ">
+          <div class="form-group">
+            <label for="updateName" class="bmd-label-floating">Turf Name</label>
+            <input id="updateName" type="text" class="form-control">
+            <span class="bmd-help">We'll never share your email with anyone else.</span>
+              </div>
+
+              <div class="row ">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="updateArea" class="bmd-label-floating">Turf Area</label>
+                    <input type="number" id="updateArea" class="form-control">
+                    <span class="bmd-help"></span>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <h6 class="text-primary mt-5">Sq.Metres</h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="material-icons">payments</i>
+                        </span>
+                      </div>
+                      <input type="text" id="updateRate" class="form-control" placeholder="Rate in Rupees">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="updateType" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
-    </div>
   </div>
   <!--  End Modal -->
 </body>
@@ -802,7 +838,19 @@
         alert("You can select only 10 images");
       }
     });
+    var val;
+      function editfunction(elem) 
+        {
+         
+           val= $(elem).val().split("_");
+          alert("Hello"); 
+          //alert(val); 
+          $('#updateName').val(val[0]); 
+          $('#updateArea').val(val[1]);
+          $('#updateRate').val(val[2]);
 
+          $(this).val($('#updateName').val()+"_"+$('#updateArea').val()+"_"+$('#updateRate').val());
+        }
     $(document).ready(function () {
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
@@ -811,13 +859,17 @@
       //materialKit.initSliders();
 
       // jQuery button click event to add a row.
-      $('#addType').on('click', function () {
+      $('#addType').on('click', function () 
+      {
 
         var typeName = $('#typeName').val()
         var typeArea = $('#area').val()
         var typeRate = $('#rate').val()
         // Adding a row inside the tbody.
         $('#tbody').append(`<tr id="type_` + typeName + `row"> 
+
+          <input name="id_` + typeName + `" class="form-check-input" type="hidden" value="-1">
+
           <td id="type_`+ typeName + `">` + typeName + `</td>
           <input name="type_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeName + `">
  
@@ -827,9 +879,74 @@
           <td id="rate_`+ typeName + `"  >` + typeRate + `</td>
           <input name="rate_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeRate + `">
 
-          <td class=" "><a name="type_`+ typeName + `row"  class="delete" onclick="remove(type_` + typeName + `row)"  ><i class="fa fa-trash text-danger"></i></a></td>
+          <td class=" ">
+            <button type="button" id="btn_`+typeName+`" class="btn btn-primary" onclick="editfunction(this)" value="`+ typeName + `_` + typeArea + `_` + typeRate + `"  data-toggle="modal" data-target="#myModal">EDIT</button>
+ 
+            <a name="type_`+ typeName + `row"  class=" delete btn btn-danger text-light" onclick="remove(type_` + typeName + `row)"  >DELETE</a></td>
           </tr>`);
       });
+       
+
+      $('.editTypeButton').on('click', function () {
+        val=[];
+          val= $(this).val().split("_");
+          //alert(val); 
+          $('#updateName').val(val[0]); 
+          $('#updateArea').val(val[1]);
+          $('#updateRate').val(val[2]);
+       });
+      
+
+
+      $('#updateType').on('click', function () 
+      {
+        
+        var typeName = $('#updateName').val();
+        var typeArea = Number($('#updateArea').val().trim());
+        var typeRate = Number($('#updateRate').val().trim());
+
+        
+        $('td[id=type_'+val[0]+']').html(typeName);
+        $('td[id=type_'+val[0]+']').attr("id","type_"+typeName);
+        $('input[name=type_'+val[0]+']').val(typeName);
+        $('input[name=type_'+val[0]+']').attr("name","type_"+typeName);
+
+        $('td[id=area_'+val[0]+']').html(typeArea);
+        $('td[id=area_'+val[0]+']').attr("id","area_"+typeName);
+        $('input[name=area_'+val[0]+']').val(typeArea);        
+        $('input[name=area_'+val[0]+']').attr("name","area_"+typeName);
+
+        $('td[id=rate_'+val[0]+']').html(typeRate);
+        $('td[id=rate_'+val[0]+']').attr("id","rate_"+typeName);
+        $('input[name=rate_'+val[0]+']').val(typeRate);
+        $('input[name=rate_'+val[0]+']').attr("name","rate_"+typeName);
+
+        alert(val[0]);
+        $('button[id=btn_'+val[0]+']').val(typeName+"_"+typeArea+"_"+typeRate);
+        $('button[id=btn_'+val[0]+']').attr("id","btn_"+typeName);
+        
+        $('button[id=btn_'+val[0]+']').attr("id","id_"+typeName);
+
+        //$('#area_'+val[0]).val(typeArea);
+        //$('#rate_'+val[0]).val(typeRate);
+        
+        // Adding a row inside the tbody.
+        // $('#tbody').append(`<tr id="type_` + typeName + `row"> 
+        //   <td id="type_`+ typeName + `">` + typeName + `</td>
+        //   <input name="type_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeName + `">
+ 
+        //   <td id="area_`+ typeName + `">` + typeArea + `</td>
+        //   <input name="area_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeArea + `">
+
+        //   <td id="rate_`+ typeName + `"  >` + typeRate + `</td>
+        //   <input name="rate_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeRate + `">
+
+        //   <td class=" ">
+        //     <button type="button" class="btn btn-primary  "  data-toggle="modal" data-target="#myModal" value="`+typeRate+`">EDIT</i></button>
+        //     <a name="type_`+ typeName + `row"  class="edit" onclick="edit(type_` + typeName + `row)"  ><i class="fa fa-edit text-info"></i></a>&nbsp;&nbsp;&nbsp;<a name="type_`+ typeName + `row"  class="delete" onclick="remove(type_` + typeName + `row)"  >DELETE</a></td>
+        //   </tr>`);
+      });
+
       var imagefile = '<%-turf.imagefile%>';
       if(imagefile!=""){
       console.log(imagefile.split(','));

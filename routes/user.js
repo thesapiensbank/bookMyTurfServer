@@ -63,7 +63,12 @@ router.route('/dashboard').get((req, res) => {
         user_email: email,
       };
       if (turf) {
-        res.render('admin/dashboard_update', { turf: turf, context: context });
+        let turfNames;
+        for (let i = 0; i < turf.turftype.length; i++) {
+          const element = turf.turftype[i];
+          
+        }
+        res.render('admin/dashboard_update', { turf: turf, context: context, turfName:turfNames });
       } else {
         res.render('admin/dashboard', { context: context });
       }
