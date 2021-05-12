@@ -172,7 +172,7 @@
     <script>
       let marker;
       var geocoder;
-
+      var turfNames = `<%-turfNames%>`.split(',');
       var updatedLatLng;
       function initMap() {
         //geocoder = new google.maps.Geocoder();
@@ -841,7 +841,6 @@
     var val;
       function editfunction(elem) 
         {
-         
            val= $(elem).val().split("_");
           alert("Hello"); 
           //alert(val); 
@@ -860,13 +859,13 @@
 
       // jQuery button click event to add a row.
       $('#addType').on('click', function () 
-      {
-
-        var typeName = $('#typeName').val()
-        var typeArea = $('#area').val()
-        var typeRate = $('#rate').val()
-        // Adding a row inside the tbody.
-        $('#tbody').append(`<tr id="type_` + typeName + `row"> 
+      { 
+        if (!turfNames.includes($('#typeName').val())) {
+          var typeName = $('#typeName').val()
+          var typeArea = $('#area').val()
+          var typeRate = $('#rate').val()
+          // Adding a row inside the tbody.
+          $('#tbody').append(`<tr id="type_` + typeName + `row"> 
 
           <input name="id_` + typeName + `" class="form-check-input" type="hidden" value="-1">
 
@@ -880,10 +879,15 @@
           <input name="rate_`+ typeName + `" class="form-check-input" type="hidden" value="` + typeRate + `">
 
           <td class=" ">
-            <button type="button" id="btn_`+typeName+`" class="btn btn-primary" onclick="editfunction(this)" value="`+ typeName + `_` + typeArea + `_` + typeRate + `"  data-toggle="modal" data-target="#myModal">EDIT</button>
+            <button type="button" id="btn_`+ typeName + `" class="btn btn-primary" onclick="editfunction(this)" value="` + typeName + `_` + typeArea + `_` + typeRate + `"  data-toggle="modal" data-target="#myModal">EDIT</button>
  
             <a name="type_`+ typeName + `row"  class=" delete btn btn-danger text-light" onclick="remove(type_` + typeName + `row)"  >DELETE</a></td>
           </tr>`);
+
+          turfNames.push(typeName);
+        }else{
+          alert("No turftype with same name is allowed")
+        }
       });
        
 
@@ -900,32 +904,40 @@
 
       $('#updateType').on('click', function () 
       {
-        
-        var typeName = $('#updateName').val();
-        var typeArea = Number($('#updateArea').val().trim());
-        var typeRate = Number($('#updateRate').val().trim());
+        if (!turfNames.includes($('#updateName').val())) {
+          var typeName = $('#updateName').val();
+          var typeArea = Number($('#updateArea').val().trim());
+          var typeRate = Number($('#updateRate').val().trim());
 
-        
-        $('td[id=type_'+val[0]+']').html(typeName);
-        $('td[id=type_'+val[0]+']').attr("id","type_"+typeName);
-        $('input[name=type_'+val[0]+']').val(typeName);
-        $('input[name=type_'+val[0]+']').attr("name","type_"+typeName);
 
-        $('td[id=area_'+val[0]+']').html(typeArea);
-        $('td[id=area_'+val[0]+']').attr("id","area_"+typeName);
-        $('input[name=area_'+val[0]+']').val(typeArea);        
-        $('input[name=area_'+val[0]+']').attr("name","area_"+typeName);
+          $('td[id=type_' + val[0] + ']').html(typeName);
+          $('td[id=type_' + val[0] + ']').attr("id", "type_" + typeName);
+          $('input[name=type_' + val[0] + ']').val(typeName);
+          $('input[name=type_' + val[0] + ']').attr("name", "type_" + typeName);
 
-        $('td[id=rate_'+val[0]+']').html(typeRate);
-        $('td[id=rate_'+val[0]+']').attr("id","rate_"+typeName);
-        $('input[name=rate_'+val[0]+']').val(typeRate);
-        $('input[name=rate_'+val[0]+']').attr("name","rate_"+typeName);
+          $('td[id=area_' + val[0] + ']').html(typeArea);
+          $('td[id=area_' + val[0] + ']').attr("id", "area_" + typeName);
+          $('input[name=area_' + val[0] + ']').val(typeArea);
+          $('input[name=area_' + val[0] + ']').attr("name", "area_" + typeName);
 
-        alert(val[0]);
-        $('button[id=btn_'+val[0]+']').val(typeName+"_"+typeArea+"_"+typeRate);
-        $('button[id=btn_'+val[0]+']').attr("id","btn_"+typeName);
-        
-        $('button[id=btn_'+val[0]+']').attr("id","id_"+typeName);
+          $('td[id=rate_' + val[0] + ']').html(typeRate);
+          $('td[id=rate_' + val[0] + ']').attr("id", "rate_" + typeName);
+          $('input[name=rate_' + val[0] + ']').val(typeRate);
+          $('input[name=rate_' + val[0] + ']').attr("name", "rate_" + typeName);
+
+          alert(val[0]);
+          $('button[id=btn_' + val[0] + ']').val(typeName + "_" + typeArea + "_" + typeRate);
+          $('button[id=btn_' + val[0] + ']').attr("id", "btn_" + typeName);
+          console.log("old-val:",val[0])
+          $('button[id=btn_' + val[0] + ']').attr("id", "id_" + typeName);
+
+          $('input[name=id_' + val[0] + ']').attr("name", "id_" + typeName);
+
+          let valuesToRemove = [val[0]];
+          turfNames = turfNames.filter(item => !valuesToRemove.includes(item))
+          console.log(turfNames);
+          turfNames.push(typeName);
+        }
 
         //$('#area_'+val[0]).val(typeArea);
         //$('#rate_'+val[0]).val(typeRate);

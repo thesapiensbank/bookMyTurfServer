@@ -302,7 +302,7 @@ router.route('/update').post((req, res) => {
     }
     Turf.findOne({ 'operatinghours.date': date })
       .then((turf) => {
-        console.log("\n Turf:"+turf);
+        // console.log("\n Turf:"+turf);
         // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
         if (turf!=null) {
           Turf.updateOne(
@@ -354,17 +354,70 @@ router.route('/update').post((req, res) => {
       }
       
       if (reqname.startsWith('type')) {
-        let turfType = reqname.split('_')[1];
-        var turfId = body[``]
+        let turfType = reqname.split('type_')[1];
+        var turfId = body[`id_${turfType}`];
         var var1 = String(body[`area_${turfType}`]).trim();
         var var2 = String(body[`rate_${turfType}`]).trim();
-        console.log(var1+","+var2);
-        turftype.push({
-
-          name: turfType,
-          area: Number(var1),
-          rate: Number(var2),
-        });
+        turfDataQuery = {
+          '$set':{
+            'turftype.$.name': turfType,
+            'turftype.$.area': Number(var1),
+            'turftype.$.rate': Number(var2)
+          }
+        }
+        if (turfId!=`-1`) {
+          Turf.updateOne(
+            {
+              email: email,
+              'turftype._id': turfId,
+            },
+            turfDataQuery,
+            function (err, turf) {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        }else{
+          Turf.updateOne(
+            { email: email },
+            {
+              $push: {
+                turftype: {
+                  name: turfType,
+                  area: Number(body[`area_${turfType}`]),
+                  rate: Number(body[`rate_${turfType}`]),
+                  bookedhours: [
+                    {
+                      date: date,
+                      hours: [],
+                    },
+                  ],
+                },
+              },
+            },
+            function (err, turf) {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+        }
+        // turftype.push(
+        //   turfId != `-1`
+        //     ? {
+        //         _id: turfId,
+        //         name: turfType,
+        //         area: Number(var1),
+        //         rate: Number(var2),
+        //       }
+        //     : {
+        //         name: turfType,
+        //         area: Number(var1),
+        //         rate: Number(var2),
+        //       }
+        // );
+        console.log(var1+","+var2,"id:",turfId);
       }
     }
 
@@ -383,7 +436,6 @@ router.route('/update').post((req, res) => {
       sports:sports,
       features:features,
       slots:slots,
-      turftype:turftype,
       imagefile:imagefile
     };
     Turf.updateOne({email:email},updateTurf, function (err, turf){
