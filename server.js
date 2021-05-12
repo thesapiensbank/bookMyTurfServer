@@ -66,8 +66,7 @@ app.post('/turf/upload', upload.array('image', 9), function (req, res, err) {
   console.log(req,req.session)
   if (isAdmin(req)) {
     console.log(req.body);
-    console.log(req.files);
-
+    
     if (err) {
       console.log('error');
       console.log(err);
