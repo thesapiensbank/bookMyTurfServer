@@ -347,12 +347,10 @@
   <script type="text/javascript" src="js/main.js"></script>
 
   <script>
-
+    var allTurfTypes = '<%- JSON.stringify(turf.turftype) %>';
     $(document).ready(function () {
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
-
-      var allTurfTypes = '<%- JSON.stringify(turf.turftype) %>';
       // console.log("allTurfTypes",allTurfTypes);
       var turfTypes = {
         turfs: JSON.parse(allTurfTypes)
@@ -361,7 +359,10 @@
 
     });
 
-    $("#dateofbooking").on(' input', function (e) { alert('Changed!'); });
+    $("#dateofbooking").on(' input', function (e) { 
+      $('mainTurfRow').append()
+      alert('Changed!'); 
+    });
 
     
 
