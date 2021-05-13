@@ -261,7 +261,7 @@
       </div>
     </div>
   
-    <div class="row">
+    <div id="mainTurfRow" class="row">
       
       <%  let type=turf.turftype; for(var i=0; i < type.length; i++) { console.log(type)%>
         <div class="col-md-6 text-center">
@@ -352,9 +352,20 @@
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
 
+      var allTurfTypes = '<%- JSON.stringify(turf.turftype) %>';
+      // console.log("allTurfTypes",allTurfTypes);
+      var turfTypes = {
+        turfs: JSON.parse(allTurfTypes)
+      }
+      console.log(turfTypes.turfs);
+
     });
 
     $("#dateofbooking").on(' input', function (e) { alert('Changed!'); });
+
+    
+
+
    </script>
 </footer>
 

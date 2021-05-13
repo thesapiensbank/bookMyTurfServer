@@ -12,6 +12,43 @@ router.route('/').get((req, res) => {
 router.route('/booking').post((req, res) => {
   if (isAdmin(req)) {
     console.log(req.body);
+    const email = req.session.context.user_email;
+    console.log(email)
+    const date = req.body.date;
+    const body = req.body;
+    for (var reqname in body) {
+      if (reqname.startsWith('id_')) {
+        let turfId = reqname.split('id_')[1];
+        let bhoursArray = [];
+        for (var i in body) {
+          if (i.startsWith(turfId + 'bhours_') && Array.isArray(body[i])) {
+            let bhours = i.split('bhours_')[1];
+            bhoursArray.push(bhours);
+          }
+        }
+
+        
+      console.log(bhoursArray,turfId);
+      Turf.updateOne(
+        {
+          'turftype._id': turfId,
+        },
+        {
+          $set: {
+            'turftype.$[outer].bookedhours.$[inner].hours': bhoursArray,
+          },
+        },
+        {
+          "arrayFilters": [{ "outer._id": turfId },{"inner.date":date}] 
+        },
+        function (err) {
+          if (err) {
+            console.log(err);
+          }
+        }
+      );
+      }
+    } 
     res.redirect('/admin/booking');
     // const status = req.body.status === 'on' ? true : false;
     // const name = req.body.name;
