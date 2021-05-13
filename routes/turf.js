@@ -13,7 +13,7 @@ router.route('/booking').post((req, res) => {
   if (isAdmin(req)) {
     console.log(req.body);
     const email = req.session.context.user_email;
-    console.log(email)
+    console.log(email);
     const date = req.body.date;
     const body = req.body;
     for (var reqname in body) {
@@ -27,28 +27,68 @@ router.route('/booking').post((req, res) => {
           }
         }
 
-        
-      console.log(bhoursArray,turfId);
-      Turf.updateOne(
-        {
-          'turftype._id': turfId,
-        },
-        {
-          $set: {
-            'turftype.$[outer].bookedhours.$[inner].hours': bhoursArray,
-          },
-        },
-        {
-          "arrayFilters": [{ "outer._id": turfId },{"inner.date":date}] 
-        },
-        function (err) {
-          if (err) {
-            console.log(err);
+        console.log(bhoursArray, turfId);
+        Turf.findOne({ 'turftype._id': turfId }, function (err, turf) {
+          var bookedHoursPresent = false;
+          console.log(turf);
+          console.log('\n--------------------------------------------\n');
+          for (let i = 0; i < turf.turftype.length; i++) {
+            for (let j = 0; j < turf.turftype[i].bookedhours.length; j++) {
+            console.log(turf.turftype[i].bookedhours[j])
+              if (turf.turftype[i].bookedhours[j].date == date && turf.turftype[i]._id == turfId) {
+                bookedHoursPresent = true;
+                break;
+              }
+            }
           }
-        }
-      );
+          
+          console.log('\n--------------------------------------------\n');
+          console.log(bookedHoursPresent);
+          if (!bookedHoursPresent) {
+            Turf.updateOne(
+              {
+                'turftype._id': turfId,
+              },
+              {
+                $push: {
+                  'turftype.$.bookedhours': {
+                    hours: bhoursArray,
+                    date: date,
+                  },
+                },
+              },
+              // {
+              //   arrayFilters: [{ 'outer._id': turfId }],
+              // },
+              function (err) {
+                if (err) {
+                  console.log(err);
+                }
+              }
+            );
+          } else {
+            Turf.updateOne(
+              {
+                'turftype._id': turfId,
+              },
+              {
+                $set: {
+                  'turftype.$[outer].bookedhours.$[inner].hours': bhoursArray,
+                },
+              },
+              {
+                arrayFilters: [{ 'outer._id': turfId }, { 'inner.date': date }],
+              },
+              function (err) {
+                if (err) {
+                  console.log(err);
+                }
+              }
+            );
+          }
+        });
       }
-    } 
+    }
     res.redirect('/admin/booking');
     // const status = req.body.status === 'on' ? true : false;
     // const name = req.body.name;
@@ -110,7 +150,7 @@ router.route('/booking').post((req, res) => {
     //     }
     //   })
     //   .catch((err) => res.status(400).json('Error: ' + err));
-    
+
     // for (var reqname in body) {
     //   // for sports
     //   if (reqname.startsWith('sports')) {
@@ -128,7 +168,7 @@ router.route('/booking').post((req, res) => {
     //       value: Array.isArray(body[reqname]) ? true : false,
     //     });
     //   }
-      
+
     //   if (reqname.startsWith('type')) {
     //     let turfType = reqname.split('_')[1];
     //     turftype.push({

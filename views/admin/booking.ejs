@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-      Book My Turf - Dashboard
+      Book My type - Dashboard
     </title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -263,62 +263,7 @@
   
     <div id="mainTurfRow" class="row">
       
-      <%  let type=turf.turftype; for(var i=0; i < type.length; i++) { console.log(type)%>
-        <div class="col-md-6 text-center">
-          <div class="card">
-            <div class="card-body p-0">
-              <div class="bg-primary m-0 px-5">
-
-                <div class="row text-light ">
-                  <div class="col-md-6">
-                    <h4 class="text-left">
-                      <strong> <%= type[i].name %></strong>
-                    </h4>
-                    
-                    <h5 class="row text-light text-left"><strong>Booked Slots</strong></h5>
-                  </div>
-                  <div class="col-md-6">
-                    <h5 class="text-right">
-                      <strong>Rs <%= type[i].rate %>/-</strong>
-                      
-                    </h5>
-                  </div>
-                </div>
-
-              </div>
-           <input name="id_<%= type[i]._id %>" class="form-check-input" type="hidden" value="<%= type[i]._id %>">
-
-          <%  turf.operatinghours[turf.operatinghours.length-1].hours.forEach(function(todos)  {  
-               let bookedHours = type[i].bookedhours[type[i].bookedhours.length-1].hours
-               let includeCheck = bookedHours.includes(todos) 
-              %>
-          
-               
-            <div class="form-check form-check-inline">
-
-             <label class="form-check-label">
-
-               <input name="<%= type[i]._id %>bhours_<%= todos %>" class="form-check-input" type="hidden" value="false">
-
-               <input name="<%= type[i]._id %>bhours_<%= todos %>" class="form-check-input" <%=includeCheck?`checked`:0%> type="checkbox" <%= todos?'value=true':0 %> >
-
-             <%= todos %> 
-
-             <span class="form-check-sign">
-
-               <span class="check"></span>
-
-             </span>
-
-           </label>
-
-         </div>
-       
-      <% }); %>
-        </div>
-      </div>
-        </div>
-      <%} %>
+    
     
     </div>
   </form>
@@ -348,25 +293,97 @@
 
   <script>
     var allTurfTypes = '<%- JSON.stringify(turf.turftype) %>';
+    var operatinghours1 = '<%- JSON.stringify(turf.operatinghours) %>'
+    var turfTypes = {
+        turfs: JSON.parse(allTurfTypes),
+        operatinghours:JSON.parse(operatinghours1)
+      }
     $(document).ready(function () {
       //init DateTimePickers
       materialKit.initFormExtendedDatetimepickers();
-      // console.log("allTurfTypes",allTurfTypes);
-      var turfTypes = {
-        turfs: JSON.parse(allTurfTypes)
-      }
-      console.log(turfTypes.turfs);
-
+      
     });
 
     $("#dateofbooking").on(' input', function (e) { 
-      $('mainTurfRow').append()
-      alert('Changed!'); 
+      let mainElementRow = $('#mainTurfRow');
+      mainElementRow.empty();
+      let date = $(this).val();
+      alert(date)
+
+        let type=turfTypes.turfs; 
+        
+        for(var i=0; i < type.length; i++) { 
+            mainElementRow.append(`<div class="col-md-6 text-center">
+              <div class="card">
+                <div id="id_`+type[i]._id+`" class="card-body p-0">
+                <div class="bg-primary m-0 px-5">
+
+                  <div class="row text-light ">
+                    <div class="col-md-6">
+                      <h4 class="text-left">
+                        <strong> `+type[i].name+` </strong>
+                      </h4>
+
+                      <h5 class="row text-light text-left"><strong>Booked Slots</strong></h5>
+                    </div>
+                    <div class="col-md-6">
+                      <h5 class="text-right">
+                        <strong>Rs `+type[i].rate+` /-</strong>
+
+                      </h5>
+                    </div>
+                  </div>
+
+                </div>
+                <input name="id_`+type[i]._id+`" class="form-check-input" type="hidden" value="`+type[i]._id+` ">
+              </div>
+              </div>
+            </div>`);
+        
+            
+             turfTypes.operatinghours[turfTypes.operatinghours.length-1].hours.forEach(function(todos)  { 
+              let bookedHours = null; 
+              let bookedHoursArray = type[i].bookedhours;
+               bookedHoursArray.forEach(element => {
+                 if(element.date == date){
+                   bookedHours = element.hours;
+                 }
+               });
+                  
+               
+              //   //type[i].bookedhours[type[i].bookedhours.length-1].hours;
+               let includeCheck = false;
+               console.log('\n Booked hours: ',bookedHours,'\n todos'+todos)
+               if (bookedHours != null && bookedHours.length!=0) {
+                 console.log("\n\t Booked Hours inside if: " + bookedHours, bookedHours[0].hours)
+                 includeCheck = bookedHours.includes(todos);
+               }
+               
+               console.log('\n Include Check: '+ includeCheck);
+               console.log(String(includeCheck?'checked':0))
+               $(`#id_`+type[i]._id).append(`<div class="form-check form-check-inline">
+
+                <label class="form-check-label">
+                <input name="`+type[i]._id +`bhours_` + todos+`" class="form-check-input" type="hidden" value="false">
+
+                <input name="`+type[i]._id+`bhours_`+ todos +`" class="form-check-input" `+String(includeCheck?'checked':0)+` type="checkbox"  `+String(todos?"value=true":0)+`  >
+
+                `+todos+`
+
+                <span class="form-check-sign">
+
+                                  <span class="check"></span>
+
+                                </span>
+
+                </label>
+
+                </div>`)
+            
+            })
+        }
+
     });
-
-    
-
-
    </script>
 </footer>
 
