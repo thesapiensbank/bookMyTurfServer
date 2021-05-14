@@ -15,6 +15,24 @@ let isAdmin = (req) => {
   }
 };
 
+let checkPrivilege = (req) => {
+  let context = req.session.context;
+  if (context === undefined || context === null) {
+    req.session.context = {
+      isLoggedIn: false,
+      privilege: null,
+      user_email: null,
+      admin_data: null
+    };
+    context = req.session.context;
+  }
+  if (context.isLoggedIn) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 let isManager = (req) => {
   let context = req.session.context;
   if (context === undefined) {
@@ -32,4 +50,4 @@ let isManager = (req) => {
   }
 };
 
-module.exports = { isAdmin, isManager };
+module.exports = {checkPrivilege} ;

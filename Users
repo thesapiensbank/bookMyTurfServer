@@ -20,7 +20,7 @@
   "name": "Vinay",
   "email": "vinaysudrik@gmail.com",
   "password": "$2b$10$km72FxmgPGXK0RRbM5dQR.gHucxbIg/mdf9v20DTqnYmo7DIN16Ei",
-  "privilege": "manager",
+  "privilege": "admin",
   "createdAt": {
     "$date": "2021-04-22T18:08:16.350Z"
   },

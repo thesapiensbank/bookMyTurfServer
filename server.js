@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const { isAdmin, isManager } = require('./routes/commonutils');
+const { checkPrivilege } = require('./routes/commonutils');
 const app = express();
 const port = process.env.PORT || 5000;
 let multer = require('multer');
@@ -64,7 +64,7 @@ var upload = multer({ storage: storage });
 
 app.post('/turf/upload', upload.array('image', 9), function (req, res, err) {
   console.log(req,req.session)
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     console.log(req.body);
     
     if (err) {

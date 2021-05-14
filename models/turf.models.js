@@ -6,7 +6,7 @@ const turfSchema = new Schema(
   {
     status: { type: Boolean, required: true },
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     website: { type: String, required: true },
     mobile: { type: Number, required: true, maxlength: 10 },
     location: [],

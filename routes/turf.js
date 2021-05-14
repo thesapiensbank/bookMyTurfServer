@@ -1,6 +1,6 @@
 const router = require('express').Router();
 let Turf = require('../models/turf.models');
-const { isAdmin, isManager } = require('./commonutils');
+const { checkPrivilege } = require('./commonutils');
 const fs = require('fs');
 
 router.route('/').get((req, res) => {
@@ -9,8 +9,43 @@ router.route('/').get((req, res) => {
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
+router.route('/list').get((req, res) => {
+  if (checkPrivilege(req)) {
+    let query =
+      req.session.context.privilege == 'admin'
+        ? {}
+        : { email: req.session.context.user_email };
+    Turf.find(query, function (err, turf) {
+      if (turf) {
+        res.render('admin/listview',{turfs:turf})
+      } else if (err) {
+        console.log(err);
+        res.status(400).json('Error: ' + err);
+      }
+    });
+  }else {
+    res.redirect('/admin');
+  }
+});
+
+
+
+router.route('/listredirect').post((req, res) => {
+  if (checkPrivilege(req)) {
+    let query = req.session.context.privilege=='admin'?{}:{email:req.session.context.user_email};
+    Turf.find(query, function (err, turf) {
+      if (turf) {
+        res.render('/admin/listview',{turfs:turf}       )
+      } else if (err) {
+        console.log(err);
+        // res.status(400).json('Error: ' + err);
+      }
+    });
+  }
+});
+
 router.route('/booking').post((req, res) => {
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     console.log(req.body);
     const email = req.session.context.user_email;
     console.log(email);
@@ -34,14 +69,17 @@ router.route('/booking').post((req, res) => {
           console.log('\n--------------------------------------------\n');
           for (let i = 0; i < turf.turftype.length; i++) {
             for (let j = 0; j < turf.turftype[i].bookedhours.length; j++) {
-            console.log(turf.turftype[i].bookedhours[j])
-              if (turf.turftype[i].bookedhours[j].date == date && turf.turftype[i]._id == turfId) {
+              console.log(turf.turftype[i].bookedhours[j]);
+              if (
+                turf.turftype[i].bookedhours[j].date == date &&
+                turf.turftype[i]._id == turfId
+              ) {
                 bookedHoursPresent = true;
                 break;
               }
             }
           }
-          
+
           console.log('\n--------------------------------------------\n');
           console.log(bookedHoursPresent);
           if (!bookedHoursPresent) {
@@ -57,9 +95,6 @@ router.route('/booking').post((req, res) => {
                   },
                 },
               },
-              // {
-              //   arrayFilters: [{ 'outer._id': turfId }],
-              // },
               function (err) {
                 if (err) {
                   console.log(err);
@@ -90,134 +125,13 @@ router.route('/booking').post((req, res) => {
       }
     }
     res.redirect('/admin/booking');
-    // const status = req.body.status === 'on' ? true : false;
-    // const name = req.body.name;
-    // const email = req.body.email;
-    // const website = req.body.website;
-    // const mobile = req.body.mobile;
-    // const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
-    // const address1 = req.body.address1;
-    // const address2 = req.body.address2;
-    // const city = req.body.city;
-    // const pincode = req.body.pincode;
-    // const state = req.body.state;
-    // const slots = req.body.slots;
-    // let operatinghours = req.body.operatinghours;
-    // operatinghours = calculateHours(operatinghours, Number(slots));
-    // let sports = [];
-    // let features = [];
-    // let body = req.body;
-    // let date = req.body.date;
-    // console.log(date);
-    // let turftype = [];
-    // operatinghoursQuery = {
-    //   '$set':{
-    //     'operatinghours.$.date': date,
-    //     'operatinghours.$.hours': operatinghours
-    //   }
-    // }
-    // Turf.findOne({ 'operatinghours.date': date })
-    //   .then((turf) => {
-    //     console.log("\n Turf:"+turf);
-    //     // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
-    //     if (turf!=null) {
-    //       Turf.updateOne(
-    //         { 'operatinghours.date': date },
-    //         operatinghoursQuery,
-    //         function (err, turf) {
-    //           if (err) {
-    //             console.log(err);
-    //           }
-    //         }
-    //       );
-    //     } else {
-    //       Turf.updateOne(
-    //         { email: email },
-    //         {
-    //           $push: {
-    //             operatinghours: {
-    //               'date': date,
-    //               'hours': operatinghours,
-    //             },
-    //           },
-    //         },
-    //         function (err, turf) {
-    //           if (err) {
-    //             console.log(err);
-    //           }
-    //         }
-    //       );
-    //     }
-    //   })
-    //   .catch((err) => res.status(400).json('Error: ' + err));
-
-    // for (var reqname in body) {
-    //   // for sports
-    //   if (reqname.startsWith('sports')) {
-    //     sportName = reqname.split('_')[1];
-    //     sports.push({
-    //       name: sportName,
-    //       value: Array.isArray(body[reqname]) ? true : false,
-    //     });
-    //   }
-    //   // for features
-    //   if (reqname.startsWith('features')) {
-    //     featureName = reqname.split('_')[1];
-    //     features.push({
-    //       name: featureName,
-    //       value: Array.isArray(body[reqname]) ? true : false,
-    //     });
-    //   }
-
-    //   if (reqname.startsWith('type')) {
-    //     let turfType = reqname.split('_')[1];
-    //     turftype.push({
-    //       name: turfType,
-    //       area: Number(body[`area_${turfType}`]),
-    //       rate: Number(body[`rate_${turfType}`]),
-    //       bookedhours: [
-    //         {
-    //           date: date,
-    //           hours: [],
-    //         },
-    //       ],
-    //     });
-    //   }
-    // }
-
-    // // const imagefile = req.body.imagefile;
-    // const imagefile = req.body.image.split(',');
-    // // const date = Date.parse(req.body.date);
-    // const updateTurf = {
-    //   status:status,
-    //   name:name,
-    //   email:email,
-    //   website:website,
-    //   mobile:mobile,
-    //   location:location,
-    //   pincode:pincode,
-    //   state:state,
-    //   sports:sports,
-    //   features:features,
-    //   slots:slots,
-    //   turftype:turftype,
-    //   imagefile:imagefile
-    // };
-    // Turf.updateOne({email:email},updateTurf, function (err, turf){
-    //   console.log(turf)
-    //   if(err){
-    //     console.log(err);
-    //   }else{
-    //     res.redirect('/admin/dashboard');
-    //   }
-    // })
   } else {
     res.redirect('/admin');
   }
 });
 
 router.route('/delete').post((req, res) => {
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     console.log(req)
     let context = req.session.context;
     let email = context.user_email;
@@ -256,7 +170,7 @@ router.route('/delete').post((req, res) => {
 
 
 router.route('/add').post((req, res) => {
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     const status = req.body.status === 'on' ? true : false;
     const name = req.body.name;
     const email = req.body.email;
@@ -341,7 +255,7 @@ router.route('/add').post((req, res) => {
 
     newTurf
       .save()
-      .then(() => res.redirect('/admin/dashboard'))
+      .then(() => res.redirect('/turf/list'))
       .catch((err) => res.status(400).json('Error: ' + err));
   } else {
     res.redirect('/admin');
@@ -350,10 +264,11 @@ router.route('/add').post((req, res) => {
 
 router.route('/update').post((req, res) => {
   console.log("--------------------------------------------Console-------------------------------",req.body);
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     const status = req.body.status === 'on' ? true : false;
     const name = req.body.name;
     const email = req.body.email;
+    const id = req.body.id
     const website = req.body.website;
     const mobile = req.body.mobile;
     const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
@@ -377,7 +292,7 @@ router.route('/update').post((req, res) => {
         'operatinghours.$.hours': operatinghours
       }
     }
-    Turf.findOne({ 'operatinghours.date': date })
+    Turf.findOne({ _id:id,'operatinghours.date': date })
       .then((turf) => {
         // console.log("\n Turf:"+turf);
         // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
@@ -520,7 +435,7 @@ router.route('/update').post((req, res) => {
       if(err){
         console.log(err);
       }else{
-        res.redirect('/admin/dashboard');
+        res.redirect('/turf/list');
       }
     })
   } else {

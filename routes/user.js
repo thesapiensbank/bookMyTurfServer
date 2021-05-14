@@ -2,7 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 let User = require('../models/user.models');
 let Turf = require('../models/turf.models');
-const { isAdmin, isManager } = require('./commonutils');
+const { checkPrivilege } = require('./commonutils');
 const process = require('process');
 
 var basePath = process.cwd();
@@ -23,8 +23,10 @@ router.route('/login').post((req, res) => {
         isLoggedIn: true,
         privilege: user.privilege,
         user_email: email,
+        admin_data: null
       };
-      res.redirect('dashboard');
+      // res.redirect('dashboard');
+      res.redirect('/turf/list');
       //res.send([true,serverPrivilege])
     }
     if (err) {
@@ -53,33 +55,70 @@ router.route('/').get((req, res) => {
   res.render('admin/index');
 });
 
-router.route('/dashboard').get((req, res) => {
-  if (isAdmin(req)) {
-    let context = req.session.context;
-    email = context.user_email;
-    Turf.findOne({ email: email }, function (err, turf) {
-      let context = {
-        date: new Date().toISOString().slice(0, 10),
-        user_email: email,
-      };
-      if (turf) {
-        let turfNames = [];
-        for (let i = 0; i < turf.turftype.length; i++) {
-          turfNames.push(turf.turftype[i].name);
+router.route('/dashboard-edit/:id').get((req, res) => {
+  console.log(req.params.id);
+  if (checkPrivilege(req)) {
+    Turf.find({ _id: req.params.id }, function (err, turf) {
+      if (turf.length) {
+        let email = req.session.context.user_email;
+        console.log(turf,req.session.context.user_email,req.session.context.privilege)
+        console.log(req.session.context.privilege == 'manager',
+        turf[0].email == req.session.context.user_email,
+      req.session.context.privilege == 'admin')
+        if (
+          (req.session.context.privilege == 'manager' &&
+            turf[0].email == email) ||
+          req.session.context.privilege == 'admin'
+        ) {
+          let context = {
+            date: new Date().toISOString().slice(0, 10),
+            user_email: email,
+          };
+          let turfNames = [];
+          for (let i = 0; i < turf[0].turftype.length; i++) {
+            turfNames.push(turf[0].turftype[i].name);
+          }
+          res.render('admin/dashboard_edit', {
+            turf: turf[0],
+            context: context,
+            turfNames: turfNames,
+          });
+        } else {
+          res.send('You dont have the privilege');
         }
-        res.render('admin/dashboard_update', { turf: turf, context: context, turfNames:turfNames });
-      } else {
-        res.render('admin/dashboard', { context: context });
+      } else{
+        res.send('No Turf found');
+      }
+      if (err) {
+        console.log(err);
+        res.sendStatus(400).json(err);
       }
     });
+  } else {
+    res.redirect('/admin');
   }
-  else {
+  // res.render('admin/index');
+});
+
+
+
+router.route('/dashboard').get((req, res) => {
+  if (checkPrivilege(req)) {
+    let context = req.session.context;
+    let usercontext = {
+      date: new Date().toISOString().slice(0, 10),
+      user_email:
+        context.privilege == 'manager' ? context.user_email : null,
+      privilege: context.privilege
+    };
+    res.render('admin/dashboard', { context: usercontext });
+  } else {
     res.redirect('/admin');
   }
 });
 
 router.route('/booking').get((req, res) => {
-  if (isAdmin(req)) {
+  if (checkPrivilege(req)) {
     let context = req.session.context;
     email = context.user_email;
     Turf.findOne({ email: email }, function (err, turf) {
