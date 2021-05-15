@@ -269,6 +269,7 @@ router.route('/update').post((req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const id = req.body.id
+    console.log(id);
     const website = req.body.website;
     const mobile = req.body.mobile;
     const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
@@ -298,7 +299,7 @@ router.route('/update').post((req, res) => {
         // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
         if (turf!=null) {
           Turf.updateOne(
-            { 'operatinghours.date': date },
+            { _id:id,'operatinghours.date': date },
             operatinghoursQuery,
             function (err, turf) {
               if (err) {

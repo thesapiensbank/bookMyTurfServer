@@ -2,13 +2,17 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 let User = require('../models/user.models');
 let Turf = require('../models/turf.models');
-const { checkPrivilege } = require('./commonutils');
+const { checkPrivilege, sendRegisterMail } = require('./commonutils');
 const process = require('process');
-
 var basePath = process.cwd();
 const saltRounds = 10;
+var createUserErr = null;
 
-let serverPrivilege = null;
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
 
 /* -------------------------------------------------------Api calls------------------------------------------------------------------------ */
 router.route('/login').post((req, res) => {
@@ -39,20 +43,55 @@ router.route('/login').post((req, res) => {
 router.route('/add').post((req, res) => {
   const name = req.body.name;
   const email = req.body.email;
-  const password = bcrypt.hashSync(req.body.password, saltRounds);
+  const mobile = req.body.mobile;
   const privilege = req.body.privilege;
-  // const turfid = req.body.turfid
-  const newUser = new User({ name, email, password, privilege });
-
+  console.log(req.body)
+  const newUser = new User({ name, email, mobile, privilege });
+  User.find({email:email},function(err,turf){
+    if(turf.length>0){
+      req.session.context.error = 'User Already Registered';
+      res.redirect('register')
+    }
+  })
+  
   newUser
     .save()
-    .then(() => res.redirect('/admin/dashbaord'))
-    .catch((err) => res.status(400).json('Error: ' + err));
+    .then(() => {
+      sendRegisterMail(email,name);
+      if (req.session.hasOwnProperty('context')) {
+        if (req.session.context.hasOwnProperty('error')) {
+          req.session.context.error=null
+        }
+      }
+      res.redirect('/admin');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 /* -------------------------------------------------------HTTP calls------------------------------------------------------------------------ */
 router.route('/').get((req, res) => {
   res.render('admin/index');
+});
+
+router.route('/register').get((req, res) => {
+  let err;
+  if(req.session.hasOwnProperty('context')){
+    if(req.session.context.hasOwnProperty('error')){
+      if(req.session.context.error!=null){
+        err = req.session.context.error
+      }
+    }
+  }
+  
+  if (checkPrivilege(req)) {
+    if (req.session.context.privilege == 'admin') {
+      res.render('create-new', { context: true, err:err });
+    }
+  } else {
+    res.render('create-new', { context: null, err:err });
+  }
 });
 
 router.route('/dashboard-edit/:id').get((req, res) => {
