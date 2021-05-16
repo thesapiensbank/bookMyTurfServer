@@ -11,12 +11,20 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-function sendOTP(email) {
+function sendOTP(email, otp) {
+  var mailTemplate = fs.readFileSync(__dirname + '/index.html', 'utf-8');
+
+  var newValue = mailTemplate.replace(/{user-otp}/g, otp);
+
+  fs.writeFileSync(__dirname + '/converted.html', newValue, 'utf-8');
+
+  var htmlstream = fs.createReadStream(__dirname + '/converted.html');
+
   var mailOptions = {
     from: 'opt652@gmail.com',
-    to: 'vinaysudrik@gmail.com',
+    to: email,
     subject: 'BookMyTurf-Credential Details',
-    text: '<h1></h1>',
+    html: htmlstream,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -53,7 +61,6 @@ function sendRegisterMail(email, username) {
   });
 }
 
-
 let checkPrivilege = (req) => {
   let context = req.session.context;
   if (context === undefined || context === null) {
@@ -72,4 +79,4 @@ let checkPrivilege = (req) => {
   }
 };
 
-module.exports = { checkPrivilege, sendRegisterMail };
+module.exports = { checkPrivilege, sendRegisterMail, sendOTP };

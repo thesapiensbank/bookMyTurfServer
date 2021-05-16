@@ -10,6 +10,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/list').get((req, res) => {
+  console.log(req.session, checkPrivilege(req))
   if (checkPrivilege(req)) {
     let query =
       req.session.context.privilege == 'admin'
@@ -146,7 +147,7 @@ router.route('/delete').post((req, res) => {
             fs.unlinkSync(path+imageToDelete);
             let deleteQuery = {email:email} ;
             const filteredItems = imagefiles.filter(item => ![imageToDelete].includes(item))
-            Turf.findOneAndUpdate(deleteQuery, { imagefile: filteredItems }, function (err, turf){
+            Turf.findOneAndUpdate(deleteQuery, { imagefile: filteredItems }, {useFindAndModify: false}, function (err, turf){
                 if(err){
                   console.log(err)
                 }
@@ -268,8 +269,8 @@ router.route('/update').post((req, res) => {
     const status = req.body.status === 'on' ? true : false;
     const name = req.body.name;
     const email = req.body.email;
-    const id = req.body.id
-    console.log(id);
+    const id = req.body.turfid
+    console.log("Turf ID: ",id);
     const website = req.body.website;
     const mobile = req.body.mobile;
     const location = req.body.location.match(/[-]{0,1}[\d]*[.]{0,1}[\d]+/g);
@@ -293,40 +294,42 @@ router.route('/update').post((req, res) => {
         'operatinghours.$.hours': operatinghours
       }
     }
-    Turf.findOne({ _id:id,'operatinghours.date': date })
-      .then((turf) => {
-        // console.log("\n Turf:"+turf);
-        // console.log("\n operatinghours:"+operatinghours,"\n turf data:"+turf.operatinghours)
-        if (turf!=null) {
-          Turf.updateOne(
-            { _id:id,'operatinghours.date': date },
-            operatinghoursQuery,
-            function (err, turf) {
-              if (err) {
-                console.log(err);
-              }
+    
+    Turf.find({ _id:id,'operatinghours.date': date }, function(err,turf){
+      console.log(turf)
+      if (turf.length) {
+        Turf.updateOne(
+          { _id:id,'operatinghours.date': date },
+          operatinghoursQuery,
+          function (err, turf) {
+            if (err) {
+              console.log(err);
             }
-          );
-        } else {
-          Turf.updateOne(
-            { email: email },
-            {
-              $push: {
-                operatinghours: {
-                  'date': date,
-                  'hours': operatinghours,
-                },
+          }
+        );
+      } else {
+        Turf.updateOne(
+          { _id:id },
+          {
+            $push: {
+              operatinghours: {
+                'date': date,
+                'hours': operatinghours,
               },
             },
-            function (err, turf) {
-              if (err) {
-                console.log(err);
-              }
+          },
+          function (err, turf) {
+            if (err) {
+              console.log(err);
             }
-          );
-        }
-      })
-      .catch((err) => res.status(400).json('Error: ' + err));
+          }
+        );
+      }
+      if(err){
+        res.status(400).json('Error: ' + err);
+      }
+    })
+   
     console.log("operating hours updated")
     for (var reqname in body) {
       // for sports

@@ -1,29 +1,3 @@
-<!--<?php
-session_start();
-include('includes/config.php');
-if(isset($_POST['login']))
-{
-$email=$_POST['username'];
-$password=md5($_POST['password']);
-$sql ="SELECT UserName,Password FROM admin WHERE UserName=:email and Password=:password";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
-$query-> execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-$_SESSION['alogin']=$_POST['username'];
-echo "<script type='text/javascript'> document.location = 'dashboard.php'; </script>";
-} else{
-  
-  echo "<script>alert('Invalid Details');</script>";
-
-}
-
-}
-
-?>-->
 <!doctype html>
 <html lang="en" class="no-js">
 
@@ -57,12 +31,15 @@ echo "<script type='text/javascript'> document.location = 'dashboard.php'; </scr
 								<form method="post" action="../admin/login">
 
 									<label for="" class="text-uppercase text-sm">Your mail id </label>
-									<input type="email" placeholder="email@some.com" name="email" class="form-control mb" required>
-
-									<label for="" class="text-uppercase text-sm">Password</label>
-									<input type="password" placeholder="Password" name="password" class="form-control mb" required>
-									<button class="btn btn-primary btn-block" name="login" type="submit">LOGIN</button>
+									<input id="email" type="email" placeholder="email@some.com" name="email" class="form-control mb" required>
+									<button  class="btn btn-primary btn-block otpclass" onclick="generateotp()" name="OTP">Generate OTP</button>
+									<label for="" style="display: none;" class="text-uppercase text-sm otpclass">OTP</label>
+									<input type="text" style="display: none;" placeholder="otp" name="otp" class="form-control mb otpclass" required>
+									<button class="btn btn-primary btn-block otpclass" style="display: none;" name="login" type="submit">LOGIN</button>
 								</form>
+								<% if(err!=false){ %> 
+									<div class="notification mx-5 my-2 text-center bg-info"><%=err%></div>
+								<% } %> 
 							</div>
 						</div>
 					</div>
@@ -70,7 +47,32 @@ echo "<script type='text/javascript'> document.location = 'dashboard.php'; </scr
 			</div>
 		</div>
 	</div>
-	
+	<script type="text/javascript">
+	function generateotp() {
+		let email = $('#email').val();	
+		$.ajax({
+			url: '/admin/otp',
+			type: 'POST',
+			cache: false,
+			data: { "email": email },
+			async: false,
+			success: function (data) {
+				console.log(data)
+				if (data == true) {
+					$(".otpclass").css({ display: 'block' })
+					alert("Please Check your email to find the OTP")
+				}else if(data.hasOwnProperty('err')){
+					alert(data.err)
+				}
+				// console.log(data, Array.isArray(data))
+			}
+			, error: function (jqXHR, textStatus, err) {
+				alert('text status ' + textStatus + ', err ' + err)
+			}
+
+		})
+	}
+	</script>
 	<!-- Loading Scripts -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap-select.min.js"></script>

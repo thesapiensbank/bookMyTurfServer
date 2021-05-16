@@ -23,8 +23,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    turfid: {
+    otp: {
       type: Number,
+      required: true,
     },
   },
   {
