@@ -29,14 +29,80 @@ router.route('/list').get((req, res) => {
   }
 });
 
-
+router.route('/slots').post((req, res) => {
+  const apitoken = req.body.apitoken;
+  const date = req.body.date;
+  const turftypeID = req.body.turftypeid;
+  console.log(req.body)
+  if (date && turftypeID) {
+    Turf.find(
+      { 'turftype._id': turftypeID, 'turftype.bookedhours.date': date },
+      function (err, turf) {
+        if (turf.length) {
+          console.log("inside if")
+          
+          let turfbh = [];
+          let oph = [];
+          if (Array.isArray(turf[0].turftype)) {
+            console.log("inside second l")
+            for (let i = 0; i < turf[0].turftype.length; i++) {
+              const element = turf[0].turftype[i];
+              if (element._id == turftypeID) {
+                if (Array.isArray(element.bookedhours)) {
+                  for (
+                    let j = element.bookedhours.length - 1;
+                    j < element.bookedhours.length;
+                    j--
+                  ) {
+                    const bookedhour = element.bookedhours[j];
+                    if (bookedhour.date === date) {
+                      turfbh = bookedhour.hours;
+                      console.log(turfbh);
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          console.log("first loop finish")
+          if (Array.isArray(turf[0].operatinghours)) {
+            for (
+              let k = turf[0].operatinghours.length - 1;
+              k < turf[0].operatinghours.length;
+              k--
+            ) {
+              const element = turf[0].operatinghours[k];
+              if (element.date === date) {
+                oph = element.hours;
+                break;
+              }
+            }
+          }
+          if(oph!=[]){
+            const availableslots = oph.filter((slot) => !turfbh.includes(slot));
+            const slots = { slots: availableslots, oph: oph, turfbh: turfbh };
+            res.json(slots);
+          }else{
+            res.send("Operating Hours")
+          }
+          
+        } else if (err) {
+          console.log(err);
+          // res.status(400).json('Error: ' + err);
+        }
+      }
+    );
+  }
+  
+});
 
 router.route('/listredirect').post((req, res) => {
   if (checkPrivilege(req)) {
     let query = req.session.context.privilege=='admin'?{}:{email:req.session.context.user_email};
     Turf.find(query, function (err, turf) {
       if (turf) {
-        res.render('/admin/listview',{turfs:turf}       )
+        res.render('/admin/listview', { turfs: turf });
       } else if (err) {
         console.log(err);
         // res.status(400).json('Error: ' + err);
