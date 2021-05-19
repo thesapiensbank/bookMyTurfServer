@@ -199,19 +199,21 @@ router.route('/booking').post((req, res) => {
 
 router.route('/delete').post((req, res) => {
   if (checkPrivilege(req)) {
-    console.log(req)
+    console.log(req.body)
     let context = req.session.context;
-    let email = context.user_email;
+    let turfid = req.body.turfId;
+    // let email = context.user_email;
     let path = './public/images/';
-    Turf.findOne({ email: email }, function (err, turf) {
-      if (turf) {
-        let imagefiles = turf.imagefile;
+    Turf.find({ _id: turfid }, function (err, turf) {
+      console.log(turf)
+      if (turf.length) {
+        let imagefiles = turf[0].imagefile;
         let imageToDelete = req.body.imageToDelete;
         console.log(imageToDelete, imagefiles)
         if(imagefiles.includes(imageToDelete)){
           try {
             fs.unlinkSync(path+imageToDelete);
-            let deleteQuery = {email:email} ;
+            let deleteQuery = {_id:turfid} ;
             const filteredItems = imagefiles.filter(item => ![imageToDelete].includes(item))
             Turf.findOneAndUpdate(deleteQuery, { imagefile: filteredItems }, {useFindAndModify: false}, function (err, turf){
                 if(err){
@@ -346,6 +348,11 @@ router.route('/update').post((req, res) => {
     const pincode = req.body.pincode;
     const state = req.body.state;
     const slots = req.body.slots;
+    let deletedTurfNames = req.body.delturfNames;
+    if(deletedTurfNames!=null){
+      deletedTurfNames = deletedTurfNames.includes(',')?deletedTurfNames.split(','):[deletedTurfNames]
+    }
+    console.log("----------------------Del--------------",deletedTurfNames)
     let operatinghours = req.body.operatinghours;
     operatinghours = calculateHours(operatinghours, Number(slots));
     let sports = [];
@@ -360,7 +367,24 @@ router.route('/update').post((req, res) => {
         'operatinghours.$.hours': operatinghours
       }
     }
-    
+    for (let i = 0; i < deletedTurfNames.length; i++) {
+      const element = deletedTurfNames[i];
+      Turf.updateOne(
+        { _id: id },
+        {
+          $pull: {
+            turftype: {
+              name: element,
+            },
+          },
+        },
+        function (err, turf) {
+          if (err) {
+            console.log(err);
+          }
+        }
+      );
+    }
     Turf.find({ _id:id,'operatinghours.date': date }, function(err,turf){
       console.log(turf)
       if (turf.length) {
@@ -427,10 +451,11 @@ router.route('/update').post((req, res) => {
             'turftype.$.rate': Number(var2)
           }
         }
+        console.log(turfDataQuery)
         if (turfId!=`-1`) {
+          console.log("update ran")
           Turf.updateOne(
             {
-              email: email,
               'turftype._id': turfId,
             },
             turfDataQuery,
@@ -441,8 +466,9 @@ router.route('/update').post((req, res) => {
             }
           );
         }else{
+          console.log("push ran")
           Turf.updateOne(
-            { email: email },
+            { _id: id },
             {
               $push: {
                 turftype: {

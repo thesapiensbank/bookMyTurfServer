@@ -1,0 +1,1122 @@
+[{
+  "_id": {
+    "$oid": "609d71ae7f9e96352ccf0f79"
+  },
+  "location": [
+    "19.21",
+    "72.976"
+  ],
+  "imagefile": [
+    "1620995718610.png",
+    "1620995718614.png"
+  ],
+  "status": true,
+  "name": "Demo Arena Turf",
+  "email": "rushikeshkardile9@gmail.com",
+  "website": "supersapiens.in",
+  "mobile": 9869868616,
+  "address1": "B-401, Radhey Heights, Ambedkar Chowk, Near OJAS Hospital, Ravet, Pune, Pune, Pune, Pune, Pune, Pune, Pune, Pune, Pune",
+  "address2": "Pune",
+  "city": "Pune",
+  "pincode": 400606,
+  "state": "Maharashtra",
+  "sports": [
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b2"
+      },
+      "name": "Football",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b3"
+      },
+      "name": "Cricket",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b4"
+      },
+      "name": "Hockey",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b5"
+      },
+      "name": "Tennis",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b6"
+      },
+      "name": "Badminton",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b7"
+      },
+      "name": "Basketball",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b8"
+      },
+      "name": "Cycling",
+      "value": false
+    }
+  ],
+  "operatinghours": [
+    {
+      "hours": [
+        "8 to 9",
+        "9 to 10",
+        "10 to 11",
+        "11 to 12",
+        "12 to 13",
+        "13 to 14",
+        "14 to 15",
+        "15 to 16",
+        "16 to 17",
+        "17 to 18",
+        "18 to 19",
+        "19 to 20"
+      ],
+      "_id": {
+        "$oid": "609d71af7f9e96352ccf0f81"
+      },
+      "date": "2021-05-13"
+    },
+    {
+      "hours": [
+        "11 to 12",
+        "12 to 13",
+        "13 to 14",
+        "14 to 15",
+        "15 to 16",
+        "16 to 17",
+        "17 to 18",
+        "18 to 19",
+        "19 to 20",
+        "20 to 21",
+        "21 to 22",
+        "22 to 23"
+      ],
+      "_id": {
+        "$oid": "60a1142ba3b21e4d64dba4e0"
+      },
+      "date": "2021-05-14"
+    },
+    {
+      "hours": [
+        "8 to 10",
+        "10 to 12",
+        "12 to 14",
+        "14 to 16",
+        "16 to 18",
+        "18 to 20"
+      ],
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e7a"
+      },
+      "date": "2021-05-17"
+    }
+  ],
+  "features": [
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0b9"
+      },
+      "name": "Wifi",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0ba"
+      },
+      "name": "Beverages",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0bb"
+      },
+      "name": "First Aid",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0bc"
+      },
+      "name": "Parking",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0bd"
+      },
+      "name": "Drinking Water",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0be"
+      },
+      "name": "Coaching",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0bf"
+      },
+      "name": "Flood Lights",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a121342a7e0453e0c8a0c0"
+      },
+      "name": "Toilets",
+      "value": false
+    }
+  ],
+  "slots": 1,
+  "turftype": [
+    {
+      "_id": {
+        "$oid": "609d71af7f9e96352ccf0f8a"
+      },
+      "name": "Turf1",
+      "area": 60231,
+      "rate": 2332,
+      "bookedhours": [
+        {
+          "hours": [
+            "13 to 14",
+            "16 to 17",
+            "17 to 18",
+            "19 to 20"
+          ],
+          "_id": {
+            "$oid": "609d71af7f9e96352ccf0f8b"
+          },
+          "date": "2021-05-13"
+        },
+        {
+          "hours": [
+            "13 to 14",
+            "16 to 17",
+            "19 to 20"
+          ],
+          "_id": {
+            "$oid": "609d71c07f9e96352ccf0f90"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "609d71af7f9e96352ccf0f8c"
+      },
+      "name": "Turf23",
+      "area": 5655,
+      "rate": 343,
+      "bookedhours": [
+        {
+          "hours": [
+            "13 to 14",
+            "16 to 17",
+            "17 to 18"
+          ],
+          "_id": {
+            "$oid": "609d71af7f9e96352ccf0f8d"
+          },
+          "date": "2021-05-13"
+        },
+        {
+          "hours": [
+            "13 to 14",
+            "14 to 15",
+            "16 to 17",
+            "17 to 18"
+          ],
+          "_id": {
+            "$oid": "609d71c07f9e96352ccf0f91"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "609d71af7f9e96352ccf0f8e"
+      },
+      "name": "Turf4",
+      "area": 2323,
+      "rate": 12,
+      "bookedhours": [
+        {
+          "hours": [
+            "10 to 11",
+            "11 to 12",
+            "14 to 15",
+            "19 to 20"
+          ],
+          "_id": {
+            "$oid": "609d71af7f9e96352ccf0f8f"
+          },
+          "date": "2021-05-13"
+        },
+        {
+          "hours": [
+            "10 to 11",
+            "14 to 15",
+            "17 to 18",
+            "19 to 20"
+          ],
+          "_id": {
+            "$oid": "609d71c07f9e96352ccf0f92"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-05-13T18:36:31.019Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-17T16:04:04.139Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "609e6e131334ea142c4629c7"
+  },
+  "location": [
+    "19.21",
+    "72.976"
+  ],
+  "imagefile": [
+    "1620995557831.png",
+    "1620995557835.png"
+  ],
+  "status": true,
+  "name": "Turf323232",
+  "email": "rushikeshkardile9@gmail.com",
+  "website": "https://www.github.com/optimus789",
+  "mobile": 8177965611,
+  "address1": "Thane, Mumbai",
+  "address2": "Mumbai",
+  "city": "Mumbai",
+  "pincode": 411044,
+  "state": "Maharashtra",
+  "sports": [
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629c8"
+      },
+      "name": "Football",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629c9"
+      },
+      "name": "Cricket",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629ca"
+      },
+      "name": "Hockey",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629cb"
+      },
+      "name": "Tennis",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629cc"
+      },
+      "name": "Badminton",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629cd"
+      },
+      "name": "Basketball",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629ce"
+      },
+      "name": "Cycling",
+      "value": false
+    }
+  ],
+  "operatinghours": [
+    {
+      "hours": [
+        "10 to 11",
+        "11 to 12",
+        "12 to 13",
+        "13 to 14",
+        "14 to 15",
+        "15 to 16",
+        "16 to 17",
+        "17 to 18",
+        "18 to 19",
+        "19 to 20",
+        "20 to 21",
+        "21 to 22"
+      ],
+      "_id": {
+        "$oid": "609e6e131334ea142c4629cf"
+      },
+      "date": "2021-05-14"
+    }
+  ],
+  "features": [
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d0"
+      },
+      "name": "Wifi",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d1"
+      },
+      "name": "Beverages",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d2"
+      },
+      "name": "First Aid",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d3"
+      },
+      "name": "Parking",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d4"
+      },
+      "name": "Drinking Water",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d5"
+      },
+      "name": "Coaching",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d6"
+      },
+      "name": "Flood Lights",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d7"
+      },
+      "name": "Toilets",
+      "value": true
+    }
+  ],
+  "slots": 1,
+  "turftype": [
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629d8"
+      },
+      "name": "t1",
+      "area": 2323,
+      "rate": 2332,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609e6e131334ea142c4629d9"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "609e6e131334ea142c4629da"
+      },
+      "name": "t2",
+      "area": 7878,
+      "rate": 565,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609e6e131334ea142c4629db"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-05-14T12:33:23.109Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-14T16:05:59.567Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "609e6eb2ba529401f881d038"
+  },
+  "location": [
+    "19.624457105480186",
+    "76.84318749999998"
+  ],
+  "imagefile": [
+    "1620995718610.png",
+    "1620995718614.png"
+  ],
+  "status": true,
+  "name": "Demo Arena Turf",
+  "email": "vinaysudrik@gmail.com",
+  "website": "supersapiens.in",
+  "mobile": 9869868616,
+  "address1": "Thane, Mumbai",
+  "address2": "Mumbai",
+  "city": "Mumbai",
+  "pincode": 400606,
+  "state": "Maharashtra",
+  "sports": [
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e6b"
+      },
+      "name": "Football",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e6c"
+      },
+      "name": "Cricket",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e6d"
+      },
+      "name": "Hockey",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e6e"
+      },
+      "name": "Tennis",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e6f"
+      },
+      "name": "Badminton",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e70"
+      },
+      "name": "Basketball",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e71"
+      },
+      "name": "Cycling",
+      "value": true
+    }
+  ],
+  "operatinghours": [
+    {
+      "hours": [
+        "10 to 11",
+        "11 to 12",
+        "12 to 13",
+        "13 to 14",
+        "14 to 15",
+        "15 to 16",
+        "16 to 17",
+        "17 to 18",
+        "18 to 19",
+        "19 to 20",
+        "20 to 21",
+        "21 to 22"
+      ],
+      "_id": {
+        "$oid": "609e6eb2ba529401f881d040"
+      },
+      "date": "2021-05-14"
+    },
+    {
+      "hours": [
+        "11 to 13",
+        "13 to 15",
+        "15 to 17",
+        "17 to 19",
+        "19 to 21",
+        "21 to 23"
+      ],
+      "_id": {
+        "$oid": "60a118db77cea51284f625a6"
+      },
+      "date": "2021-05-16"
+    },
+    {
+      "hours": [
+        "11 to 13",
+        "13 to 15",
+        "15 to 17",
+        "17 to 19",
+        "19 to 21",
+        "21 to 23"
+      ],
+      "_id": {
+        "$oid": "60a119fb77cea51284f625b6"
+      },
+      "date": "2021-05-16"
+    },
+    {
+      "hours": [
+        "8 to 10",
+        "10 to 12",
+        "12 to 14",
+        "14 to 16",
+        "16 to 18",
+        "18 to 20"
+      ],
+      "_id": {
+        "$oid": "60a11a5577cea51284f625c6"
+      },
+      "date": "2021-05-16"
+    }
+  ],
+  "features": [
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e72"
+      },
+      "name": "Wifi",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e73"
+      },
+      "name": "Beverages",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e74"
+      },
+      "name": "First Aid",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e75"
+      },
+      "name": "Parking",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e76"
+      },
+      "name": "Drinking Water",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e77"
+      },
+      "name": "Coaching",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e78"
+      },
+      "name": "Flood Lights",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a293f480bc2826b8ec9e79"
+      },
+      "name": "Toilets",
+      "value": false
+    }
+  ],
+  "slots": 2,
+  "turftype": [
+    {
+      "_id": {
+        "$oid": "609e6eb2ba529401f881d049"
+      },
+      "name": "t1",
+      "area": 2323,
+      "rate": 56756,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609e6eb2ba529401f881d04a"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "609e6eb2ba529401f881d04b"
+      },
+      "name": "t23",
+      "area": 8089,
+      "rate": 234,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609e6eb2ba529401f881d04c"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-05-14T12:36:02.992Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-17T16:04:04.129Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "609ea3ae97981e37d434cbdc"
+  },
+  "location": [
+    "24.26947973038893",
+    "79.56779687499998"
+  ],
+  "imagefile": [
+    "1621009248764.png"
+  ],
+  "status": true,
+  "name": "opt",
+  "email": "rushikeshkardile9@gmail.com",
+  "website": "https://www.github.com/optimus789",
+  "mobile": 8177965611,
+  "address1": "Schillerstraße 20, 60313 Frankfurt am Main",
+  "address2": "Pune",
+  "city": "Pune",
+  "pincode": 411044,
+  "state": "Maharashtra",
+  "sports": [
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbdd"
+      },
+      "name": "Football",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbde"
+      },
+      "name": "Cricket",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbdf"
+      },
+      "name": "Hockey",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe0"
+      },
+      "name": "Tennis",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe1"
+      },
+      "name": "Badminton",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe2"
+      },
+      "name": "Basketball",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe3"
+      },
+      "name": "Cycling",
+      "value": false
+    }
+  ],
+  "operatinghours": [
+    {
+      "hours": [
+        "9 to 11",
+        "11 to 13",
+        "13 to 15",
+        "15 to 17",
+        "17 to 19",
+        "19 to 21"
+      ],
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe4"
+      },
+      "date": "2021-05-14"
+    }
+  ],
+  "features": [
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe5"
+      },
+      "name": "Wifi",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe6"
+      },
+      "name": "Beverages",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe7"
+      },
+      "name": "First Aid",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe8"
+      },
+      "name": "Parking",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbe9"
+      },
+      "name": "Drinking Water",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbea"
+      },
+      "name": "Coaching",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbeb"
+      },
+      "name": "Flood Lights",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbec"
+      },
+      "name": "Toilets",
+      "value": false
+    }
+  ],
+  "slots": 2,
+  "turftype": [
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbed"
+      },
+      "name": "Type1",
+      "area": 12131,
+      "rate": 948,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609ea3ae97981e37d434cbee"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "609ea3ae97981e37d434cbef"
+      },
+      "name": "Type2",
+      "area": 87433,
+      "rate": 232,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "609ea3ae97981e37d434cbf0"
+          },
+          "date": "2021-05-14"
+        }
+      ]
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-05-14T16:22:06.104Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-15T14:19:25.060Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60a10ce0635a2b14e4bbe385"
+  },
+  "location": [
+    "19.624457105480186",
+    "77.54631249999998"
+  ],
+  "imagefile": [
+    "1621167226201.png",
+    "1621167226252.png",
+    "1621167226903.png"
+  ],
+  "status": true,
+  "name": "opt652",
+  "email": "opt652@gmail.com",
+  "website": "https://www.github.com/optimus789",
+  "mobile": 8177965611,
+  "address1": "opt address",
+  "address2": "Pune",
+  "city": "Pune",
+  "pincode": 411044,
+  "state": "Maharashtra",
+  "sports": [
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe386"
+      },
+      "name": "Football",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe387"
+      },
+      "name": "Cricket",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe388"
+      },
+      "name": "Hockey",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe389"
+      },
+      "name": "Tennis",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38a"
+      },
+      "name": "Badminton",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38b"
+      },
+      "name": "Basketball",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38c"
+      },
+      "name": "Cycling",
+      "value": false
+    }
+  ],
+  "operatinghours": [
+    {
+      "hours": [
+        "9 to 10",
+        "10 to 11",
+        "11 to 12",
+        "12 to 13",
+        "13 to 14",
+        "14 to 15",
+        "15 to 16",
+        "16 to 17",
+        "17 to 18",
+        "18 to 19",
+        "19 to 20",
+        "20 to 21"
+      ],
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38d"
+      },
+      "date": "2021-05-16"
+    }
+  ],
+  "features": [
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38e"
+      },
+      "name": "Wifi",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe38f"
+      },
+      "name": "Beverages",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe390"
+      },
+      "name": "First Aid",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe391"
+      },
+      "name": "Parking",
+      "value": true
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe392"
+      },
+      "name": "Drinking Water",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe393"
+      },
+      "name": "Coaching",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe394"
+      },
+      "name": "Flood Lights",
+      "value": false
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe395"
+      },
+      "name": "Toilets",
+      "value": false
+    }
+  ],
+  "slots": 1,
+  "turftype": [
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe396"
+      },
+      "name": "Turf1",
+      "area": 21312,
+      "rate": 872,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "60a10ce0635a2b14e4bbe397"
+          },
+          "date": "2021-05-16"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "60a10ce0635a2b14e4bbe398"
+      },
+      "name": "Turf2",
+      "area": 67676,
+      "rate": 232,
+      "bookedhours": [
+        {
+          "hours": [],
+          "_id": {
+            "$oid": "60a10ce0635a2b14e4bbe399"
+          },
+          "date": "2021-05-16"
+        }
+      ]
+    }
+  ],
+  "createdAt": {
+    "$date": "2021-05-16T12:15:28.363Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-16T12:15:28.363Z"
+  },
+  "__v": 0
+}]

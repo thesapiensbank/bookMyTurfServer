@@ -149,7 +149,7 @@ router.route('/register').get((req, res) => {
 router.route('/dashboard-edit/:id').get((req, res) => {
   console.log(req.params.id);
   console.log(req.session.context);
-  if (checkPrivilege(req)) {
+  if (checkPrivilege(req) && req.params.id.length == 24) {
     Turf.find({ _id: req.params.id }, function (err, turf) {
       if (turf.length) {
         let email = req.session.context.user_email;

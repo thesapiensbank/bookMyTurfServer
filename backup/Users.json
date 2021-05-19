@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "6081ae6ba45193f7377a97c0"
+  },
+  "name": "Rushikesh",
+  "email": "rushikeshkardile9@gmail.com",
+  "password": "$2b$10$aVojqYCT4XfukCoDKa1zYe/1TnL6xzvjNOZQ2QftQMN8VM2XMOi8u",
+  "privilege": "manager",
+  "createdAt": {
+    "$date": "2021-04-22T17:12:11.242Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-16T14:01:00.787Z"
+  },
+  "__v": 0,
+  "otp": 8709
+},{
+  "_id": {
+    "$oid": "6096549fabd8a621dc776a3a"
+  },
+  "name": "Vinay",
+  "email": "vinaysudrik@gmail.com",
+  "password": "$2b$10$t6jmBltQpQkmBCu9gZ9r..U4B30PpFloiOlhv6TGu1T0AP/VApMXO",
+  "privilege": "admin",
+  "createdAt": {
+    "$date": "2021-05-08T09:06:39.789Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-17T15:51:22.439Z"
+  },
+  "__v": 0,
+  "otp": 7863
+},{
+  "_id": {
+    "$oid": "60a1003554adce03441fbc95"
+  },
+  "name": "OPTIMUS",
+  "email": "opt652@gmail.com",
+  "mobile": "+918177965611",
+  "privilege": "manager",
+  "otp": 5081,
+  "createdAt": {
+    "$date": "2021-05-16T11:21:25.682Z"
+  },
+  "updatedAt": {
+    "$date": "2021-05-16T13:59:00.312Z"
+  },
+  "__v": 0
+}]

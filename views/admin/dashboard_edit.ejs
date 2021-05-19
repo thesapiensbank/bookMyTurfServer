@@ -173,6 +173,7 @@
       let marker;
       var geocoder;
       var turfNames = `<%-turfNames%>`.split(',');
+      var delturfNames = []
       var updatedLatLng;
       function initMap() {
         //geocoder = new google.maps.Geocoder();
@@ -676,6 +677,7 @@
         <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
         <input id="email" name="email" class="form-check-input" type="hidden" value='<%=context.user_email%>'>
         <input id="turfid" name="turfid" class="form-check-input" type="hidden" value='<%=context.turfid%>'>
+        <input id="delturfNames" name="delturfNames" class="form-check-input" type="hidden" value=''>
         <input id="date" name="date" class="form-check-input" type="hidden" value='<%=context.date%>'>
       </div>
       <button id="submit" type="submit" class="btn btn-primary">Publish</button>
@@ -938,7 +940,7 @@
 
           let valuesToRemove = [val[0]];
           turfNames = turfNames.filter(item => !valuesToRemove.includes(item))
-          console.log(turfNames);
+          console.log("TurfNames:",turfNames);
           turfNames.push(typeName);
         }
 
@@ -973,7 +975,13 @@
     function remove(element) {
       // var removeRow =  $(this).attr('name');
       //alert(removeRow);
-
+      console.log("Element removed name: ",element);
+      let string1 = String(element.id).slice(5, element.id.length-3);
+      turfNames = turfNames.filter(removedElement => ![string1].includes(removedElement))
+      console.log(turfNames)
+      delturfNames.push(string1);
+      $('#delturfNames').val(delturfNames);
+      console.log(delturfNames)
       $(element).remove();
     }
 
@@ -1076,14 +1084,16 @@
     });
 }
     function deleteImage(element,ext)
-    {      
+    {   
+      
+      let id= '<%-context.turfid%>';
      //primarySlider.remove(1);
      //secondarySlider.remove(1);
      $.ajax({
         url: '/turf/delete',
         type: 'POST',
         cache: false,
-        data: {"imageToDelete":element+String(ext)},
+        data: {"imageToDelete":element+String(ext),"turfId":id},
         async: false,
         success: function (data) {
           alert(data)
