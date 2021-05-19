@@ -213,19 +213,42 @@ router.route('/dashboard').get((req, res) => {
   }
 });
 
-router.route('/booking').get((req, res) => {
-  if (checkPrivilege(req)) {
+router.route('/booking/:id').get((req, res) => {
+  console.log(req.params.id);
+  console.log(req.session.context);
+  if (checkPrivilege(req) && req.params.id.length == 24) {
+    let id = req.params.id;
     let context = req.session.context;
     email = context.user_email;
-    Turf.findOne({ email: email }, function (err, turf) {
-      let context = {
-        date: new Date().toISOString().slice(0, 10),
-        user_email: email,
-      };
+
+    Turf.findOne({ _id: id }, function (err, turf) {
+      console.log(
+        turf,
+        req.session.context.user_email,
+        req.session.context.privilege
+      );
+      console.log(
+        req.session.context.privilege == 'manager',
+        turf.email == req.session.context.user_email,
+        req.session.context.privilege == 'admin'
+      );
       if (turf) {
-        res.render('admin/booking', { turf: turf, context: context });
+        if (
+          (req.session.context.privilege == 'manager' &&
+            turf.email == email) ||
+          req.session.context.privilege == 'admin'
+        ) {
+          let context = {
+            date: new Date().toISOString().slice(0, 10),
+            user_email: email,
+          };
+
+          res.render('admin/booking', { turf: turf, context: context });
+        } else {
+          res.send('You dont have the privilege');
+        }
       } else {
-        res.redirect('admin/dashboard');
+        res.redirect('/admin/dashboard');
       }
     });
   } else {

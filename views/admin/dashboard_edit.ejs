@@ -256,7 +256,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav">
             <li class="active nav-item"><a href="javascript:;" class="nav-link">Link</a></li>
-            <li class="nav-item"><a href="booking" class="nav-link">Booking</a></li>
+            <li class="nav-item"><a href="../booking/<%= turf._id %>"  class="nav-link">Booking</a></li>
             <li class="dropdown nav-item">
               <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown">Dropdown</a>
               <div class="dropdown-menu">
@@ -643,7 +643,7 @@
                   <tbody class="px-3" id="tbody">
                     <% let turftype=turf.turftype; 
                     for(var i=0; i < turftype.length; i++) { 
-                      let func=`remove(type_${turftype[i].name}row)`;
+                      let func=`remove("type_${turftype[i].name}row")`;
                       %>
 
                       <tr id="type_<%= turftype[i].name %>row">
@@ -675,7 +675,7 @@
           </div>
         </div>
         <input id="imagefield" name="image" class="form-check-input" type="hidden" value="">
-        <input id="email" name="email" class="form-check-input" type="hidden" value='<%=context.user_email%>'>
+        <input id="email" name="email" class="form-check-input" type="hidden" value='<%=turf.email%>'>
         <input id="turfid" name="turfid" class="form-check-input" type="hidden" value='<%=context.turfid%>'>
         <input id="delturfNames" name="delturfNames" class="form-check-input" type="hidden" value=''>
         <input id="date" name="date" class="form-check-input" type="hidden" value='<%=context.date%>'>
@@ -700,7 +700,7 @@
         <div class="modal-body mx-3 ">
           <div class="form-group">
             <label for="exampleInput1" class="bmd-label-floating">Turf Name</label>
-            <input id="typeName" type="text" class="form-control">
+            <input id="typeName" type="text" onkeyup="nospaces(this)" class="form-control">
             <span class="bmd-help">We'll never share your email with anyone else.</span>
               </div>
 
@@ -774,7 +774,7 @@
         <div class="modal-body mx-3 ">
           <div class="form-group">
             <label for="updateName" class="bmd-label-floating">Turf Name</label>
-            <input id="updateName" type="text" class="form-control">
+            <input id="updateName" type="text" onkeyup="nospaces(this)" class="form-control">
             <span class="bmd-help">We'll never share your email with anyone else.</span>
               </div>
 
@@ -838,6 +838,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
 
   <script>
+    function nospaces(t){
+        if(t.value.match(/\s/g)){
+          t.value=t.value.replace(/\s/g,'-');
+        }
+      }
     $("#image").on("change", function () {
       if ($("#image")[0].files.length > 10) {
         alert("You can select only 10 images");
@@ -976,13 +981,15 @@
       // var removeRow =  $(this).attr('name');
       //alert(removeRow);
       console.log("Element removed name: ",element);
-      let string1 = String(element.id).slice(5, element.id.length-3);
+      let baseelement = $(`#${element}`)[0]
+      console.log(baseelement,baseelement.id)
+      let string1 = String(baseelement.id).slice(5, baseelement.id.length-3);
       turfNames = turfNames.filter(removedElement => ![string1].includes(removedElement))
       console.log(turfNames)
       delturfNames.push(string1);
       $('#delturfNames').val(delturfNames);
       console.log(delturfNames)
-      $(element).remove();
+      baseelement.remove();
     }
 
     function scrollToDownload() {

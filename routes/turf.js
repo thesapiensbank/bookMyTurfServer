@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Turf = require('../models/turf.models');
+let User = require('../models/user.models');
 const { checkPrivilege } = require('./commonutils');
 const fs = require('fs');
 
@@ -115,10 +116,11 @@ router.route('/booking').post((req, res) => {
   if (checkPrivilege(req)) {
     console.log(req.body);
     const email = req.session.context.user_email;
-    console.log(email);
     const date = req.body.date;
     const body = req.body;
+    let id = req.body.turfid;
     for (var reqname in body) {
+      console.log("REQNAME_---------------:",reqname)
       if (reqname.startsWith('id_')) {
         let turfId = reqname.split('id_')[1];
         let bhoursArray = [];
@@ -129,69 +131,76 @@ router.route('/booking').post((req, res) => {
           }
         }
 
-        console.log(bhoursArray, turfId);
+        console.log('BHours array: ', bhoursArray, turfId);
         Turf.findOne({ 'turftype._id': turfId }, function (err, turf) {
           var bookedHoursPresent = false;
-          console.log(turf);
           console.log('\n--------------------------------------------\n');
-          for (let i = 0; i < turf.turftype.length; i++) {
-            for (let j = 0; j < turf.turftype[i].bookedhours.length; j++) {
-              console.log(turf.turftype[i].bookedhours[j]);
-              if (
-                turf.turftype[i].bookedhours[j].date == date &&
-                turf.turftype[i]._id == turfId
-              ) {
-                bookedHoursPresent = true;
-                break;
+          if (turf) {
+            
+            for (let i = 0; i < turf.turftype.length; i++) {
+              for (let j = 0; j < turf.turftype[i].bookedhours.length; j++) {
+                console.log(turf.turftype[i].bookedhours[j]);
+                if (
+                  turf.turftype[i].bookedhours[j].date == date &&
+                  turf.turftype[i]._id == turfId
+                ) {
+                  bookedHoursPresent = true;
+                  break;
+                }
               }
             }
-          }
 
-          console.log('\n--------------------------------------------\n');
-          console.log(bookedHoursPresent);
-          if (!bookedHoursPresent) {
-            Turf.updateOne(
-              {
-                'turftype._id': turfId,
-              },
-              {
-                $push: {
-                  'turftype.$.bookedhours': {
-                    hours: bhoursArray,
-                    date: date,
+            console.log('\n--------------------------------------------\n');
+            console.log(bookedHoursPresent);
+            if (!bookedHoursPresent) {
+              Turf.updateOne(
+                {
+                  'turftype._id': turfId,
+                },
+                {
+                  $push: {
+                    'turftype.$.bookedhours': {
+                      hours: bhoursArray,
+                      date: date,
+                    },
                   },
                 },
-              },
-              function (err) {
-                if (err) {
-                  console.log(err);
+                function (err) {
+                  if (err) {
+                    console.log(err);
+                  }
                 }
-              }
-            );
-          } else {
-            Turf.updateOne(
-              {
-                'turftype._id': turfId,
-              },
-              {
-                $set: {
-                  'turftype.$[outer].bookedhours.$[inner].hours': bhoursArray,
+              );
+            } else {
+              Turf.updateOne(
+                {
+                  'turftype._id': turfId,
                 },
-              },
-              {
-                arrayFilters: [{ 'outer._id': turfId }, { 'inner.date': date }],
-              },
-              function (err) {
-                if (err) {
-                  console.log(err);
+                {
+                  $set: {
+                    'turftype.$[outer].bookedhours.$[inner].hours': bhoursArray,
+                  },
+                },
+                {
+                  arrayFilters: [
+                    { 'outer._id': turfId },
+                    { 'inner.date': date },
+                  ],
+                },
+                function (err) {
+                  if (err) {
+                    console.log(err);
+                  }
                 }
-              }
-            );
+              );
+            }
           }
         });
       }
     }
-    res.redirect('/admin/booking');
+    console.log("this ran")
+    console.log(`/admin/booking/${id}`)
+    res.redirect(`/admin/booking/${id}`);
   } else {
     res.redirect('/admin');
   }
@@ -253,79 +262,86 @@ router.route('/add').post((req, res) => {
     const state = req.body.state;
     const slots = req.body.slots;
     let operatinghours = req.body.operatinghours;
-    operatinghours = calculateHours(operatinghours, Number(slots));
-    let sports = [];
-    let features = [];
-    let body = req.body;
-    let date = req.body.date;
-    let turftype = [];
-    operatinghours = [
-      {
-        date: date,
-        hours: operatinghours,
-      },
-    ];
-    for (var reqname in body) {
-      // for sports
-      if (reqname.startsWith('sports')) {
-        sportName = reqname.split('_')[1];
-        sports.push({
-          name: sportName,
-          value: Array.isArray(body[reqname]) ? true : false,
-        });
-      }
-      // for features
-      if (reqname.startsWith('features')) {
-        sportName = reqname.split('_')[1];
-        features.push({
-          name: sportName,
-          value: Array.isArray(body[reqname]) ? true : false,
-        });
-      }
-      
-      if (reqname.startsWith('type')) {
-        let turfType = reqname.split('_')[1];
-        turftype.push({
-          name: turfType,
-          area: Number(body[`area_${turfType}`]),
-          rate: Number(body[`rate_${turfType}`]),
-          bookedhours: [
-            {
-              date: date,
-              hours: [],
-            },
-          ],
-        });
-      }
-    }
+    
+    User.findOne({ email: email }, function (err, turf) {
+      if (turf) {
+        operatinghours = calculateHours(operatinghours, Number(slots));
+        let sports = [];
+        let features = [];
+        let body = req.body;
+        let date = req.body.date;
+        let turftype = [];
+        operatinghours = [
+          {
+            date: date,
+            hours: operatinghours,
+          },
+        ];
+        for (var reqname in body) {
+          // for sports
+          if (reqname.startsWith('sports')) {
+            sportName = reqname.split('_')[1];
+            sports.push({
+              name: sportName,
+              value: Array.isArray(body[reqname]) ? true : false,
+            });
+          }
+          // for features
+          if (reqname.startsWith('features')) {
+            sportName = reqname.split('_')[1];
+            features.push({
+              name: sportName,
+              value: Array.isArray(body[reqname]) ? true : false,
+            });
+          }
 
-    // const imagefile = req.body.imagefile;
-    const imagefile = req.body.image.split(',');
-    // const date = Date.parse(req.body.date);
-    const newTurf = new Turf({
-      status,
-      name,
-      email,
-      website,
-      mobile,
-      location,
-      address1,
-      address2,
-      city,
-      pincode,
-      state,
-      sports,
-      operatinghours,
-      features,
-      slots,
-      turftype,
-      imagefile,
+          if (reqname.startsWith('type')) {
+            let turfType = reqname.split('_')[1];
+            turftype.push({
+              name: turfType,
+              area: Number(body[`area_${turfType}`]),
+              rate: Number(body[`rate_${turfType}`]),
+              bookedhours: [
+                {
+                  date: date,
+                  hours: [],
+                },
+              ],
+            });
+          }
+        }
+
+        // const imagefile = req.body.imagefile;
+        const imagefile = req.body.image.split(',');
+        // const date = Date.parse(req.body.date);
+        const newTurf = new Turf({
+          status,
+          name,
+          email,
+          website,
+          mobile,
+          location,
+          address1,
+          address2,
+          city,
+          pincode,
+          state,
+          sports,
+          operatinghours,
+          features,
+          slots,
+          turftype,
+          imagefile,
+        });
+        newTurf
+          .save()
+          .then(() => res.redirect('/turf/list'))
+          .catch((err) => res.status(400).json('Error: ' + err));
+      } else {
+        res.send(`Enter a registered Turf Manager's email`);
+      }
     });
-
-    newTurf
-      .save()
-      .then(() => res.redirect('/turf/list'))
-      .catch((err) => res.status(400).json('Error: ' + err));
+    
   } else {
     res.redirect('/admin');
   }
@@ -526,7 +542,7 @@ router.route('/update').post((req, res) => {
       slots:slots,
       imagefile:imagefile
     };
-    Turf.updateOne({email:email},updateTurf, function (err, turf){
+    Turf.updateOne({_id: id},updateTurf, function (err, turf){
       console.log(turf)
       if(err){
         console.log(err);
