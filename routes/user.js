@@ -168,8 +168,21 @@ router.route('/dashboard-edit/:id').get((req, res) => {
             turf[0].email == email) ||
           req.session.context.privilege == 'admin'
         ) {
+          let date = new Date().toISOString().slice(0, 10);
+          let minDate = new Date();
+          let operatinghours = turf[0].operatinghours;
+          for (let i = 0; i < operatinghours.length; i++) {
+            const element = operatinghours[i];
+            if(element.date==date){
+              minDate.setDate(new Date(date).getDate()+1);
+              break;
+            }
+          }
+          minDate = minDate.toISOString().slice(0, 10);
+          
           let context = {
-            date: new Date().toISOString().slice(0, 10),
+            date: date,
+            minDate: minDate,
             user_email: email,
             turfid: req.params.id,
           };
@@ -214,24 +227,24 @@ router.route('/dashboard').get((req, res) => {
 });
 
 router.route('/booking/:id').get((req, res) => {
-  console.log(req.params.id);
-  console.log(req.session.context);
+  // console.log(req.params.id);
+  // console.log(req.session.context);
   if (checkPrivilege(req) && req.params.id.length == 24) {
     let id = req.params.id;
     let context = req.session.context;
     email = context.user_email;
 
     Turf.findOne({ _id: id }, function (err, turf) {
-      console.log(
-        turf,
-        req.session.context.user_email,
-        req.session.context.privilege
-      );
-      console.log(
-        req.session.context.privilege == 'manager',
-        turf.email == req.session.context.user_email,
-        req.session.context.privilege == 'admin'
-      );
+      // console.log(
+      //   turf,
+      //   req.session.context.user_email,
+      //   req.session.context.privilege
+      // );
+      // console.log(
+      //   req.session.context.privilege == 'manager',
+      //   turf.email == req.session.context.user_email,
+      //   req.session.context.privilege == 'admin'
+      // );
       if (turf) {
         if (
           (req.session.context.privilege == 'manager' &&

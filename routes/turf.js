@@ -153,6 +153,32 @@ router.route('/booking').post((req, res) => {
             console.log('\n--------------------------------------------\n');
             console.log(bookedHoursPresent);
             if (!bookedHoursPresent) {
+              Turf.findOne({ _id: id }, function (err, turf) {
+                let ophpresent=false;
+                if(turf){
+                  for (let i = 0; i < turf.operatinghours.length; i++) {
+                    const element = turf.operatinghours[i];
+                    if(element.date==date){
+                      ophpresent = true;
+                      break;
+                    }
+                  }
+                  if(!ophpresent){
+                    Turf.updateOne({_id:id},{
+                      $push: {
+                        operatinghours: {
+                          'date': date,
+                          'hours': operatinghours,
+                        },
+                      },
+                    },function(err,turf){
+                      if(err){
+                        console.log(err);
+                      }
+                    })
+                  }
+                }
+              });
               Turf.updateOne(
                 {
                   'turftype._id': turfId,
@@ -364,6 +390,9 @@ router.route('/update').post((req, res) => {
     const pincode = req.body.pincode;
     const state = req.body.state;
     const slots = req.body.slots;
+    const ophdate = req.body.dateofoperating;
+    console.log("---------------------------------------------------------------------",req.body)
+   
     let deletedTurfNames = req.body.delturfNames;
     if(deletedTurfNames!=null){
       deletedTurfNames = deletedTurfNames.includes(',')?deletedTurfNames.split(','):[deletedTurfNames]
@@ -377,12 +406,12 @@ router.route('/update').post((req, res) => {
     let date = req.body.date;
     console.log(date);
     let turftype = [];
-    operatinghoursQuery = {
-      '$set':{
-        'operatinghours.$.date': date,
-        'operatinghours.$.hours': operatinghours
-      }
-    }
+    // operatinghoursQuery = {
+    //   '$set':{
+    //     'operatinghours.$.date': ophdate,
+    //     'operatinghours.$.hours': operatinghours
+    //   }
+    // }
     for (let i = 0; i < deletedTurfNames.length; i++) {
       const element = deletedTurfNames[i];
       Turf.updateOne(
@@ -401,26 +430,15 @@ router.route('/update').post((req, res) => {
         }
       );
     }
-    Turf.find({ _id:id,'operatinghours.date': date }, function(err,turf){
-      console.log(turf)
-      if (turf.length) {
+    if (ophdate != null) {
+      if (ophdate != '') {
         Turf.updateOne(
-          { _id:id,'operatinghours.date': date },
-          operatinghoursQuery,
-          function (err, turf) {
-            if (err) {
-              console.log(err);
-            }
-          }
-        );
-      } else {
-        Turf.updateOne(
-          { _id:id },
+          { _id: id },
           {
             $push: {
               operatinghours: {
-                'date': date,
-                'hours': operatinghours,
+                date: ophdate,
+                hours: operatinghours,
               },
             },
           },
@@ -431,10 +449,8 @@ router.route('/update').post((req, res) => {
           }
         );
       }
-      if(err){
-        res.status(400).json('Error: ' + err);
-      }
-    })
+    }
+    
    
     console.log("operating hours updated")
     for (var reqname in body) {

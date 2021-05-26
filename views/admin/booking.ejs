@@ -294,8 +294,10 @@
   <script type="text/javascript" src="/admin/js/main.js"></script>
 
   <script>
+    var turf1 = '<%- JSON.stringify(turf) %>';
     var allTurfTypes = '<%- JSON.stringify(turf.turftype) %>';
     var operatinghours1 = '<%- JSON.stringify(turf.operatinghours) %>'
+    console.log(JSON.parse(turf1))
     var turfTypes = {
         turfs: JSON.parse(allTurfTypes),
         operatinghours:JSON.parse(operatinghours1)
@@ -341,9 +343,17 @@
               </div>
               </div>
             </div>`);
-        
             
-             turfTypes.operatinghours[turfTypes.operatinghours.length-1].hours.forEach(function(todos)  { 
+            let hours = turfTypes.operatinghours[turfTypes.operatinghours.length-1].hours;
+            for (let i = 0; i < turfTypes.operatinghours.length; i++) {
+              const element = turfTypes.operatinghours[i];
+              if(element.date==date){
+                hours = element.hours;
+                break;
+              }
+            }
+            
+            hours.forEach(function(todos)  { 
               let bookedHours = null; 
               let bookedHoursArray = type[i].bookedhours;
                bookedHoursArray.forEach(element => {
