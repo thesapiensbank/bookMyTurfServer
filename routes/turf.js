@@ -399,7 +399,11 @@ router.route('/update').post((req, res) => {
     }
     console.log("----------------------Del--------------",deletedTurfNames)
     let operatinghours = req.body.operatinghours;
+    if(operatinghours==null){
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Display here: ",operatinghours)
+    }
     operatinghours = calculateHours(operatinghours, Number(slots));
+    console.log("~~~~~~~~~~~~~~~~~~~~~~This is today operating hours:",operatinghours);
     let sports = [];
     let features = [];
     let body = req.body;
@@ -432,6 +436,7 @@ router.route('/update').post((req, res) => {
     }
     if (ophdate != null) {
       if (ophdate != '') {
+        console.log("CHeck date which is not null:",ophdate);
         Turf.updateOne(
           { _id: id },
           {

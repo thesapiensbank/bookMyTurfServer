@@ -225,16 +225,7 @@
             <li class="nav-item active "><a href="#" class="nav-link">Booking</a></li>
             <li class="dropdown nav-item">
               <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown">Dropdown</a>
-              <div class="dropdown-menu">
-                <h6 class="dropdown-header">Dropdown header</h6>
-                <a href="javascript:;" class="dropdown-item">Action</a>
-                <a href="javascript:;" class="dropdown-item">Another action</a>
-                <a href="javascript:;" class="dropdown-item">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a href="javascript:;" class="dropdown-item">Separated link</a>
-                <div class="dropdown-divider"></div>
-                <a href="javascript:;" class="dropdown-item">One more separated link</a>
-              </div>
+              
             </li>
           </ul>
         </div>
@@ -245,6 +236,16 @@
 
 <body>
   <form id="bookingForm" action="../../turf/booking" method="POST" class="container">
+
+    <div class="  text-center text-light" style="display: none;" id="notice" >
+
+      <p class="py-2 px-3 bg-info" style="filter: drop-shadow(0 0 0.15rem rgb(85, 85, 85));">
+
+        Change Operating Hours if you want to change bookable slots for the selected Date.
+
+      </p>
+
+    </div>
 
     <div class="row text-center">
       <div class="col-md-3">
@@ -344,15 +345,25 @@
               </div>
             </div>`);
             
+            let ophPresentAtDate = false;
             let hours = turfTypes.operatinghours[turfTypes.operatinghours.length-1].hours;
             for (let i = 0; i < turfTypes.operatinghours.length; i++) {
               const element = turfTypes.operatinghours[i];
               if(element.date==date){
+                ophPresentAtDate = true;
                 hours = element.hours;
                 break;
               }
             }
             
+            if(!ophPresentAtDate)
+              {
+                  $("#notice").css("display", "block");               
+              }
+              else{
+                $("#notice").css("display", "none");              
+              }
+
             hours.forEach(function(todos)  { 
               let bookedHours = null; 
               let bookedHoursArray = type[i].bookedhours;

@@ -53,10 +53,7 @@
         margin: 0;
         padding: 0;
       }
-
-
-
-      /* Table Styles */
+ /* Table Styles */
 
       .table-wrapper {
         box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
@@ -558,78 +555,84 @@
       </div>
 
       <hr>
+  
+        <div class="row m-2  ">
 
-      <div class="row m-2  ">
-
-        <div class="col-md-3">
-          <label class="form-check-label text-primary font-weight-bold">
-            Operating Hours
-          </label>
-          <%
-          let hoursArr,start,end; 
-          for (let i = 0; i < turf.operatinghours.length; i++) {
-            const element = turf.operatinghours[i];
-            console.log(element)
-            if(element.date == context.date){
-              hoursArr = element.hours;
+          <div class="col-md-3">
+            <label class="form-check-label text-primary font-weight-bold">
+              Operating Hours
+            </label>
+            <%
+            let hoursArr,start,end;
+            let ophFlag = false;
+            for (let i = 0; i < turf.operatinghours.length; i++) {
+              const element = turf.operatinghours[i];
               console.log(element)
-              start = (hoursArr[0].trim()).split('to')[0].replace(' ','');
-              end = (hoursArr[hoursArr.length-1].trim()).split('to')[1].replace(' ','');
-              console.log("StartEnd:",start,end);
-              break;
-            } 
-          }
-          
-          %>
-          <!-- input with datetimepicker -->
-          <div class="form-group pb-1">
-            <select id="operatinghours" name="operatinghours" class="form-select" required aria-label="Default select example">
-              
-              <option value="<%=start%> to <%=end%>" selected><%= start %>:00 to <%= end %>:00</option>
-              <option value="8 to 20">8:00 to 20:00</option>
-              <option value="9 to 21">9:00 to 21:00</option>
-              <option value="10 to 22">10:00 to 22:00</option>
-              <option value="11 to 23">11:00 to 23:00</option>
-               
-            </select>
-          </div>
-         
-    
-        </div>
-        <div class="col-md-3">
-          <!-- input with datetimepicker -->
-          <label for="dateofbirth" class="text-primary font-weight-bold">Operating Date</label>
-          
-          <input type="text" id="operatingdate" class="datetimepicker" name="dateofoperating" >
-        </div>
-        <input id="turfid" name="turfid" class="form-check-input" type="hidden" value=<%=turf._id%>>
-      </div>
-      
-      <div class="row mt-3  m-2">
-        <div class="col-4 col-md-3">
-          <label class="form-check-label text-primary font-weight-bold my-3">
-            Slots
-          </label>
-          <div class="dropdown pb-1">
-            <select required id="slots" name="slots" class="form-select p-1" aria-label="Default select example">
-              <option value="<%= turf.slots %>" selected><%= turf.slots %> Hours Slot</option>
-              <option value="1">1 Hour Slots</option>
-              <option value="2">2 Hour Slots</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-8 ">
-          <h6 class="text-primary my-3">Bookable slots for each type</h6>
-          <ul id="bookableHours"><%= turf.operatinghours.hours %> 
-            <% let operatinghours=turf.operatinghours[turf.operatinghours.length-1].hours; for(var i=0; i < operatinghours.length; i++) {%>
-              <li>
-                <%= operatinghours[i] %>
-              </li>
-              <%} %>
-          </ul>
-        </div>
+              if(element.date == context.date){
+                hoursArr = element.hours;
+                start = (hoursArr[0].trim()).split('to')[0].replace(' ','');
+                end = (hoursArr[hoursArr.length-1].trim()).split('to')[1].replace(' ','');
+                if(start!=undefined&&end!==undefined){
+                  ophFlag=true;
+                }
+                break;
+              } 
+              console.log("StartEnd:",start,end,ophFlag);
 
-      </div>
+            }
+            
+            %>
+
+            <!-- input with datetimepicker -->
+            <div class="form-group pb-1">
+              <select id="operatinghours" name="operatinghours" class="form-select" required aria-label="Default select example">
+                
+                <option value="<%=start%> to <%=end%>" <%= !ophFlag?`disabled`:`selected` %> > <%= ophFlag?`${start}:00 to ${end}:00`: `Please Select valid operating hour` %> </option>
+                <option value="8 to 20">8:00 to 20:00</option>
+                <option value="9 to 21">9:00 to 21:00</option>
+                <option value="10 to 22">10:00 to 22:00</option>
+                <option value="11 to 23">11:00 to 23:00</option>
+                
+              </select>
+            </div>
+          
+      
+          </div>
+          <div class="col-md-3">
+            <!-- input with datetimepicker -->
+            <label for="dateofbirth" class="text-primary font-weight-bold">Operating Date</label>
+            
+            <input type="text" id="operatingdate"   class="datetimepicker" name="dateofoperating" >
+          </div>
+          <input id="turfid" name="turfid" class="form-check-input" type="hidden" value=<%=turf._id%>>
+        </div>
+        
+        <div class="row mt-3  m-2">
+          <div class="col-4 col-md-3">
+            <label class="form-check-label text-primary font-weight-bold my-3">
+              Slots
+            </label>
+            <div class="dropdown pb-1">
+              <select required id="slots" name="slots" class="form-select p-1" aria-label="Default select example">
+                <option value="<%= turf.slots %>" selected><%= turf.slots %> Hours Slot</option>
+                <option value="1">1 Hour Slots</option>
+                <option value="2">2 Hour Slots</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-8 ">
+            <h6 class="text-primary my-3">Bookable slots for each type</h6>
+            <ul id="bookableHours"><%= turf.operatinghours.hours %> 
+              <% let operatinghours=turf.operatinghours[turf.operatinghours.length-1].hours; for(var i=0; i < operatinghours.length; i++) {%>
+                <li>
+                  <%= operatinghours[i] %>
+                </li>
+                <%} %>
+            </ul>
+          </div>
+
+        </div>
+ 
 
       <hr>
 
