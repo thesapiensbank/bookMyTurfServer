@@ -64,7 +64,7 @@ router.route('/otp').post((req, res) => {
       User.updateOne({ email: email }, { otp: otp }, function (err, user, res) {
         if (err == null) {
           // uncomment this line for production
-          // sendOTP(email,otp)
+          sendOTP(email,otp)
           console.log(otp);
         }
         if (err) {
@@ -129,9 +129,15 @@ router.route('/').get((req, res) => {
 
 router.route('/register').get((req, res) => {
   let err;
+  console.log(req.session)
   if (req.session.hasOwnProperty('context')) {
+    console.log("1st condition")
     if (req.session.context.hasOwnProperty('error')) {
+      console.log("2nd condition")
+
       if (req.session.context.error != null) {
+        console.log("3rd condition")
+
         err = req.session.context.error;
       }
     }
@@ -140,6 +146,8 @@ router.route('/register').get((req, res) => {
   if (checkPrivilege(req)) {
     if (req.session.context.privilege == 'admin') {
       res.render('create-new', { context: true, err: err });
+    }else{
+      res.redirect('/turf/list')
     }
   } else {
     res.render('create-new', { context: null, err: err });

@@ -54,7 +54,6 @@
 
       /* custom styles */
       body {
-        padding: 4em;
         background: #e5e5e5;
         font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
       }
@@ -220,13 +219,10 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav">
-            <li class="nav-item"><a href="../admin/dashboard" class="nav-link">Dashboard</a></li>
-            <li class="nav-item"><a href="../../turf/list" class="nav-link">Turfs List</a></li>
-            <li class="nav-item active "><a href="#" class="nav-link">Booking</a></li>
-            <li class="dropdown nav-item">
-              <a href="javascript:;" class="dropdown-toggle nav-link" data-toggle="dropdown">Dropdown</a>
-              
-            </li>
+            <li class="nav-item"><a href="../../turf/list" class="nav-link">Home</a></li>
+
+            <li class="nav-item"><a href="../dashboard-edit/<%= turf._id %>" class="nav-link">Edit Turf</a></li>
+           
           </ul>
         </div>
       </div>

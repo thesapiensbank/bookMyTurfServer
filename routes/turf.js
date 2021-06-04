@@ -31,7 +31,6 @@ router.route('/list').get((req, res) => {
 });
 
 router.route('/slots').post((req, res) => {
-  const apitoken = req.body.apitoken;
   const date = req.body.date;
   const turftypeID = req.body.turftypeid;
   console.log(req.body)
@@ -39,6 +38,7 @@ router.route('/slots').post((req, res) => {
     Turf.find(
       { 'turftype._id': turftypeID, 'turftype.bookedhours.date': date },
       function (err, turf) {
+        console.log(turf,turf.length)
         if (turf.length) {
           console.log("inside if")
           
@@ -91,7 +91,10 @@ router.route('/slots').post((req, res) => {
         } else if (err) {
           console.log(err);
           // res.status(400).json('Error: ' + err);
+        }else{
+          res.send("Turf not found")
         }
+        
       }
     );
   }

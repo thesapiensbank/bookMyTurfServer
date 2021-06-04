@@ -32,9 +32,9 @@
 
 									<label for="" class="text-uppercase text-sm">Your mail id </label>
 									<input id="email" type="email" placeholder="email@some.com" name="email" class="form-control mb" required>
-									<button  class="btn btn-primary btn-block otpclass" onclick="generateotp()">Generate OTP</button>
+									<button  class="btn btn-primary btn-block otpclass gen-btn" onclick="generateotp()">Generate OTP</button>
 									<label for="" style="display: none;" class="text-uppercase text-sm otpclass">OTP</label>
-									<input type="text" style="display: none;" placeholder="otp" name="otp" class="form-control mb otpclass" required>
+									<input type="text" id="otp" style="display: none;" autocomplete="off" placeholder="otp" name="otp" class="form-control mb otpclass" required>
 									<button class="btn btn-primary btn-block otpclass" style="display: none;" name="login" type="submit">LOGIN</button>
 								</form>
 								<% if(err!=false){ %> 
@@ -59,8 +59,14 @@
 			success: function (data) {
 				console.log(data)
 				if (data == true) {
-					$(".otpclass").css({ display: 'block' })
+					$(".otpclass").css({ display: 'block' }) 
+						
 					alert("Please Check your email to find the OTP")
+					$('.gen-btn').prop('disabled', true);
+						$('.gen-btn').hide(1000);
+						
+					setTimeout(enableButton,10000);
+					 
 				}else if(data.hasOwnProperty('err')){
 					alert(data.err)
 				}
@@ -72,6 +78,12 @@
 
 		})
 	}
+
+	function enableButton(){ 
+		$('.gen-btn').show(1000);  
+		$('.gen-btn').prop('disabled', false);
+	}
+
 	</script>
 	<!-- Loading Scripts -->
 	<script src="js/jquery.min.js"></script>

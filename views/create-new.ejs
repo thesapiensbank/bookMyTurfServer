@@ -38,14 +38,14 @@
 
 									<label for="" class="text-uppercase text-sm">Mail ID</label>
 									<input type="email" placeholder="Enter mail ID" name="email" class="form-control mb" required>
-									
+									<% if(context==true) { %> 
 									<label for="cars">User Privilege</label> 
 											<select name="privilege" id="privilege">
-											<option value="manager">Arena Manager</option>
-											<option value="admin">Admin</option> 
+												<option value="manager">Arena Manager</option>
+												<option value="admin">Admin</option>
 											</select>
 									<button class="btn btn-primary btn-block" name="login" type="submit">Register</button>
-
+									<% } %> 
 								</form>
 								<% if(err!=false){ %> 
 									<div class="notification mx-5 my-2 text-center bg-info"><%=err%></div>
