@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-social.css">
+	<link rel="stylesheet" href="css/bootstrap-select.css">
+	<link rel="stylesheet" href="css/fileinput.min.css">
+	<link rel="stylesheet" href="css/awesome-bootstrap-checkbox.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="login-page bk-img" style="background-image: url(images/background.jpg);">
+		<div class="form-content">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<h1 class="text-center text-bold text-light mt-4x">Login</h1>
+						<div class="well row pt-2x pb-3x bk-light">
+							<div class="col-md-8 col-md-offset-2">
+								<form method="post" action="../admin/login">
+
+									<label for="" class="text-uppercase text-sm">Your mail id </label>
+									<input id="email" type="email" placeholder="email@some.com" name="email" class="form-control mb" required>
+									<button  class="btn btn-primary btn-block otpclass gen-btn" onclick="generateotp()">Generate OTP</button>
+									<label for="" style="display: none;" class="text-uppercase text-sm otpclass">OTP</label>
+									<input type="text" id="otp" style="display: none;" autocomplete="off" placeholder="otp" name="otp" class="form-control mb otpclass" required>
+									<button class="btn btn-primary btn-block otpclass" style="display: none;" name="login" type="submit">LOGIN</button>
+								</form>
+								<% if(err!=false){ %> 
+									<div class="notification mx-5 my-2 text-center bg-info"><%=err%></div>
+								<% } %> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	function generateotp() {
+		let email = $('#email').val();	
+		$.ajax({
+			url: '/admin/otp',
+			type: 'POST',
+			cache: false,
+			data: { "email": email },
+			async: false,
+			success: function (data) {
+				console.log(data)
+				if (data == true) {
+					$(".otpclass").css({ display: 'block' }) 
+						
+					alert("Please Check your email to find the OTP")
+					$('.gen-btn').prop('disabled', true);
+						$('.gen-btn').hide(1000);
+						
+					setTimeout(enableButton,10000);
+					 
+				}else if(data.hasOwnProperty('err')){
+					alert(data.err)
+				}
+				// console.log(data, Array.isArray(data))
+			}
+			, error: function (jqXHR, textStatus, err) {
+				alert('text status ' + textStatus + ', err ' + err)
+			}
+
+		})
+	}
+
+	function enableButton(){ 
+		$('.gen-btn').show(1000);  
+		$('.gen-btn').prop('disabled', false);
+	}
+
+	</script>
+	<!-- Loading Scripts -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap-select.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.dataTables.min.js"></script>
+	<script src="js/dataTables.bootstrap.min.js"></script>
+	<script src="js/Chart.min.js"></script>
+	<script src="js/fileinput.js"></script>
+	<script src="js/chartData.js"></script>
+	<script src="js/main.js"></script>
+
+</body>
+
+</html>
