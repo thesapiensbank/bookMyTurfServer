@@ -1,13 +1,21 @@
 # bookMyTurfServer
 
-Url -> /turf/slots
-Method -> POST
-data -> 
+Url : `https://bookmyturf.net/turf/slots`
+
+
+Method : POST
+
+
+POST data :
+```
 {
     "date":"YYYY-MM-DD",
     "turftypeid":"60b91dd57a790e8e1338a09c"
 }
-response -> (oph-> available slots OR operating hours, turfbh-> turf booked hours)
+```
+
+response : { `slots`:  [available slots] , `turfbh`: [turf booked hours], `oph`: [Operating hours] }
+```
 {
     "slots": [
         "8 to 9",
@@ -40,12 +48,18 @@ response -> (oph-> available slots OR operating hours, turfbh-> turf booked hour
         "17 to 18"
     ]
 }
+```
+
 
 // 
 (if turf not present )
-res->Turf not found
+
+res:`Turf not found`
+
 //
 
-URL-> /turf
-Method -> GET
+URL:` https://bookmyturf.net/turf`
+
+Method : GET
+
 Load all turfs 
