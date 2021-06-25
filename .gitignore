@@ -3,3 +3,4 @@ public/images/
 
 .env
 routes/converted.html
+package-lock.json
