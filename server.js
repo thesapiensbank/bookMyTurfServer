@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const https = require('https');
+const fs = require('fs');
 require('dotenv').config();
 const { checkPrivilege } = require('./routes/commonutils');
 const app = express();
@@ -19,6 +21,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const uri = process.env.ATLAS_URI;
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
 mongoose.connect(uri, {
   useUnifiedTopology: true,
@@ -82,7 +94,9 @@ app.post('/turf/upload', upload.array('image', 9), function (req, res, err) {
   }
 });
 
-app.listen(port, () => {
+const httpsServer = https.createServer(credentials,app);
+
+httpsServer.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
-  console.log(`http://127.0.0.1:${port}`);
+  console.log(`https://127.0.0.1:${port}`);
 });
