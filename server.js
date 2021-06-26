@@ -36,6 +36,7 @@ const turfRouter = require('./routes/turf');
 const userRouter = require('./routes/user');
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 app.use('/', indexRouter);
 app.use('/turf', turfRouter);
 app.use('/admin', userRouter);
