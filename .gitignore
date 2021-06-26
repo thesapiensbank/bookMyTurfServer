@@ -2,5 +2,6 @@ node_modules/
 public/images/
 
 .env
+.well-known/
 routes/converted.html
 package-lock.json
