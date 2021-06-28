@@ -21,7 +21,7 @@ function sendOTP(email, otp) {
   var htmlstream = fs.createReadStream(__dirname + '/converted.html');
 
   var mailOptions = {
-    from: 'opt652@gmail.com',
+    from: 'contact.bookmyturf@gmail.com',
     to: email,
     subject: 'BookMyTurf-Credential Details',
     html: htmlstream,
@@ -46,7 +46,7 @@ function sendRegisterMail(email, username) {
   var htmlstream = fs.createReadStream(__dirname + '/converted.html');
 
   var mailOptions = {
-    from: 'opt652@gmail.com',
+    from: 'contact.bookmyturf@gmail.com',
     to: email,
     subject: 'BookMyTurf Registration Successful',
     html: htmlstream,
