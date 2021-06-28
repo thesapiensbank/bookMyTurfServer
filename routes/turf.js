@@ -241,7 +241,7 @@ router.route('/delete').post((req, res) => {
     let context = req.session.context;
     let turfid = req.body.turfId;
     // let email = context.user_email;
-    let path = './public/images/';
+    let path = (__dirname + '/public/images/');
     Turf.find({ _id: turfid }, function (err, turf) {
       console.log(turf)
       if (turf.length) {

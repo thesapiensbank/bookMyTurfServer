@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
-const http = require('http');
 const https = require('https');
 const fs = require('fs');
 require('dotenv').config();
@@ -23,7 +22,13 @@ app.use(express.urlencoded({ extended: true }));
 
 const uri = process.env.ATLAS_URI;
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/privkey.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/privkey.pemconst credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
+mu
+', 'utf8');
 const certificate = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/bookmyturf.net/chain.pem', 'utf8');
 
@@ -60,7 +65,7 @@ var fileNames = [];
 //Define where project photos will be stored
 var storage = multer.diskStorage({
   destination: function (request, file, callback) {
-    callback(null, (__dirname + '/public/images/'));
+    callback(null, './public/images/');
   },
   filename: function (request, file, callback) {
     let extArray = file.mimetype.split("/");

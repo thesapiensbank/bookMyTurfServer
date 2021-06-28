@@ -1,15 +1,15 @@
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+
 const fs = require('fs');
-var transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport(smtpTransport({
+  service: 'gmail',
   host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  requireTLS: false,
-  auth: {
-    user: 'opt652@gmail.com',
-    pass: 'Optimus@652',
+    auth: {
+    user: 'contact.bookmyturf@gmail.com',
+    pass: 'Vidal2001',
   },
-});
+}));
 
 function sendOTP(email, otp) {
   var mailTemplate = fs.readFileSync(__dirname + '/index.html', 'utf-8');
