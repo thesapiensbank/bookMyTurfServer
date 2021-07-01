@@ -59,9 +59,7 @@ response : { `slots`:  [available slots] , `turfbh`: [turf booked hours], `oph`:
 ```
 
 
-// 
 (if turf not present )
 
 res:`Turf not found`
 
-//
