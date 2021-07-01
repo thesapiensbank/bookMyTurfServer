@@ -1,5 +1,5 @@
 # bookMyTurfServer
-Fetch all turfs 
+## Fetch all turfs 
 
 Method : GET
 
@@ -8,9 +8,12 @@ URL:`https://bookmyturf.net/turf`
 
 
 
-Check available slots on specific date for specific Turf Type within a Turf Object
+## Check available slots on specific date for specific Turf Type within a Turf Object
+
 Method : POST
+
 Url : `https://bookmyturf.net/turf/slots`
+
 POST data :
 ```
 {
