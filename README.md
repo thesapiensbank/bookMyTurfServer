@@ -1,6 +1,8 @@
 # bookMyTurfServer
 Fetch all turfs 
+
 Method : GET
+
 URL:`https://bookmyturf.net/turf`
 
 
