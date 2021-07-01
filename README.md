@@ -2,9 +2,13 @@
 
 Url : `https://bookmyturf.net/turf/slots`
 
-
 Method : POST
 
+URL:`https://bookmyturf.net/turf`
+
+Method : GET
+
+Load all turfs 
 
 POST data :
 ```
@@ -57,9 +61,3 @@ response : { `slots`:  [available slots] , `turfbh`: [turf booked hours], `oph`:
 res:`Turf not found`
 
 //
-
-URL:` https://bookmyturf.net/turf`
-
-Method : GET
-
-Load all turfs 
