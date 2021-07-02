@@ -3,10 +3,12 @@ let Turf = require('../models/turf.models');
 let User = require('../models/user.models');
 const { checkPrivilege } = require('./commonutils');
 const fs = require('fs');
+const process = require('process');
+
 
 router.route('/').get((req, res) => {
   Turf.find()
-    .then((turf) => res.json(turf))
+    .then((turf) => res.send(JSON.stringify(turf)))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
@@ -171,7 +173,7 @@ router.route('/booking').post((req, res) => {
                       $push: {
                         operatinghours: {
                           'date': date,
-                          'hours': operatinghours,
+                          'hours': bhoursArray,
                         },
                       },
                     },function(err,turf){
@@ -241,7 +243,7 @@ router.route('/delete').post((req, res) => {
     let context = req.session.context;
     let turfid = req.body.turfId;
     // let email = context.user_email;
-    let path = (__dirname + '/public/images/');
+    let path = (process.cwd() + '/public/images/');
     Turf.find({ _id: turfid }, function (err, turf) {
       console.log(turf)
       if (turf.length) {
